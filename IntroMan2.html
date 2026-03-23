@@ -1,0 +1,1854 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introduction au Management - Chapitres 3 à 6</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1300px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #f0f0f0;
+            width: 100%;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3498db, #1e3c72);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .header {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .header h1 {
+            color: #1e3c72;
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+
+        .badge {
+            background: #1e3c72;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        .content {
+            padding: 30px;
+            min-height: 500px;
+            max-height: 70vh;
+            overflow-y: auto;
+            background: #ffffff;
+            scroll-behavior: smooth;
+        }
+
+        .slide {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-title {
+            color: #1e3c72;
+            font-size: 2.2em;
+            margin-bottom: 25px;
+            font-weight: 700;
+            border-left: 5px solid #3498db;
+            padding-left: 20px;
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 10;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+        }
+
+        .slide-content {
+            color: #2c3e50;
+            line-height: 1.8;
+            font-size: 1.15em;
+        }
+
+        .slide-content h3 {
+            color: #1e3c72;
+            margin: 25px 0 15px 0;
+            font-size: 1.5em;
+        }
+
+        .slide-content h4 {
+            color: #2c3e50;
+            margin: 20px 0 10px 0;
+            font-size: 1.25em;
+        }
+
+        .slide-content p {
+            margin: 15px 0;
+        }
+
+        .slide-content ul, .slide-content ol {
+            margin: 15px 0 15px 30px;
+        }
+
+        .slide-content li {
+            margin: 10px 0;
+        }
+
+        .definition {
+            background: #e8f4fd;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+            border-left: 5px solid #3498db;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .definition strong {
+            color: #1e3c72;
+            font-size: 1.1em;
+        }
+
+        .formula {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1.3em;
+            text-align: center;
+            border-left: 5px solid #1e3c72;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .example {
+            background: #fef5e7;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+            border-left: 5px solid #f39c12;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin: 25px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        th {
+            background: #1e3c72;
+            color: white;
+            font-weight: 600;
+            padding: 15px;
+            text-align: left;
+        }
+
+        td {
+            border: 1px solid #e9ecef;
+            padding: 12px;
+        }
+
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .controls {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-btn {
+            background: white;
+            color: #1e3c72;
+            border: 1px solid #dee2e6;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: #e9ecef;
+            transform: translateY(-1px);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .play-btn {
+            background: linear-gradient(90deg, #3498db, #1e3c72);
+            color: white;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .play-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.5);
+        }
+
+        .stop-btn {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .stop-btn:hover {
+            background: #c0392b;
+        }
+
+        .counter {
+            color: #6c757d;
+            font-size: 0.95em;
+            background: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            backdrop-filter: blur(5px);
+        }
+
+        .section-marker {
+            border-bottom: 2px solid #3498db;
+            margin: 30px 0 20px 0;
+            padding-bottom: 10px;
+            color: #1e3c72;
+            font-weight: 600;
+            font-size: 1.3em;
+        }
+
+        .quote {
+            font-style: italic;
+            color: #555;
+            border-left: 3px solid #1e3c72;
+            padding-left: 20px;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+                max-height: 60vh;
+            }
+            
+            .slide-title {
+                font-size: 1.8em;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+            
+            .nav-buttons {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            button {
+                flex: 1;
+                text-align: center;
+            }
+            
+            .status {
+                top: 10px;
+                right: 10px;
+                font-size: 0.8em;
+                padding: 8px 15px;
+            }
+        }
+
+        .org-chart {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 30px 0;
+        }
+        
+        .org-level {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 10px 0;
+            flex-wrap: wrap;
+        }
+        
+        .org-box {
+            border: 2px solid #3498db;
+            padding: 15px 25px;
+            border-radius: 8px;
+            background: #f8f9fa;
+            font-weight: 600;
+            min-width: 150px;
+            text-align: center;
+        }
+        
+        .org-connector {
+            width: 2px;
+            height: 20px;
+            background: #3498db;
+            margin: 0 auto;
+        }
+
+        .hand-diagram {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .finger {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100px;
+        }
+        
+        .finger-name {
+            font-weight: bold;
+            color: #1e3c72;
+            margin-bottom: 5px;
+        }
+        
+        .finger-box {
+            width: 80px;
+            height: 150px;
+            background: linear-gradient(to right, #f8f9fa, #e9ecef);
+            border: 2px solid #3498db;
+            border-radius: 40px 40px 10px 10px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: 10px;
+            font-weight: bold;
+            color: #1e3c72;
+        }
+        
+        .finger-principle {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 0.9em;
+            max-width: 120px;
+        }
+        
+        .palm {
+            width: 500px;
+            height: 100px;
+            background: #f8f9fa;
+            border: 2px solid #3498db;
+            border-radius: 50px;
+            margin: 10px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #1e3c72;
+        }
+
+        .motivation-pyramid {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 30px 0;
+        }
+        
+        .pyramid-level {
+            width: 100%;
+            text-align: center;
+            padding: 15px;
+            margin: 2px 0;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .level1 { background: #27ae60; width: 80%; }
+        .level2 { background: #2980b9; width: 70%; }
+        .level3 { background: #f39c12; width: 60%; }
+        .level4 { background: #e67e22; width: 50%; }
+        .level5 { background: #e74c3c; width: 40%; }
+        
+        .role-category {
+            background: #f8f9fa;
+            border-left: 5px solid #1e3c72;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        
+        .pillar {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 30px;
+            font-weight: bold;
+            color: white;
+        }
+        
+        .pillar-economique { background: #27ae60; }
+        .pillar-social { background: #2980b9; }
+        .pillar-environnemental { background: #f39c12; }
+        
+        .stakeholder-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .stakeholder-table th {
+            background: #1e3c72;
+            color: white;
+            padding: 10px;
+        }
+        
+        .stakeholder-table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="status" id="status">Mode navigation</div>
+    
+    <div class="container">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        
+        <div class="header">
+            <h1>📊 Introduction au Management - Chapitres 3, 4, 5 & 6</h1>
+            <span class="badge" id="slideCounter">1/35</span>
+        </div>
+
+        <div class="content" id="content">
+            <!-- Les slides seront injectées dynamiquement -->
+        </div>
+
+        <div class="controls">
+            <div class="nav-buttons">
+                <button class="nav-btn" onclick="prevSlide()" id="prevBtn">← Précédent</button>
+                <button class="nav-btn" onclick="nextSlide()" id="nextBtn">Suivant →</button>
+            </div>
+            <button class="play-btn" onclick="toggleAutoPlay()" id="playBtn">▶ Lecture automatique</button>
+            <span class="counter" id="timeDisplay">00:00 / 00:00</span>
+        </div>
+    </div>
+
+    <audio id="audioPlayer" src="management_ch3_6.mp3" preload="auto"></audio>
+
+    <script>
+        // Message d'accueil
+        alert("📚 Bienvenue dans le cours d'Introduction au Management - Chapitres 3 à 6 !\n\nAstuces :\n• Mettez le cours en pause ⏸️ pour lire les écrits 📄\n• Utilisez les flèches ← → pour naviguer\n• La barre d'espace démarre/arrête la lecture\n\nProfitez bien de ce cours !");
+
+        // ============================================
+        // DONNÉES DU COURS - 35 SLIDES
+        // ============================================
+        const slides = [
+            // CHAPITRE 3 - ÉCOLE CLASSIQUE
+            {
+                title: "Chapitre 3 - L'École Classique du Management",
+                content: `
+                    <h3>La Révolution Industrielle</h3>
+                    
+                    
+                    <div class="definition">
+                        <strong>Usine :</strong> Établissement industriel où, à l'aide de machines, on transforme des matières premières ou des produits semi-finis.
+                    </div>
+                    
+                    <div class="definition">
+                        <strong>Industrie :</strong> Ensemble des activités économiques qui produisent des biens matériels par la transformation et la mise en œuvre des matières premières.
+                    </div>
+                    
+                    <div class="definition">
+                        <strong>Révolution industrielle :</strong> Courant social et économique ayant eu lieu en Grande-Bretagne à la fin du 18ème siècle avant de se répandre en Europe et en Amérique du Nord.
+                    </div>
+                    
+                    <h4>Caractéristiques :</h4>
+                    <ul>
+                        <li>Énergie humaine remplacée par l'énergie mécanique</li>
+                        <li>Production de masse pour la consommation de masse</li>
+                        <li>Moyens efficaces de transport</li>
+                    </ul>
+                    
+                    
+                `
+            },
+            {
+                title: "Introduction à l'École Classique",
+                content: `
+                    <h3>Contexte historique</h3>
+                    <p>La recherche de meilleures performances pour l'entreprise a poussé les chercheurs et les praticiens à théoriser leurs observations. Les premiers théoriciens se sont intéressés à l'entreprise, puis progressivement à toutes les organisations.</p>
+                    
+                    <div class="definition">
+                        <strong>École classique :</strong> Ensemble des idées, postulats et hypothèses du management scientifique et de la théorie administrative générale.
+                    </div>
+                    
+                    <p>Point commun : la recherche de la performance organisationnelle.</p>
+                    
+                    <h4>Deux grandes catégories :</h4>
+                    <ul>
+                        <li>Le management scientifique (Taylor, Ford)</li>
+                        <li>La théorie administrative générale (Fayol, Weber)</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Frederick Winslow Taylor (1856-1915)",
+                content: `
+                    <h3>Le père du management scientifique</h3>
+                    
+                    <div class="definition">
+                        <strong>Taylorisme :</strong> Ensemble des principes conçus par Taylor pour arriver à l'organisation scientifique du travail.
+                    </div>
+                    
+                    <h4>Parcours :</h4>
+                    <ul>
+                        <li>Ouvrier, puis contremaître, ingénieur mécanicien, conseiller en organisation</li>
+                        <li>Midvale Steel Company et Bethlehem Steel Company</li>
+                        <li>Ouvrage majeur : "Scientific Management" (1911)</li>
+                    </ul>
+                    
+                    <h4>Constat de départ :</h4>
+                    <p>Flânerie systématique des ouvriers (perte de temps). Causes :</p>
+                    <ul>
+                        <li>Mauvaise tradition : l'ouvrier organisait seul son travail</li>
+                        <li>Marchandage dans la fixation des rémunérations</li>
+                        <li>Direction générale démissionnaire</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Les 4 Principes de Taylor",
+                content: `
+                    <h3>Les principes du management scientifique</h3>
+                    
+                    <ol>
+                        <li><strong>Étude scientifique :</strong> Étude de toutes les connaissances traditionnelles, leur enregistrement, classement et transformation en lois scientifiques.</li>
+                        <li><strong>Sélection scientifique :</strong> Sélection scientifique des ouvriers et perfectionnement de leurs qualités.</li>
+                        <li><strong>Application scientifique :</strong> Mise en application de la science du travail par les ouvriers scientifiquement entraînés.</li>
+                        <li><strong>Répartition du travail :</strong> Répartition presque égale du travail entre les ouvriers et les membres de la direction.</li>
+                    </ol>
+                    
+                    <div class="example">
+                        <strong>Synthèse des contributions :</strong>
+                        <ul>
+                            <li>Division horizontale du travail (parcellisation, spécialisation, "one best way")</li>
+                            <li>Division verticale du travail (concepteurs vs exécutants, "right man at the right place")</li>
+                            <li>Salaire au rendement (primes de productivité)</li>
+                            <li>Contrôle du travail (contremaîtres spécialisés)</li>
+                        </ul>
+                    </div>
+                `
+            },
+            {
+                title: "Forces et Limites du Taylorisme",
+                content: `
+                    <h3>Évaluation du Taylorisme</h3>
+                    
+                    <table>
+                        <tr>
+                            <th>Forces</th>
+                            <th>Limites</th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <ul>
+                                    <li>Étude scientifique du travail humain</li>
+                                    <li>Lutte contre le gaspillage du temps</li>
+                                    <li>Augmentation de la productivité</li>
+                                    <li>Prise de conscience des responsabilités de la direction</li>
+                                    <li>Modèle formel et rationnel</li>
+                                </ul>
+                            </td>
+                            <td>
+                                <ul>
+                                    <li>Homme considéré comme une machine</li>
+                                    <li>Pas d'initiative pour l'ouvrier</li>
+                                    <li>Ignorance de l'aspect informel et des relations humaines</li>
+                                    <li>Rémunération comme seule source de motivation</li>
+                                    <li>Trop de contrôle tue la cohésion sociale</li>
+                                    <li>Division excessive → esprit de caste</li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>
+                `
+            },
+            {
+                title: "Henry Ford (1863-1947) et le Fordisme",
+                content: `
+                    <h3>Le Fordisme</h3>
+                    
+                    <div class="definition">
+                        <strong>Fordisme :</strong> Organisation du travail introduite par Henry Ford intégrant un convoyeur (travail à la chaîne), la standardisation des pièces et des produits, et des salaires élevés pour augmenter la productivité et fidéliser le personnel.
+                    </div>
+                    
+                    <h4>Les 3 principes innovants :</h4>
+                    
+                    <div class="org-chart">
+                        <div class="org-level">
+                            <div class="org-box">Travail à la chaîne</div>
+                        </div>
+                        <div class="org-level">
+                            <div class="org-box">Standardisation</div>
+                        </div>
+                        <div class="org-level">
+                            <div class="org-box">Five dollars a day</div>
+                        </div>
+                    </div>
+                    
+                    <ul>
+                        <li><strong>Travail à la chaîne :</strong> Convoyeur mécanisé assurant la circulation des pièces à rythme continu, plus de temps morts.</li>
+                        <li><strong>Standardisation :</strong> Production de grandes séries de pièces interchangeables.</li>
+                        <li><strong>Five dollars a day :</strong> Doublement du salaire (2,4$ → 5$) pour fidéliser et permettre l'achat des voitures Ford.</li>
+                    </ul>
+                    
+                    <p><strong>Résultat :</strong> Production de masse pour une consommation de masse.</p>
+                `
+            },
+            {
+                title: "Henri Fayol (1841-1925)",
+                content: `
+                    <h3>La Gestion Administrative Générale</h3>
+                    
+                    <div class="definition">
+                        <strong>Henri Fayol :</strong> Ingénieur des mines français, dirigeant de l'entreprise Commentry-Fourchambault-Decazeville (1888-1918). Auteur de "Administration Industrielle et Générale" (1916).
+                    </div>
+                    
+                    <h4>Constat :</h4>
+                    <p>En France, absence de doctrine administrative. Les dirigeants étaient formés uniquement aux mathématiques et aux techniques, pas à l'administration.</p>
+                    
+                    <h4>Les 6 fonctions de l'entreprise :</h4>
+                    <table>
+                        <tr>
+                            <td><strong>Technique</strong></td>
+                            <td>Fabrication, transformation, production</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Commerciale</strong></td>
+                            <td>Achat, vente, échange</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Financière</strong></td>
+                            <td>Recherche et usage optimal des capitaux</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Sécurité</strong></td>
+                            <td>Protection des personnes et des biens</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Comptable</strong></td>
+                            <td>Tenue des statistiques, bilan</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Administrative</strong></td>
+                            <td>Planification, organisation, commandement, coordination, contrôle</td>
+                        </tr>
+                    </table>
+                `
+            },
+            {
+                title: "Les 14 Principes de Fayol",
+                content: `
+                    <h3>Les quatorze principes d'administration</h3>
+                    
+                    <div class="org-level" style="flex-wrap: wrap;">
+                        <span style="background: #e8f4fd; padding: 5px 10px; margin: 5px; border-radius: 20px;">Division du travail</span>
+                        <span style="background: #e8f4fd; padding: 5px 10px; margin: 5px; border-radius: 20px;">Autorité</span>
+                        <span style="background: #e8f4fd; padding: 5px 10px; margin: 5px; border-radius: 20px;">Discipline</span>
+                        <span style="background: #e8f4fd; padding: 5px 10px; margin: 5px; border-radius: 20px;">Unité de commandement</span>
+                        <span style="background: #e8f4fd; padding: 5px 10px; margin: 5px; border-radius: 20px;">Unité de direction</span>
+                        <span style="background: #e8f4fd; padding: 5px 10px; margin: 5px; border-radius: 20px;">Subordination intérêt privé</span>
+                        <span style="background: #e8f4fd; padding: 5px 10px; margin: 5px; border-radius: 20px;">Rémunération</span>
+                        <span style="background: #e8f4fd; padding: 5px 10px; margin: 5px; border-radius: 20px;">Centralisation/décentralisation</span>
+                        <span style="background: #e8f4fd; padding: 5px 10px; margin: 5px; border-radius: 20px;">Hiérarchie</span>
+                        <span style="background: #e8f4fd; padding: 5px 10px; margin: 5px; border-radius: 20px;">Ordre</span>
+                        <span style="background: #e8f4fd; padding: 5px 10px; margin: 5px; border-radius: 20px;">Équité</span>
+                        <span style="background: #e8f4fd; padding: 5px 10px; margin: 5px; border-radius: 20px;">Stabilité du personnel</span>
+                        <span style="background: #e8f4fd; padding: 5px 10px; margin: 5px; border-radius: 20px;">Initiative</span>
+                        <span style="background: #e8f4fd; padding: 5px 10px; margin: 5px; border-radius: 20px;">Union du personnel</span>
+                    </div>
+                `
+            },
+            {
+                title: "La Main de Fer de Fayol",
+                content: `
+                    <h3>Les 5 principes essentiels</h3>
+                    
+                    <div class="hand-diagram">
+                        <div class="finger">
+                            <div class="finger-name">Auriculaire</div>
+                            <div class="finger-box">✋</div>
+                            <div class="finger-principle"><strong>Initiative</strong><br>Proposer et exécuter</div>
+                        </div>
+                        <div class="finger">
+                            <div class="finger-name">Annulaire</div>
+                            <div class="finger-box">✋</div>
+                            <div class="finger-principle"><strong>Unité de direction</strong><br>Un chef, un programme</div>
+                        </div>
+                        <div class="finger">
+                            <div class="finger-name">Majeur</div>
+                            <div class="finger-box">✋</div>
+                            <div class="finger-principle"><strong>Hiérarchie</strong><br>Série des chefs</div>
+                        </div>
+                        <div class="finger">
+                            <div class="finger-name">Index</div>
+                            <div class="finger-box">✋</div>
+                            <div class="finger-principle"><strong>Unité de commandement</strong><br>Un seul chef</div>
+                        </div>
+                        <div class="finger">
+                            <div class="finger-name">Pouce</div>
+                            <div class="finger-box">✋</div>
+                            <div class="finger-principle"><strong>Autorité</strong><br>Droit de commander</div>
+                        </div>
+                    </div>
+                    <div class="palm">
+                        MAIN DE FER DE FAYOL
+                    </div>
+                `
+            },
+            {
+                title: "Les Sources de l'Autorité",
+                content: `
+                    <h3>Les trois types d'autorité</h3>
+                    
+                    <table>
+                        <tr>
+                            <th>Type</th>
+                            <th>Source</th>
+                            <th>Caractéristique</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Autorité statutaire</strong></td>
+                            <td>Le poste, la charte, les statuts</td>
+                            <td>N'appartient pas à la personne, délimitée par les tâches</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Autorité sapientiale</strong></td>
+                            <td>Le savoir, les connaissances, l'expertise</td>
+                            <td>Basée sur la compétence ("sapiens" = savant)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Autorité personnelle</strong></td>
+                            <td>Les qualités de l'individu</td>
+                            <td>Autorité charismatique (Weber), qualités subjectives</td>
+                        </tr>
+                    </table>
+                `
+            },
+            {
+                title: "La Main de Fer de Fayol",
+                content: `
+                    <h3>Les 5 principes essentiels</h3>
+                    
+                    <div class="hand-diagram">
+                        <div class="finger">
+                            <div class="finger-name">Auriculaire</div>
+                            <div class="finger-box">✋</div>
+                            <div class="finger-principle"><strong>Initiative</strong><br>Proposer et exécuter</div>
+                        </div>
+                        <div class="finger">
+                            <div class="finger-name">Annulaire</div>
+                            <div class="finger-box">✋</div>
+                            <div class="finger-principle"><strong>Unité de direction</strong><br>Un chef, un programme</div>
+                        </div>
+                        <div class="finger">
+                            <div class="finger-name">Majeur</div>
+                            <div class="finger-box">✋</div>
+                            <div class="finger-principle"><strong>Hiérarchie</strong><br>Série des chefs</div>
+                        </div>
+                        <div class="finger">
+                            <div class="finger-name">Index</div>
+                            <div class="finger-box">✋</div>
+                            <div class="finger-principle"><strong>Unité de commandement</strong><br>Un seul chef</div>
+                        </div>
+                        <div class="finger">
+                            <div class="finger-name">Pouce</div>
+                            <div class="finger-box">✋</div>
+                            <div class="finger-principle"><strong>Autorité</strong><br>Droit de commander</div>
+                        </div>
+                    </div>
+                    <div class="palm">
+                        MAIN DE FER DE FAYOL
+                    </div>
+                `
+            },
+            {
+                title: "Max Weber (1864-1920)",
+                content: `
+                    <h3>La rationalisation et la bureaucratie</h3>
+                    
+                    <div class="definition">
+                        <strong>Rationalité :</strong> Situation de choix dans laquelle l'acteur choisit celle qu'il croit aboutir au meilleur résultat global. Logique gouvernée par le raisonnement d'efficience.
+                    </div>
+                    
+                    <h4>La bureaucratie selon Weber (sens sociologique) :</h4>
+                    <ul>
+                        <li>Règles et procédures appliquées de façon impersonnelle</li>
+                        <li>Personnel qualifié et spécialisé</li>
+                        <li>Distinction entre intérêts privés et intérêt général</li>
+                        <li>Recrutement sur concours</li>
+                        <li>Promotion basée sur l'ancienneté</li>
+                        <li>Hiérarchie claire</li>
+                        <li>Supériorité de la règle</li>
+                        <li>Rémunération fixe et droit à la retraite</li>
+                        <li>Discipline et contrôle stricts</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Les 3 Types d'Autorité Légitime (Weber)",
+                content: `
+                    <h3>Fondements de la légitimité</h3>
+                    
+                    <table>
+                        <tr>
+                            <th>Type d'autorité</th>
+                            <th>Fondement de légitimité</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Autorité traditionnelle</strong></td>
+                            <td>Traditions, coutumes, usages</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Autorité charismatique</strong></td>
+                            <td>Qualités exceptionnelles du chef, héros, ascendant personnel</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Autorité rationnelle-légale (bureaucratique)</strong></td>
+                            <td>Règles impersonnelles, objectivité</td>
+                        </tr>
+                    </table>
+                    
+                    <div class="quote">
+                        Weber privilégie l'autorité légale et rationnelle car elle est objective, basée sur des règles impersonnelles.
+                    </div>
+                    
+                    <h4>Forces :</h4>
+                    <ul>
+                        <li>Méritocratie</li>
+                        <li>Règles impersonnelles</li>
+                        <li>Compétences</li>
+                        <li>Ordre et efficacité</li>
+                    </ul>
+                    
+                    <h4>Limites :</h4>
+                    <ul>
+                        <li>Modèle mécanique et rigide</li>
+                        <li>Trop de division → esprit de caste</li>
+                        <li>Trop de contrôle → perte de cohésion sociale</li>
+                        <li>Ignore l'aspect informel</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Conclusion de l'École Classique",
+                content: `
+                    <h3>Synthèse</h3>
+                    
+                    <table>
+                        <tr>
+                            <th></th>
+                            <th>Taylor</th>
+                            <th>Fayol</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Focalisation</strong></td>
+                            <td>Atelier, ouvriers</td>
+                            <td>Direction générale</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Contrôle</strong></td>
+                            <td>Strict, contremaîtres</td>
+                            <td>Flexible</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Commandement</strong></td>
+                            <td>Dualité</td>
+                            <td>Unité de commandement</td>
+                        </tr>
+                    </table>
+                    
+                    <p>Les deux théories sont complémentaires. Points communs :</p>
+                    <ul>
+                        <li>Modèles rationnels et formels</li>
+                        <li>Pauvres en dimension humaine</li>
+                        <li>Ignorance des relations humaines et de l'informel</li>
+                    </ul>
+                `
+            },
+            
+            // CHAPITRE 4 - RELATIONS HUMAINES
+            {
+                title: "Chapitre 4 - L'École des Relations Humaines",
+                content: `
+                    <h3>Introduction</h3>
+                    
+                    <p>Ce chapitre exploite la dimension humaine, le facteur humain dans la performance organisationnelle, négligé par l'école classique.</p>
+                    
+                    <h4>Précurseurs :</h4>
+                    <ul>
+                        <li>Robert Owen</li>
+                        <li>Hugo Munsterberg</li>
+                        <li>Mary Parker Follett</li>
+                        <li>Chester Barnard</li>
+                        <li>Elton Mayo (père fondateur)</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Elton Mayo (1880-1949)",
+                content: `
+                    <h3>L'expérience de Hawthorne</h3>
+                    
+                    <div class="definition">
+                        <strong>Elton Mayo :</strong> Psychologue industriel australien, installé aux États-Unis, considéré comme le père fondateur de l'école des relations humaines.
+                    </div>
+                    
+                    <h4>L'expérience :</h4>
+                    <p>Menée à la Western Electric Company à Chicago avec des collaborateurs de la Harvard Business School.</p>
+                    <p>Étude des variations de l'environnement physique et des conditions de travail (éclairage, horaires, primes, temps de repos) sur la productivité d'un groupe expérimental de 6 ouvrières volontaires dans un atelier de bobinage.</p>
+                    
+                    <h4>Résultats surprenants :</h4>
+                    <ul>
+                        <li>Productivité augmente avec l'amélioration des conditions</li>
+                        <li>Productivité continue d'augmenter quand on détériore les conditions</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Les Enseignements de Hawthorne",
+                content: `
+                    <h3>Conclusions de l'expérience</h3>
+                    
+                    <div class="definition">
+                        Les gains de productivité n'étaient pas dus aux conditions de travail, mais au changement des relations sociales entre les membres du groupe et entre le groupe et la direction.
+                    </div>
+                    
+                    <h4>Leçons clés :</h4>
+                    <ul>
+                        <li>La direction s'est intéressée au travail des ouvrières</li>
+                        <li>Qualité des relations interpersonnelles au sein du groupe</li>
+                        <li>Qualité des relations avec le supérieur</li>
+                        <li>Existence de relations informelles, leaders informels, règles informelles</li>
+                    </ul>
+                    
+                    <div class="quote">
+                        La rémunération n'est pas l'unique source de motivation. Les relations sociales bien entretenues sont tout aussi importantes.
+                    </div>
+                `
+            },
+            {
+                title: "Le Groupe et les Relations Humaines",
+                content: `
+                    <h3>Concepts clés</h3>
+                    
+                    <div class="definition">
+                        <strong>Groupe de travail :</strong> Ensemble de deux personnes ou plus en interaction, poursuivant un objectif commun.
+                    </div>
+                    
+                    <div class="definition">
+                        <strong>Équipe :</strong> Groupe de travail dont les actions sont interdépendantes et coordonnées, chaque membre jouant un rôle déterminé.
+                    </div>
+                    
+                    <h4>Caractéristiques du groupe :</h4>
+                    <ul>
+                        <li>Cohésion : forces qui permettent au groupe de rester soudé</li>
+                        <li>Leaders informels émergent</li>
+                        <li>Règles informelles complètent les règles formelles</li>
+                        <li>Le groupe a une influence forte sur l'individu</li>
+                    </ul>
+                    
+                    <p>Le style de commandement doit être souple et flexible. L'organisation est un système social, une communauté.</p>
+                `
+            },
+            {
+                title: "La Motivation - Définitions",
+                content: `
+                    <h3>Qu'est-ce que la motivation ?</h3>
+                    
+                    <div class="definition">
+                        <strong>Étymologie :</strong> Du latin "movere" - ce qui met en mouvement.
+                    </div>
+                    
+                    <div class="definition">
+                        <strong>Motivation :</strong> État interne qui pousse une personne à s'engager dans des comportements particuliers. Action des forces (conscientes ou inconscientes) qui déterminent le comportement.
+                    </div>
+                    
+                    <p>La motivation booste l'homme vers un comportement positif lié à la production :</p>
+                    <ul>
+                        <li><strong>Intensité :</strong> conjuguer beaucoup d'efforts</li>
+                        <li><strong>Persistance :</strong> comportement continu</li>
+                        <li><strong>Direction :</strong> comportement lié à la production</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Les 2 Catégories de Théories de Motivation",
+                content: `
+                    <h3>Théories du contenu vs Théories du processus</h3>
+                    
+                    <table>
+                        <tr>
+                            <th>Théories du contenu</th>
+                            <th>Théories du processus</th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>Question :</strong> QUOI ? Qu'est-ce qui motive ?
+                            </td>
+                            <td>
+                                <strong>Question :</strong> COMMENT ? Comment motive-t-on ?
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <ul>
+                                    <li>Abraham Maslow</li>
+                                    <li>David McClelland</li>
+                                    <li>Frederick Herzberg</li>
+                                    <li>Clayton Alderfer</li>
+                                </ul>
+                            </td>
+                            <td>
+                                <ul>
+                                    <li>Stacey Adams (équité)</li>
+                                    <li>Victor Vroom (attentes)</li>
+                                    <li>Théorie du renforcement</li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>
+                `
+            },
+            {
+                title: "La Pyramide de Maslow",
+                content: `
+                    <h3>Hiérarchie des besoins</h3>
+                    
+                    <div class="motivation-pyramid">
+                        <div class="pyramid-level level5" style="width: 40%;">Besoins de réalisation</div>
+                        <div class="pyramid-level level4" style="width: 50%;">Besoins d'estime</div>
+                        <div class="pyramid-level level3" style="width: 60%;">Besoins sociaux (appartenance)</div>
+                        <div class="pyramid-level level2" style="width: 70%;">Besoins de sécurité</div>
+                        <div class="pyramid-level level1" style="width: 80%;">Besoins physiologiques</div>
+                    </div>
+                    
+                    <p>On accède à un besoin après satisfaction du besoin de niveau inférieur.</p>
+                    
+                    <h4>Force :</h4>
+                    <p>Identification des divers besoins de l'homme.</p>
+                    
+                    <h4>Limite :</h4>
+                    <p>Vision mécaniste - l'homme ne suit pas toujours cette hiérarchisation.</p>
+                `
+            },
+            {
+                title: "La Théorie de McClelland",
+                content: `
+                    <h3>Les 3 besoins</h3>
+                    
+                    <table>
+                        <tr>
+                            <th>Besoin</th>
+                            <th>Description</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Besoin d'accomplissement</strong></td>
+                            <td>Vouloir se dépasser, se battre pour réussir</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Besoin de pouvoir</strong></td>
+                            <td>Imposer aux autres un comportement voulu, influencer</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Besoin d'affiliation</strong></td>
+                            <td>Volonté d'avoir de bonnes relations interpersonnelles, amicales</td>
+                        </tr>
+                    </table>
+                `
+            },
+            {
+                title: "La Théorie Bi-factorielle de Herzberg",
+                content: `
+                    <h3>Facteurs de satisfaction vs Facteurs d'insatisfaction</h3>
+                    
+                    <table>
+                        <tr>
+                            <th>Facteurs de satisfaction (MOTIVATEURS)</th>
+                            <th>Facteurs d'insatisfaction (HYGIÈNE)</th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <ul>
+                                    <li>Reconnaissance</li>
+                                    <li>Réalisation de soi</li>
+                                    <li>Intérêt du travail</li>
+                                    <li>Contenu du travail</li>
+                                    <li>Responsabilités</li>
+                                    <li>Promotion</li>
+                                </ul>
+                                <em>Intrinsèques à l'homme</em>
+                            </td>
+                            <td>
+                                <ul>
+                                    <li>Politique RH</li>
+                                    <li>Relations interpersonnelles</li>
+                                    <li>Conditions de travail</li>
+                                    <li>Rémunération</li>
+                                </ul>
+                                <em>Extrinsèques à l'homme</em>
+                            </td>
+                        </tr>
+                    </table>
+                    
+                    <p>Les facteurs d'hygiène, s'ils sont absents, causent l'insatisfaction, mais leur présence n'entraîne pas la satisfaction.</p>
+                `
+            },
+            {
+                title: "La Théorie ERG d'Alderfer",
+                content: `
+                    <h3>Réduction de la pyramide</h3>
+                    
+                    <div class="org-chart">
+                        <div class="org-level">
+                            <div class="org-box" style="background: #e74c3c; color: white;">Croissance (C)</div>
+                        </div>
+                        <div class="org-level">
+                            <div class="org-box" style="background: #f39c12; color: white;">Sociabilité (S)</div>
+                        </div>
+                        <div class="org-level">
+                            <div class="org-box" style="background: #27ae60; color: white;">Existence (E)</div>
+                        </div>
+                    </div>
+                    
+                    <ul>
+                        <li><strong>Existence (E) :</strong> besoins physiologiques + sécurité</li>
+                        <li><strong>Sociabilité (S) :</strong> besoins sociaux + estime</li>
+                        <li><strong>Croissance (C) :</strong> besoin d'accomplissement</li>
+                    </ul>
+                    
+                    <p>Critique de la rigidité de la hiérarchie de Maslow.</p>
+                `
+            },
+            {
+                title: "La Théorie de l'Équité (Stacey Adams)",
+                content: `
+                    <h3>La comparaison sociale</h3>
+                    
+                    <div class="formula">
+                        Contribution (apports) ↔ Rétribution (reçus)
+                    </div>
+                    
+                    <p>Le travailleur compare :</p>
+                    <ul>
+                        <li>Ce qu'il apporte à l'organisation (énergie, intelligence, force physique)</li>
+                        <li>Ce qu'il reçoit en contrepartie (salaire, avantages)</li>
+                        <li>Il se compare aux autres collègues (équité interne)</li>
+                        <li>Il se compare aux autres organisations (équité externe)</li>
+                    </ul>
+                    
+                    <div class="quote">
+                        "Mbongo muke, mosala muke" (lingala) - Peu d'argent, peu de travail.
+                    </div>
+                    
+                    <p>Si la rétribution est perçue comme équitable, le travailleur s'implique davantage. Sinon, il réduit sa contribution.</p>
+                `
+            },
+            {
+                title: "La Théorie des Attentes (Victor Vroom)",
+                content: `
+                    <h3>Le comportement déterminé par le résultat attendu</h3>
+                    
+                    <div class="definition">
+                        La motivation dépend avant tout des attentes individuelles ou de l'idée qu'on se fait du résultat à réaliser à l'issue de l'acte qu'on pose.
+                    </div>
+                    
+                    <p>Un salarié est motivé lorsque :</p>
+                    <ul>
+                        <li>Il a le sentiment de pouvoir réaliser la performance souhaitée</li>
+                        <li>Il sait qu'il en sera récompensé</li>
+                    </ul>
+                    
+                    <div class="formula">
+                        Motivation = Attente × Instrumentalité × Valence
+                    </div>
+                `
+            },
+            {
+                title: "Les Théories X et Y (Douglas McGregor)",
+                content: `
+                    <h3>Deux conceptions de l'homme au travail</h3>
+                    
+                    <table>
+                        <tr>
+                            <th>Théorie X</th>
+                            <th>Théorie Y</th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <ul>
+                                    <li>L'homme n'aime pas le travail</li>
+                                    <li>Il n'aime pas les responsabilités</li>
+                                    <li>Il recherche d'abord sa sécurité</li>
+                                    <li>Il a peu d'ambitions</li>
+                                    <li>Il souhaite être dirigé</li>
+                                </ul>
+                                <strong>→ Management autoritaire</strong>
+                            </td>
+                            <td>
+                                <ul>
+                                    <li>L'homme aime le travail par nature</li>
+                                    <li>Il cherche des responsabilités</li>
+                                    <li>Il aime la créativité</li>
+                                </ul>
+                                <strong>→ Management participatif</strong>
+                            </td>
+                        </tr>
+                    </table>
+                `
+            },
+            {
+                title: "Les Styles de Commandement (Kurt Lewin)",
+                content: `
+                    <h3>Les 3 styles</h3>
+                    
+                    <table>
+                        <tr>
+                            <th>Style</th>
+                            <th>Caractéristiques</th>
+                            <th>Résultats</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Autoritaire</strong></td>
+                            <td>Leader décide seul, donne des ordres</td>
+                            <td>Rendement élevé, mais mauvaise ambiance, agressivité</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Démocratique</strong></td>
+                            <td>Participation, décisions ensemble, autonomie</td>
+                            <td>Bonne cohésion, créativité, bon climat</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Laisser-faire</strong></td>
+                            <td>Chef n'intervient pas, auto-gestion</td>
+                            <td>Anarchie, loi du plus fort, agressivité</td>
+                        </tr>
+                    </table>
+                    
+                    <p>Le style démocratique est le meilleur, mais le style autoritaire peut convenir dans certaines circonstances (indiscipline).</p>
+                `
+            },
+            {
+                title: "Les 4 Styles de Likert",
+                content: `
+                    <h3>Rensis Likert</h3>
+                    
+                    <table>
+                        <tr>
+                            <th>Style</th>
+                            <th>Caractéristiques</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Autoritaire-exploiteur</strong></td>
+                            <td>Crainte, sanction, décisions imposées</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Autoritaire-paternaliste</strong></td>
+                            <td>Menaces et récompenses, délégation limitée</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Consultatif</strong></td>
+                            <td>Personnel consulté, mais chef décide</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Participatif</strong></td>
+                            <td>Objectifs fixés, autonomie réelle, coopération</td>
+                        </tr>
+                    </table>
+                `
+            },
+            
+            // CHAPITRE 5 - RÔLES DU MANAGER
+            {
+                title: "Chapitre 5 - Les Rôles du Manager",
+                content: `
+                    <h3>Manager vs Employé</h3>
+                    
+                    <div class="definition">
+                        <strong>Manager :</strong> Personne qui coordonne et dirige dans une organisation les activités des autres.
+                    </div>
+                    
+                    <div class="definition">
+                        <strong>Employé :</strong> Personne qui occupe une tâche donnée mais n'a pas de responsabilité de supervision.
+                    </div>
+                    
+                    <h4>Les niveaux de managers :</h4>
+                    <ul>
+                        <li><strong>Managers de première ligne :</strong> contremaîtres, superviseurs, chefs d'équipe</li>
+                        <li><strong>Managers intermédiaires :</strong> chefs d'agence, chefs de département, chefs de service</li>
+                        <li><strong>Cadres dirigeants (Top managers) :</strong> PCA, DG, administrateurs</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Les Compétences du Manager",
+                content: `
+                    <h3>Compétences générales</h3>
+                    
+                    <table>
+                        <tr>
+                            <th>Compétence</th>
+                            <th>Description</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Conceptuelle</strong></td>
+                            <td>Capacité mentale d'analyser les situations et de prendre des décisions appropriées</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Interpersonnelle</strong></td>
+                            <td>Capacité de collaborer avec les autres, travailler en équipe, maintenir un bon climat social</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Technique</strong></td>
+                            <td>Capacité d'expert dans un domaine spécialisé</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Politique</strong></td>
+                            <td>Capacité d'être un homme de contact pour assurer son pouvoir</td>
+                        </tr>
+                    </table>
+                    
+                    <h4>Compétences spécifiques :</h4>
+                    <ul>
+                        <li>Contrôle de l'environnement et des ressources</li>
+                        <li>Répartition des responsabilités</li>
+                        <li>Gestion de l'information</li>
+                        <li>Formation continue du personnel</li>
+                        <li>Motivation du personnel</li>
+                        <li>Résolution des problèmes stratégiques</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Les 10 Rôles du Manager (Mintzberg)",
+                content: `
+                    <h3>Les 3 catégories de rôles</h3>
+                    
+                    <div class="role-category">
+                        <h4>Rôles interpersonnels</h4>
+                        <ul>
+                            <li><strong>Symbole (figure de proue) :</strong> obligations cérémoniales, signature</li>
+                            <li><strong>Leader :</strong> motiver, encourager, mobiliser</li>
+                            <li><strong>Agent de liaison :</strong> contacts avec le monde extérieur</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="role-category">
+                        <h4>Rôles informationnels</h4>
+                        <ul>
+                            <li><strong>Observateur actif :</strong> recherche d'informations</li>
+                            <li><strong>Diffuseur :</strong> partage des informations</li>
+                            <li><strong>Porte-parole :</strong> transmission au public</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="role-category">
+                        <h4>Rôles décisionnels</h4>
+                        <ul>
+                            <li><strong>Entrepreneur :</strong> lancer des projets d'amélioration</li>
+                            <li><strong>Régulateur :</strong> identifier les problèmes, proposer des solutions</li>
+                            <li><strong>Répartiteur de ressources :</strong> allocation des ressources</li>
+                            <li><strong>Négociateur :</strong> représenter l'organisation</li>
+                        </ul>
+                    </div>
+                `
+            },
+            
+            // CHAPITRE 6 - DÉVELOPPEMENT DURABLE ET RSE
+            {
+                title: "Chapitre 6 - Développement Durable et RSE",
+                content: `
+                    <h3>Le Développement Durable</h3>
+                    
+                    <div class="definition">
+                        <strong>Rapport Brundtland (1987) :</strong> "Notre avenir à tous"
+                    </div>
+                    
+                    <div class="definition">
+                        <strong>Développement durable :</strong> Développement qui répond aux besoins des générations présentes sans compromettre la capacité des générations futures de répondre aux leurs.
+                    </div>
+                    
+                    <h4>Les 3 piliers :</h4>
+                    <div style="text-align: center; margin: 20px 0;">
+                        <span class="pillar pillar-economique">ÉCONOMIQUE</span>
+                        <span class="pillar pillar-social">SOCIAL</span>
+                        <span class="pillar pillar-environnemental">ENVIRONNEMENTAL</span>
+                    </div>
+                    
+                    <ul>
+                        <li><strong>Pilier économique :</strong> performance financière, rentabilité</li>
+                        <li><strong>Pilier social :</strong> formation, motivation, conditions de travail, climat social</li>
+                        <li><strong>Pilier environnemental :</strong> assainissement, réduction des déchets, protection</li>
+                    </ul>
+                    
+                    <div class="quote">
+                        Solidarité intergénérationnelle : même droit d'accès aux ressources, même devoir d'en assurer la pérennité.
+                    </div>
+                `
+            },
+            {
+                title: "La Responsabilité Sociétale d'Entreprise (RSE)",
+                content: `
+                    <h3>Définitions</h3>
+                    
+                    <div class="definition">
+                        <strong>Responsabilité (étymologie) :</strong> Du latin "respondere" - répondre de ses actes, se porter garant.
+                    </div>
+                    
+                    <div class="definition">
+                        <strong>RSE (sens étroit) :</strong> L'entreprise répond de ses actes dans le domaine social, vis-à-vis de son personnel.
+                    </div>
+                    
+                    <div class="definition">
+                        <strong>RSE (sens large) :</strong> L'entreprise répond de ses actes devant tous les groupes sociaux, internes et externes, devant l'ensemble de la société.
+                    </div>
+                    
+                    <h4>Selon la norme ISO 26000 (2010) :</h4>
+                    <p>Responsabilité d'une organisation vis-à-vis des impacts de ses décisions et activités sur la société et l'environnement, se traduisant par un comportement transparent et éthique qui :</p>
+                    <ul>
+                        <li>Contribue au développement durable</li>
+                        <li>Prend en compte les attentes des parties prenantes</li>
+                        <li>Respecte les lois</li>
+                        <li>Est intégré dans l'ensemble de l'organisation</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Les Parties Prenantes",
+                content: `
+                    <h3>Stakeholders</h3>
+                    
+                    <div class="definition">
+                        <strong>Partie prenante (Freeman) :</strong> Tout groupe ou individu qui peut affecter ou être affecté par la réalisation des objectifs de l'organisation.
+                    </div>
+                    
+                    <h4>Attentes des parties prenantes :</h4>
+                    
+                    <table class="stakeholder-table">
+                        <tr>
+                            <th>Partie prenante</th>
+                            <th>Attentes</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Personnel</strong></td>
+                            <td>Rémunération motivante, reconnaissance, promotion</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Propriétaires</strong></td>
+                            <td>Dividendes importants</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Clients</strong></td>
+                            <td>Biens et services de qualité</td>
+                        </tr>
+                        <tr>
+                            <td><strong>État</strong></td>
+                            <td>Paiement des impôts, création d'emplois, assainissement</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Créanciers (banques)</strong></td>
+                            <td>Remboursement des crédits</td>
+                        </tr>
+                    </table>
+                `
+            },
+            {
+                title: "Les Principes de la RSE",
+                content: `
+                    <h3>Les 5 principes</h3>
+                    
+                    <ol>
+                        <li><strong>Transparence :</strong> Communiquer clairement et complètement sur les politiques, décisions, activités et leurs conséquences.</li>
+                        <li><strong>Comportement éthique :</strong> Être guidé par les valeurs morales d'honnêteté, d'équité et d'intégrité.</li>
+                        <li><strong>Légalité :</strong> Respecter toutes les législations et réglementations, ainsi que les normes internationales.</li>
+                        <li><strong>Respect des intérêts des parties prenantes :</strong> Répondre positivement à leurs attentes.</li>
+                        <li><strong>Respect des droits de l'homme :</strong> Les droits fondamentaux doivent être respectés.</li>
+                    </ol>
+                `
+            },
+            {
+                title: "La Responsabilité au Sens Philosophique",
+                content: `
+                    <h3>Hans Jonas et le principe responsabilité</h3>
+                    
+                    <div class="definition">
+                        <strong>Responsabilité :</strong> Condition d'imputabilité des actes à un individu. Obligation de réparer un dommage.
+                    </div>
+                    
+                    <div class="quote">
+                        "Agir de façon que les actions ne soient pas destructrices pour les possibilités de vie future sur terre." - Hans Jonas
+                    </div>
+                    
+                    <p>La responsabilité est une modalité de l'action :</p>
+                    <ul>
+                        <li>Réfléchir aux conséquences de ses actes</li>
+                        <li>Pour soi et surtout pour autrui</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Conclusion Générale",
+                content: `
+                    <h3>Synthèse des chapitres 3 à 6</h3>
+                    
+                    <h4>Chapitre 3 - École Classique :</h4>
+                    <ul>
+                        <li>Taylor : organisation scientifique du travail, OST</li>
+                        <li>Ford : travail à la chaîne, production de masse</li>
+                        <li>Fayol : administration, 14 principes</li>
+                        <li>Weber : bureaucratie, autorité rationnelle-légale</li>
+                    </ul>
+                    
+                    <h4>Chapitre 4 - Relations Humaines :</h4>
+                    <ul>
+                        <li>Mayo : expérience Hawthorne, importance des relations sociales</li>
+                        <li>Motivation : théories du contenu (Maslow, Herzberg) et du processus (Adams, Vroom)</li>
+                        <li>Leadership : McGregor (X/Y), Lewin (styles), Likert</li>
+                    </ul>
+                    
+                    <h4>Chapitre 5 - Rôles du Manager :</h4>
+                    <ul>
+                        <li>10 rôles répartis en 3 catégories (interpersonnels, informationnels, décisionnels)</li>
+                        <li>Compétences : conceptuelles, interpersonnelles, techniques, politiques</li>
+                    </ul>
+                    
+                    <h4>Chapitre 6 - Développement Durable et RSE :</h4>
+                    <ul>
+                        <li>3 piliers : économique, social, environnemental</li>
+                        <li>Parties prenantes et leurs attentes</li>
+                        <li>Principes : transparence, éthique, légalité, respect</li>
+                    </ul>
+                `
+            }
+        ];
+
+        // ============================================
+        // TIMINGS POUR SYNCHRONISATION AUDIO
+        // ============================================
+        const timeline = [
+            0,     // Slide 1 - Intro Ch3
+            67,    // Slide 2 - Révolution industrielle
+            107,    // Slide 3 - Taylor
+            172,    // Slide 4 - 4 principes Taylor
+            248,   // Slide 5 - Forces/limites Taylor
+            249,   // Slide 6 - Ford
+            364,   // Slide 7 - Fayol
+            439,   // Slide 8 - 14 principes
+            468,   // Slide 9 - Main de fer
+            478,   // Slide 10 - Sources autorité
+            492,   // Slide 11 - Weber
+            520,   // Slide 12 - 3 types autorité
+            563,   // Slide 13 - Conclusion classique
+            601,   // Slide 14 - Intro Ch4
+            637,   // Slide 15 - Mayo
+            642,   // Slide 16 - Enseignements Hawthorne
+            701,   // Slide 17 - Groupe
+            712,   // Slide 18 - Motivation définition
+            777.5,   // Slide 19 - 2 catégories théories
+            798,   // Slide 20 - Maslow
+            814,   // Slide 21 - McClelland
+            835,   // Slide 22 - Herzberg
+            845,   // Slide 23 - Alderfer
+            886,   // Slide 24 - Adams équité
+            901,   // Slide 25 - Vroom attentes
+            933,   // Slide 26 - McGregor X/Y
+            946,   // Slide 27 - Lewin styles
+            1013,   // Slide 28 - Likert
+            1046,   // Slide 29 - Intro Ch5
+            1074,   // Slide 30 - Compétences
+            1132,   // Slide 31 - 10 rôles
+            1187,   // Slide 32 - Intro Ch6 DD
+            1259,   // Slide 33 - RSE
+            1349,   // Slide 34 - Parties prenantes
+            1425,   // Slide 35 - Conclusion
+            1475,    // Fin
+            1499.5,
+            1530
+        ];
+
+        // Durée totale estimée
+        const totalDuration = 1540; // secondes (15 minutes)
+
+        // Variables d'état
+        let currentSlide = 0;
+        let isAutoPlaying = false;
+        let autoPlayInterval;
+        let syncInterval;
+        
+        // Éléments DOM
+        const audioPlayer = document.getElementById('audioPlayer');
+        const contentDiv = document.getElementById('content');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const playBtn = document.getElementById('playBtn');
+        const statusDiv = document.getElementById('status');
+        const slideCounter = document.getElementById('slideCounter');
+        const progressFill = document.getElementById('progressFill');
+        const timeDisplay = document.getElementById('timeDisplay');
+
+        // ============================================
+        // FONCTIONS D'AFFICHAGE
+        // ============================================
+        function renderSlide(index) {
+            const slide = slides[index];
+            
+            contentDiv.innerHTML = `
+                <div class="slide active">
+                    <h2 class="slide-title">${slide.title}</h2>
+                    <div class="slide-content">${slide.content}</div>
+                </div>
+            `;
+            
+            slideCounter.textContent = `${index + 1}/${slides.length}`;
+            progressFill.style.width = `${((index + 1) / slides.length) * 100}%`;
+            
+            // Mise à jour des boutons de navigation
+            if (!isAutoPlaying) {
+                prevBtn.disabled = index === 0;
+                nextBtn.disabled = index === slides.length - 1;
+            }
+            
+            // Scroll en haut
+            contentDiv.scrollTop = 0;
+        }
+
+        // ============================================
+        // FONCTIONS DE NAVIGATION
+        // ============================================
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                renderSlide(currentSlide);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                renderSlide(currentSlide);
+            }
+        }
+
+        // ============================================
+        // SYNCHRONISATION AUDIO / SLIDES
+        // ============================================
+        function updateTimeDisplay() {
+            const current = audioPlayer.currentTime;
+            const minutes = Math.floor(current / 60);
+            const seconds = Math.floor(current % 60);
+            const totalMinutes = Math.floor(totalDuration / 60);
+            const totalSeconds = Math.floor(totalDuration % 60);
+            
+            timeDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} / ${totalMinutes.toString().padStart(2, '0')}:${totalSeconds.toString().padStart(2, '0')}`;
+            
+            // Mise à jour de la barre de progression
+            const progress = (current / totalDuration) * 100;
+            progressFill.style.width = `${Math.min(progress, 100)}%`;
+        }
+
+        function checkSync() {
+            if (!isAutoPlaying) return;
+            
+            const currentTime = audioPlayer.currentTime;
+            
+            // Trouver la slide correspondante au temps actuel
+            for (let i = timeline.length - 1; i >= 0; i--) {
+                if (currentTime >= timeline[i]) {
+                    if (i !== currentSlide) {
+                        currentSlide = i;
+                        renderSlide(currentSlide);
+                    }
+                    break;
+                }
+            }
+            
+            updateTimeDisplay();
+            
+            // Arrêt automatique à la fin
+            if (currentTime >= totalDuration - 1) {
+                stopAutoPlay();
+            }
+        }
+
+        function startAutoPlay() {
+            if (!audioPlayer.src) {
+                alert('Veuillez placer le fichier audio "management_ch3_6.mp3" dans le même dossier que ce fichier HTML.');
+                return;
+            }
+            
+            isAutoPlaying = true;
+            playBtn.textContent = '⏸ Pause';
+            playBtn.classList.remove('play-btn');
+            playBtn.classList.add('stop-btn');
+            statusDiv.textContent = 'Mode automatique';
+            statusDiv.style.background = 'rgba(40, 167, 69, 0.9)';
+            
+            prevBtn.disabled = true;
+            nextBtn.disabled = true;
+            
+            audioPlayer.play();
+            
+            // Vérifier la synchronisation toutes les 100ms
+            syncInterval = setInterval(checkSync, 100);
+        }
+
+        function stopAutoPlay() {
+            isAutoPlaying = false;
+            playBtn.textContent = '▶ Lecture automatique';
+            playBtn.classList.remove('stop-btn');
+            playBtn.classList.add('play-btn');
+            statusDiv.textContent = 'Mode navigation';
+            statusDiv.style.background = 'rgba(0,0,0,0.8)';
+            
+            audioPlayer.pause();
+            
+            if (syncInterval) {
+                clearInterval(syncInterval);
+            }
+            
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === slides.length - 1;
+        }
+
+        function toggleAutoPlay() {
+            if (isAutoPlaying) {
+                stopAutoPlay();
+            } else {
+                startAutoPlay();
+            }
+        }
+
+        // ============================================
+        // GESTION DES ÉVÉNEMENTS AUDIO
+        // ============================================
+        audioPlayer.addEventListener('ended', function() {
+            stopAutoPlay();
+        });
+
+        audioPlayer.addEventListener('timeupdate', function() {
+            if (!isAutoPlaying) {
+                updateTimeDisplay();
+            }
+        });
+
+        // ============================================
+        // RACCOURCIS CLAVIER
+        // ============================================
+        document.addEventListener('keydown', function(e) {
+            if (isAutoPlaying) return;
+            
+            if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                prevSlide();
+            } else if (e.key === 'ArrowRight') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === ' ') {
+                e.preventDefault();
+                toggleAutoPlay();
+            }
+        });
+
+        // ============================================
+        // INITIALISATION
+        // ============================================
+        renderSlide(0);
+        updateTimeDisplay();
+
+        // Vérifier si l'audio existe
+        audioPlayer.addEventListener('error', function() {
+            console.warn('Fichier audio non trouvé. Placez "management_ch3_6.mp3" dans le même dossier.');
+        });
+    </script>
+</body>
+</html>
+            
