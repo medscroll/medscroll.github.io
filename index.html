@@ -338,6 +338,116 @@
                 grid-template-columns: 1fr;
             }
         }
+        /* Bannière d'installation - à ajouter dans la section <style> */
+.install-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    max-width: 500px;
+    margin: 0 auto;
+    background: linear-gradient(135deg, #112240 0%, #0a192f 100%);
+    border-top: 2px solid #64ffda;
+    padding: 15px 20px;
+    z-index: 1001;
+    transform: translateY(100%);
+    transition: transform 0.4s ease;
+    box-shadow: 0 -5px 20px rgba(0,0,0,0.3);
+}
+
+.install-banner.show {
+    transform: translateY(0);
+}
+
+.install-banner-content {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.install-banner-icon {
+    font-size: 2.5rem;
+    filter: drop-shadow(0 2px 4px #64ffda55);
+}
+
+.install-banner-text {
+    flex: 1;
+}
+
+.install-banner-text h4 {
+    color: #64ffda;
+    font-size: 1rem;
+    margin-bottom: 4px;
+}
+
+.install-banner-text p {
+    color: #8892b0;
+    font-size: 0.8rem;
+}
+
+.install-banner-buttons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.btn-install {
+    background-color: #64ffda;
+    color: #0a192f;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+    font-size: 0.85rem;
+}
+
+.btn-install:hover {
+    background-color: #4cd8b5;
+    transform: scale(1.02);
+}
+
+.btn-later {
+    background: none;
+    border: 1px solid #1e3a5c;
+    color: #8892b0;
+    padding: 8px 15px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: 0.2s;
+}
+
+.btn-later:hover {
+    border-color: #64ffda;
+    color: #64ffda;
+}
+
+.btn-close {
+    background: none;
+    border: none;
+    color: #8892b0;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 5px;
+    margin-left: 5px;
+}
+
+.btn-close:hover {
+    color: #64ffda;
+}
+
+.update-badge {
+    background-color: #ff6b35;
+    color: white;
+    border-radius: 20px;
+    padding: 2px 8px;
+    font-size: 0.7rem;
+    margin-left: 8px;
+    font-weight: bold;
+}
     </style>
 </head>
 <body>
@@ -445,6 +555,21 @@
                 </a>
             </div>
         </div>
+        <!-- Bannière d'installation intelligente -->
+<div class="install-banner" id="installBanner">
+    <div class="install-banner-content">
+        <div class="install-banner-icon">📱</div>
+        <div class="install-banner-text">
+            <h4>STUDIA <span id="updateBadge" class="update-badge" style="display:none;">Nouvelle version</span></h4>
+            <p>Application Android • Téléchargez la dernière version</p>
+        </div>
+        <div class="install-banner-buttons">
+            <button class="btn-install" id="installBtn">Installer</button>
+            <button class="btn-later" id="laterBtn">Plus tard</button>
+            <button class="btn-close" id="closeBannerBtn">✕</button>
+        </div>
+    </div>
+</div>
     </div>
 
     <!-- Message de redirection (optionnel mais gardé pour cohérence) -->
@@ -454,6 +579,101 @@
     </div>
 
     <script>
+        // === GESTION DE LA BANNIÈRE D'INSTALLATION ===
+(function() {
+    const INSTALL_KEY = 'studia_banner_closed';
+    const APP_VERSION = '1.2.0';
+    const VERSION_KEY = 'studia_app_version';
+
+    // Fonction pour afficher/masquer la bannière
+    function showBanner(show) {
+        const banner = document.getElementById('installBanner');
+        if (banner) {
+            if (show) {
+                banner.classList.add('show');
+            } else {
+                banner.classList.remove('show');
+            }
+        }
+    }
+
+    // Vérifier si la bannière doit s'afficher
+    function checkAndShowBanner() {
+        const banner = document.getElementById('installBanner');
+        const updateBadge = document.getElementById('updateBadge');
+        
+        if (!banner) return;
+        
+        const savedVersion = localStorage.getItem(VERSION_KEY);
+        const isBannerClosed = localStorage.getItem(INSTALL_KEY);
+        
+        // Vérifier si c'est une mise à jour
+        const isUpdate = savedVersion && savedVersion !== APP_VERSION;
+        
+        if (isUpdate) {
+            // Afficher le badge de mise à jour
+            if (updateBadge) updateBadge.style.display = 'inline-block';
+            showBanner(true);
+        } 
+        else if (!isBannerClosed) {
+            if (updateBadge) updateBadge.style.display = 'none';
+            showBanner(true);
+        }
+        
+        // Stocker la version actuelle
+        localStorage.setItem(VERSION_KEY, APP_VERSION);
+    }
+
+    // Fermer la bannière
+    function closeBanner(permanent = false) {
+        showBanner(false);
+        if (permanent) {
+            localStorage.setItem(INSTALL_KEY, 'true');
+        }
+    }
+
+    // Télécharger l'application
+    function downloadApp() {
+        window.location.href = 'STUDIA.apk';
+        
+        // Afficher un message de confirmation
+        const msg = document.getElementById('redirectMessage');
+        if (msg) {
+            const span = msg.querySelector('span');
+            if (span) span.innerHTML = '📱 Téléchargement lancé...';
+            msg.classList.add('show');
+            setTimeout(() => {
+                msg.classList.remove('show');
+                if (span) span.innerHTML = '🔁 Redirection vers la catégorie...';
+            }, 2000);
+        }
+    }
+
+    // Initialisation après chargement du DOM
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAndShowBanner();
+            
+            const installBtn = document.getElementById('installBtn');
+            const laterBtn = document.getElementById('laterBtn');
+            const closeBtn = document.getElementById('closeBannerBtn');
+            
+            if (installBtn) installBtn.addEventListener('click', downloadApp);
+            if (laterBtn) laterBtn.addEventListener('click', function() { closeBanner(false); });
+            if (closeBtn) closeBtn.addEventListener('click', function() { closeBanner(true); });
+        });
+    } else {
+        checkAndShowBanner();
+        
+        const installBtn = document.getElementById('installBtn');
+        const laterBtn = document.getElementById('laterBtn');
+        const closeBtn = document.getElementById('closeBannerBtn');
+        
+        if (installBtn) installBtn.addEventListener('click', downloadApp);
+        if (laterBtn) laterBtn.addEventListener('click', function() { closeBanner(false); });
+        if (closeBtn) closeBtn.addEventListener('click', function() { closeBanner(true); });
+    }
+})();
         // === GESTION DU MENU HAMBURGER (identique) ===
         const hamburgerBtn = document.getElementById('hamburgerBtn');
         const menuOverlay = document.getElementById('menuOverlay');
