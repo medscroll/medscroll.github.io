@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistique Mathématique - Cours complet</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1300px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #f0f0f0;
+            width: 100%;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3498db, #2c3e50);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .header {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+
+        .badge {
+            background: #3498db;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        .content {
+            padding: 30px;
+            min-height: 500px;
+            max-height: 70vh;
+            overflow-y: auto;
+            background: #ffffff;
+            scroll-behavior: smooth;
+        }
+
+        .slide {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-title {
+            color: #2c3e50;
+            font-size: 2.2em;
+            margin-bottom: 25px;
+            font-weight: 700;
+            border-left: 5px solid #3498db;
+            padding-left: 20px;
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 10;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+
+        .slide-content {
+            color: #2c3e50;
+            line-height: 1.8;
+            font-size: 1.15em;
+        }
+
+        .slide-content h3 {
+            color: #2c3e50;
+            margin: 25px 0 15px 0;
+            font-size: 1.5em;
+        }
+
+        .slide-content h4 {
+            color: #2c3e50;
+            margin: 20px 0 10px 0;
+            font-size: 1.25em;
+        }
+
+        .slide-content p {
+            margin: 15px 0;
+        }
+
+        .slide-content ul, .slide-content ol {
+            margin: 15px 0 15px 30px;
+        }
+
+        .slide-content li {
+            margin: 10px 0;
+        }
+
+        .definition {
+            background: #e3f2fd;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+            border-left: 5px solid #3498db;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .formula {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1.3em;
+            text-align: center;
+            border-left: 5px solid #2c3e50;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .example {
+            background: #fff3e0;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+            border-left: 5px solid #f39c12;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin: 25px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        th {
+            background: #2c3e50;
+            color: white;
+            font-weight: 600;
+            padding: 15px;
+            text-align: left;
+        }
+
+        td {
+            border: 1px solid #e9ecef;
+            padding: 12px;
+        }
+
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .controls {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-btn {
+            background: white;
+            color: #2c3e50;
+            border: 1px solid #dee2e6;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: #e9ecef;
+            transform: translateY(-1px);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .play-btn {
+            background: linear-gradient(90deg, #3498db, #2c3e50);
+            color: white;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .play-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.5);
+        }
+
+        .stop-btn {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .stop-btn:hover {
+            background: #c0392b;
+        }
+
+        .counter {
+            color: #6c757d;
+            font-size: 0.95em;
+            background: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            backdrop-filter: blur(5px);
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+                max-height: 60vh;
+            }
+            
+            .slide-title {
+                font-size: 1.8em;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+            
+            .nav-buttons {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            button {
+                flex: 1;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="status" id="status">Mode navigation</div>
+    
+    <div class="container">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        
+        <div class="header">
+            <h1>📊 STATISTIQUE MATHÉMATIQUE - Cours complet </h1>
+            <span class="badge" id="slideCounter">1/24</span>
+        </div>
+
+        <div class="content" id="content">
+            <!-- Les slides seront injectées dynamiquement -->
+        </div>
+
+        <div class="controls">
+            <div class="nav-buttons">
+                <button class="nav-btn" onclick="prevSlide()" id="prevBtn">← Précédent</button>
+                <button class="nav-btn" onclick="nextSlide()" id="nextBtn">Suivant →</button>
+            </div>
+            <button class="play-btn" onclick="toggleAutoPlay()" id="playBtn">▶ Lecture automatique</button>
+            <span class="counter" id="timeDisplay">00:00 / 00:00</span>
+        </div>
+    </div>
+
+    <audio id="audioPlayer" src="stat_inf_complet.mp3" preload="auto"></audio>
+
+    <script>
+        // Message d'accueil
+        alert("📚 Bienvenue dans le cours de STATISTIQUE MATHÉMATIQUE (inférentielle) !\n\nAstuces :\n• Mettez le cours en pause ⏸️ pour lire les écrits 📄\n• Utilisez les flèches ← → pour naviguer\n• La barre d'espace démarre/arrête la lecture\n\nProfitez bien de ce cours !");
+
+        // ============================================
+        // DONNÉES DU COURS - 24 SLIDES
+        // ============================================
+        const slides = [
+            {
+                title: "Plan du cours & Introduction",
+                content: `<p><strong>STATISTIQUE MATHÉMATIQUE </strong></p>
+                <h3>Plan du cours</h3>
+                <h4>Partie I : PROBABILITÉ</h4>
+                <ul>
+                    <li>Chapitre 1 : Combinatoire</li>
+                    <li>Chapitre 2 : Espaces probabilisés et variables aléatoires</li>
+                    <li>Chapitre 3 : Moments des variables aléatoires et lois usuelles</li>
+                    <li>Chapitre 4 : Théorèmes de limites et espérances conditionnelles</li>
+                </ul>
+                <h4>Partie II : STATISTIQUE INFÉRENTIELLE</h4>
+                <ul>
+                    <li>Chapitre 5 : Estimation</li>
+                    <li>Chapitre 6 : Tests statistiques</li>
+                    <li>Chapitre 7 : Régression linéaire</li>
+                </ul>
+                <p><em>Partie III : Processus stochastiques (introduction)</em></p>`
+            },
+            {
+                title: "Chapitre 1 : Combinatoire",
+                content: `<h3>Chapitre 1 : Combinatoire</h3>
+                <p><strong>Objectif :</strong> Compter le nombre de résultats possibles dans une expérience aléatoire.</p>
+                <h4>1. Tirage avec remise</h4>
+                <div class="formula">Nombre de résultats possibles = N<sup>n</sup></div>
+                <p>Exemple : Lancer 3 fois un dé à 6 faces → 6<sup>3</sup> = 216 issues.</p>
+                <h4>2. Tirage sans remise</h4>
+                <ul>
+                    <li><strong>Arrangement (ordre important) :</strong> A<sub>N</sub><sup>n</sup> = N! / (N-n)!</li>
+                    <li><strong>Permutation (tous les objets) :</strong> P<sub>N</sub> = N!</li>
+                    <li><strong>Combinaison (ordre non important) :</strong> C<sub>N</sub><sup>n</sup> = N! / [n!(N-n)!]</li>
+                </ul>
+                <div class="example"><strong>Exemple (tiercé) :</strong> 15 chevaux, nombre de tiercés dans l'ordre = 15×14×13 = 2730.</div>
+                <div class="formula"><strong>Formule du binôme :</strong> (a+b)<sup>n</sup> = Σ<sub>k=0</sub><sup>n</sup> C<sub>n</sub><sup>k</sup> a<sup>n-k</sup> b<sup>k</sup></div>`
+            },
+            {
+                title: "Chapitre 2 : Espace probabilisé",
+                content: `<h3>Chapitre 2 : Espaces probabilisés et variables aléatoires</h3>
+                <div class="definition">
+                    <strong>Espace probabilisable (Ω, 𝒯) :</strong> Ω est l'ensemble des résultats possibles, 𝒯 est une tribu (ensemble d'événements).
+                </div>
+                <div class="definition">
+                    <strong>Probabilité P :</strong> Une mesure sur 𝒯 telle que P(Ω)=1 et pour des événements disjoints, P(∪A<sub>i</sub>) = ΣP(A<sub>i</sub>).
+                </div>
+                <h4>Probabilité conditionnelle</h4>
+                <div class="formula">P(A|B) = P(A∩B) / P(B), si P(B) > 0</div>
+                <h4>Théorème de Bayes</h4>
+                <div class="formula">P(A<sub>i</sub>|B) = [P(B|A<sub>i</sub>) P(A<sub>i</sub>)] / Σ<sub>j</sub> P(B|A<sub>j</sub>) P(A<sub>j</sub>)</div>`
+            },
+            {
+                title: "Variables aléatoires",
+                content: `<h3>Variable aléatoire et tribu engendrée</h3>
+                <div class="definition">
+                    <strong>Variable aléatoire :</strong> Une fonction X: Ω → ℝ mesurable (l'image réciproque d'un intervalle est un événement).
+                </div>
+                <ul>
+                    <li><strong>Variable discrète :</strong> Prend un nombre fini ou dénombrable de valeurs (ex: loi de Bernoulli, Binomiale, Poisson).</li>
+                    <li><strong>Variable continue :</strong> Prend une infinité non dénombrable de valeurs (ex: loi Uniforme, Exponentielle, Normale).</li>
+                </ul>
+                <h4>Fonction de répartition</h4>
+                <div class="formula">F(x) = P(X ≤ x)</div>`
+            },
+            {
+                title: "Chapitre 3 : Moments d'une v.a.",
+                content: `<h3>Chapitre 3 : Moments des variables aléatoires</h3>
+                <div class="definition">
+                    <strong>Espérance mathématique E[X] :</strong> Moyenne pondérée des valeurs de X par leurs probabilités.
+                </div>
+                <ul>
+                    <li>Pour une v.a. discrète : E[X] = Σ x<sub>i</sub> P(X=x<sub>i</sub>)</li>
+                    <li>Pour une v.a. continue : E[X] = ∫ x f(x) dx</li>
+                </ul>
+                <div class="definition">
+                    <strong>Variance V(X) :</strong> Mesure de dispersion. V(X) = E[(X - E[X])²] = E[X²] - (E[X])².
+                </div>
+                <div class="definition">
+                    <strong>Covariance :</strong> Cov(X,Y) = E[(X-E[X])(Y-E[Y])] = E[XY] - E[X]E[Y].
+                </div>
+                <div class="definition">
+                    <strong>Coefficient de corrélation :</strong> ρ(X,Y) = Cov(X,Y) / (σ<sub>X</sub> σ<sub>Y</sub>), avec -1 ≤ ρ ≤ 1.
+                </div>`
+            },
+            {
+                title: "Lois discrètes usuelles",
+                content: `<h3>Lois de probabilité discrètes usuelles</h3>
+                <ul>
+                    <li><strong>Loi de Bernoulli :</strong> X ~ Ber(p), P(X=1)=p, P(X=0)=1-p. E[X]=p, V(X)=p(1-p).</li>
+                    <li><strong>Loi Binomiale :</strong> X ~ B(n,p), nombre de succès dans n épreuves de Bernoulli. P(X=k)=C<sub>n</sub><sup>k</sup> p<sup>k</sup>(1-p)<sup>n-k</sup>. E[X]=np, V(X)=np(1-p).</li>
+                    <li><strong>Loi de Poisson :</strong> X ~ P(λ), modélise les événements rares. P(X=k)=e<sup>-λ</sup> λ<sup>k</sup>/k!, k≥0. E[X]=λ, V(X)=λ.</li>
+                </ul>`
+            },
+            {
+                title: "Lois continues usuelles",
+                content: `<h3>Lois continues usuelles</h3>
+                <ul>
+                    <li><strong>Loi Uniforme :</strong> X ~ U(a,b), densité f(x)=1/(b-a) sur [a,b]. E[X]=(a+b)/2, V(X)=(b-a)²/12.</li>
+                    <li><strong>Loi Exponentielle :</strong> X ~ Exp(λ), modélise la durée de vie. f(x)=λe<sup>-λx</sup>, x≥0. E[X]=1/λ, V(X)=1/λ².</li>
+                    <li><strong>Loi Normale :</strong> X ~ N(μ,σ²), loi centrale (TCL). f(x)=1/(σ√(2π)) e<sup>-(x-μ)²/(2σ²)</sup>. E[X]=μ, V(X)=σ².</li>
+                </ul>`
+            },
+            {
+                title: "Lois dérivées de la normale",
+                content: `<h3>Lois déduites de la loi normale (pour tests)</h3>
+                <ul>
+                    <li><strong>Loi du χ² (Khi-deux) :</strong> Somme de carrés de v.a. normales centrées réduites indépendantes.</li>
+                    <li><strong>Loi de Student :</strong> Rapport entre une normale centrée réduite et une racine d'un χ² indépendant.</li>
+                    <li><strong>Loi de Fisher :</strong> Rapport de deux χ² indépendants.</li>
+                </ul>
+                <p>Ces lois sont essentielles pour les tests d'hypothèses et les intervalles de confiance.</p>`
+            },
+            {
+                title: "Chapitre 4 : Théorèmes limites",
+                content: `<h3>Chapitre 4 : Théorèmes limites et espérances conditionnelles</h3>
+                <div class="definition">
+                    <strong>Convergence en probabilité (loi faible) :</strong> ∀ε>0, P(|X<sub>n</sub> - X| > ε) → 0 quand n→∞.
+                </div>
+                <div class="definition">
+                    <strong>Loi faible des grands nombres :</strong> Soit X<sub>1</sub>,...,X<sub>n</sub> i.i.d. d'espérance μ. Alors, la moyenne empirique X̄<sub>n</sub> converge en probabilité vers μ.
+                </div>
+                <div class="definition">
+                    <strong>Loi forte des grands nombres :</strong> X̄<sub>n</sub> → μ presque sûrement.
+                </div>
+                <div class="definition">
+                    <strong>Théorème de la limite centrale (TLC) :</strong> Soit X<sub>1</sub>,...,X<sub>n</sub> i.i.d. avec E[X]=μ et V(X)=σ². Alors √n (X̄<sub>n</sub> - μ) / σ →<sup>loi</sup> N(0,1).
+                </div>`
+            },
+            {
+                title: "Espérance conditionnelle",
+                content: `<h3>Espérance conditionnelle</h3>
+                <div class="definition">
+                    <strong>Espérance conditionnelle par rapport à un événement A :</strong> E[X|A] = (1/P(A)) ∫<sub>A</sub> X dP.
+                </div>
+                <div class="definition">
+                    <strong>Espérance conditionnelle par rapport à une v.a. Y :</strong> E[X|Y] est une fonction de Y qui minimise l'erreur quadratique.
+                </div>
+                <p><strong>Propriétés :</strong> Linéarité, "tour" E[E[X|Y]] = E[X].</p>
+                <div class="example"><strong>Cas gaussien :</strong> Si (X,Y) est un vecteur gaussien, alors E[X|Y] = μ<sub>X</sub> + (σ<sub>XY</sub>/σ<sub>Y</sub>²)(Y-μ<sub>Y</sub>) (régression linéaire).</div>`
+            },
+            {
+                title: "Chapitre 5 : Estimation (Introduction)",
+                content: `<h3>Chapitre 5 : Estimation</h3>
+                <p><strong>Objectif :</strong> À partir d'un échantillon (X<sub>1</sub>,...,X<sub>n</sub>), on cherche à estimer un paramètre θ inconnu d'une population.</p>
+                <div class="definition">
+                    <strong>Échantillon aléatoire :</strong> Variables i.i.d. suivant la même loi que la population.
+                </div>
+                <h4>Estimation ponctuelle</h4>
+                <p>Un estimateur T<sub>n</sub> = h(X<sub>1</sub>,...,X<sub>n</sub>) est une statistique utilisée pour approcher θ.</p>
+                <ul>
+                    <li><strong>Sans biais :</strong> E[T<sub>n</sub>] = θ.</li>
+                    <li><strong>Convergent :</strong> T<sub>n</sub> →<sup>P</sup> θ.</li>
+                </ul>`
+            },
+            {
+                title: "Estimation ponctuelle - Exemples",
+                content: `<h3>Exemples d'estimateurs ponctuels</h3>
+                <ul>
+                    <li><strong>Estimation de la moyenne μ :</strong> X̄<sub>n</sub> = (1/n) Σ X<sub>i</sub>. C'est un estimateur sans biais et convergent.</li>
+                    <li><strong>Estimation de la variance σ² :</strong> Variance empirique corrigée S<sub>n</sub>² = 1/(n-1) Σ (X<sub>i</sub> - X̄<sub>n</sub>)², sans biais.</li>
+                    <li><strong>Estimation d'une proportion p :</strong> p̂<sub>n</sub> = (1/n) Σ X<sub>i</sub> (avec X<sub>i</sub>~Ber(p)), sans biais.</li>
+                </ul>
+                <div class="example">
+                    <strong>Exemple :</strong> Pour un échantillon de taille 100, si 40 individus ont la propriété, p̂ = 40/100 = 0.4.
+                </div>`
+            },
+            {
+                title: "Estimation par intervalle de confiance",
+                content: `<h3>Estimation par intervalle de confiance (IC)</h3>
+                <div class="definition">
+                    Un intervalle de confiance de niveau (1-α) est un intervalle aléatoire [L,U] tel que P(θ ∈ [L,U]) = 1-α.
+                </div>
+                <h4>IC pour une moyenne (σ connu)</h4>
+                <div class="formula">IC<sub>1-α</sub>(μ) = [X̄<sub>n</sub> - z<sub>α/2</sub> * σ/√n , X̄<sub>n</sub> + z<sub>α/2</sub> * σ/√n]</div>
+                <h4>IC pour une proportion (grands échantillons)</h4>
+                <div class="formula">IC<sub>1-α</sub>(p) = [p̂ - z<sub>α/2</sub> √(p̂(1-p̂)/n) , p̂ + z<sub>α/2</sub> √(p̂(1-p̂)/n)]</div>`
+            },
+            {
+                title: "Estimation par maximum de vraisemblance (EMV)",
+                content: `<h3>Estimation par maximum de vraisemblance (MLE)</h3>
+                <div class="definition">
+                    La vraisemblance L(θ) = ∏<sub>i=1</sub><sup>n</sup> f<sub>θ</sub>(X<sub>i</sub>). L'EMV θ̂ maximise L(θ).
+                </div>
+                <p>Méthode générale : maximiser la log-vraisemblance l(θ) = Σ ln f<sub>θ</sub>(X<sub>i</sub>).</p>
+                <div class="example">
+                    <strong>Exemple : Moyenne d'une normale (σ² connu).</strong> θ̂ = X̄<sub>n</sub>.
+                </div>
+                <div class="example">
+                    <strong>Exemple : Proportion p d'une Bernoulli.</strong> p̂ = X̄<sub>n</sub>.
+                </div>`
+            },
+            {
+                title: "Chapitre 6 : Tests statistiques (Introduction)",
+                content: `<h3>Chapitre 6 : Tests statistiques</h3>
+                <div class="definition">
+                    Un test est une procédure de décision entre deux hypothèses : H<sub>0</sub> (hypothèse nulle) et H<sub>1</sub> (hypothèse alternative).
+                </div>
+                <ul>
+                    <li><strong>Test paramétrique :</strong> Porte sur un paramètre (ex: H<sub>0</sub>: μ=μ<sub>0</sub>).</li>
+                    <li><strong>Test non-paramétrique :</strong> Ne spécifie pas la forme de la loi (ex: test d'ajustement du χ²).</li>
+                </ul>
+                <h4>Risques</h4>
+                <ul>
+                    <li><strong>Risque de première espèce (α) :</strong> Rejeter H<sub>0</sub> alors qu'elle est vraie.</li>
+                    <li><strong>Risque de deuxième espèce (β) :</strong> Accepter H<sub>0</sub> alors qu'elle est fausse.</li>
+                </ul>`
+            },
+            {
+                title: "Lemme de Neyman-Pearson",
+                content: `<h3>Lemme de Neyman-Pearson (hypothèses simples)</h3>
+                <div class="definition">
+                    Soit H<sub>0</sub>: θ=θ<sub>0</sub> et H<sub>1</sub>: θ=θ<sub>1</sub>. Le test le plus puissant de niveau α est basé sur la statistique du rapport de vraisemblance : Λ = L(θ<sub>1</sub>)/L(θ<sub>0</sub>).
+                </div>
+                <p>On rejette H<sub>0</sub> si Λ > k, où k est choisi pour que P(Λ > k | H<sub>0</sub>) = α.</p>
+                <div class="example">
+                    <strong>Exemple :</strong> Test de moyenne pour une normale d'écart-type 1, H<sub>0</sub>: μ=0 vs H<sub>1</sub>: μ=6. Le test rejette H<sub>0</sub> si X̄<sub>n</sub> > c.
+                </div>`
+            },
+            {
+                title: "Tests sur une population - Test de moyenne",
+                content: `<h3>Test de moyenne d'une population</h3>
+                <ul>
+                    <li><strong>Cas 1 : σ connu (ou grands échantillons)</strong><br>Statistique de test : Z = √n (X̄ - μ<sub>0</sub>)/σ ~ N(0,1) sous H<sub>0</sub>.<br>Région de rejet (H<sub>1</sub>: μ ≠ μ<sub>0</sub>) : |Z| > z<sub>α/2</sub>.</li>
+                    <li><strong>Cas 2 : σ inconnu (petits échantillons)</strong><br>Statistique de test : T = √n (X̄ - μ<sub>0</sub>)/S<sub>n</sub> ~ Student(n-1) sous H<sub>0</sub>.</li>
+                </ul>`
+            },
+            {
+                title: "Tests sur une population - Proportion & Variance",
+                content: `<h3>Test de proportion et test de variance</h3>
+                <h4>Test de proportion p (grands échantillons)</h4>
+                <div class="formula">Z = (p̂ - p<sub>0</sub>) / √(p<sub>0</sub>(1-p<sub>0</sub>)/n) ~ N(0,1) sous H<sub>0</sub></div>
+                <h4>Test de variance (loi normale)</h4>
+                <div class="formula">Statistique : χ² = (n-1)S<sub>n</sub>² / σ<sub>0</sub>² ~ χ²(n-1) sous H<sub>0</sub>: σ²=σ<sub>0</sub>²</div>`
+            },
+            {
+                title: "Comparaison de deux populations",
+                content: `<h3>Tests de comparaison de deux populations</h3>
+                <ul>
+                    <li><strong>Égalité de deux moyennes (échantillons indépendants, variances égales) :</strong><br>Statistique T = (X̄ - Ȳ) / (S<sub>p</sub> √(1/n<sub>1</sub> + 1/n<sub>2</sub>)) ~ Student(n<sub>1</sub>+n<sub>2</sub>-2).</li>
+                    <li><strong>Égalité de deux proportions :</strong><br>Z = (p̂<sub>1</sub> - p̂<sub>2</sub>) / √(p̂(1-p̂)(1/n<sub>1</sub>+1/n<sub>2</sub>)) ~ N(0,1).</li>
+                    <li><strong>Égalité de deux variances (test de Fisher) :</strong><br>F = S<sub>1</sub>² / S<sub>2</sub>² ~ Fisher(n<sub>1</sub>-1, n<sub>2</sub>-1).</li>
+                </ul>`
+            },
+            {
+                title: "Test du χ² d'indépendance",
+                content: `<h3>Test du χ² d'indépendance (tableau de contingence)</h3>
+                <div class="definition">
+                    Hypothèse H<sub>0</sub> : Les deux caractères sont indépendants.
+                </div>
+                <p>Statistique de test : χ² = Σ<sub>i,j</sub> (O<sub>ij</sub> - E<sub>ij</sub>)² / E<sub>ij</sub> ~ χ²((r-1)(c-1)) sous H<sub>0</sub>.</p>
+                <ul>
+                    <li>O<sub>ij</sub> : effectifs observés</li>
+                    <li>E<sub>ij</sub> = (Total ligne i × Total colonne j) / Total général</li>
+                </ul>
+                <p>On rejette H<sub>0</sub> si χ² > χ²<sub>α</sub>((r-1)(c-1)).</p>`
+            },
+            {
+                title: "Test d'ajustement du χ²",
+                content: `<h3>Test d'ajustement du χ² (adéquation à une loi)</h3>
+                <div class="definition">
+                    Hypothèse H<sub>0</sub> : La variable suit une loi spécifiée (ex: loi uniforme, normale...).
+                </div>
+                <p>Principe : On compare les effectifs observés O<sub>k</sub> (par classe) aux effectifs théoriques E<sub>k</sub> = n × P<sub>théorique</sub>(classe).</p>
+                <div class="formula">χ² = Σ<sub>k</sub> (O<sub>k</sub> - E<sub>k</sub>)² / E<sub>k</sub> ~ χ²(K - r - 1)</div>
+                <p>où r est le nombre de paramètres estimés.</p>`
+            },
+            {
+                title: "Chapitre 7 : Régression linéaire",
+                content: `<h3>Chapitre 7 : Régression linéaire simple</h3>
+                <div class="definition">
+                    Modèle : Y = aX + b + ε, avec ε ~ N(0, σ²) (bruit blanc gaussien).
+                </div>
+                <h4>Objectif :</h4>
+                <p>Estimer les coefficients a et b à partir de n observations (x<sub>i</sub>, y<sub>i</sub>).</p>
+                <h4>Estimation par les moindres carrés :</h4>
+                <div class="formula">
+                    â = Cov(X,Y) / Var(X) = Σ (x<sub>i</sub>-x̄)(y<sub>i</sub>-ȳ) / Σ (x<sub>i</sub>-x̄)²<br>
+                    b̂ = ȳ - â x̄
+                </div>`
+            },
+            {
+                title: "Régression - Tests et prévision",
+                content: `<h3>Régression linéaire : inférence et prévision</h3>
+                <ul>
+                    <li><strong>Test de significativité de la pente :</strong> H<sub>0</sub>: a=0. Statistique T = â / SE(â) ~ Student(n-2).</li>
+                    <li><strong>Intervalle de confiance pour la pente :</strong> â ± t<sub>α/2,n-2</sub> SE(â).</li>
+                    <li><strong>Prévision :</strong> Pour une nouvelle valeur x<sub>0</sub>, ŷ<sub>0</sub> = â x<sub>0</sub> + b̂.<br>IC pour la moyenne : ŷ<sub>0</sub> ± t<sub>α/2,n-2</sub> σ̂ √(1/n + (x<sub>0</sub>-x̄)²/Σ(x<sub>i</sub>-x̄)²).</li>
+                </ul>`
+            },
+            {
+                title: "Synthèse du cours",
+                content: `<h3>Synthèse : Statistique Mathématique Inférentielle</h3>
+                <ul>
+                    <li><strong>Objectif :</strong> Tirer des conclusions sur une population à partir d'un échantillon.</li>
+                    <li><strong>Estimation :</strong> Ponctuelle (estimateurs sans biais, EMV) et par intervalle de confiance.</li>
+                    <li><strong>Tests :</strong> Décision entre H<sub>0</sub> et H<sub>1</sub> en contrôlant le risque α.</li>
+                    <li><strong>Régression :</strong> Modélisation de la relation linéaire entre deux variables.</li>
+                </ul>
+                <div class="definition" style="text-align: center; font-size: 1.2em;">
+                    <strong>Félicitations !</strong><br>
+                    Vous avez terminé le cours de Statistique Mathématique.<br>
+                    
+                </div>`
+            }
+        ];
+
+        // Timings pour synchronisation audio (en secondes) - Durée totale ~ 20 min
+        const timeline = [
+    0.00,    // Slide 1 - Plan du cours & Introduction
+    4,    // Slide 2 - Chapitre 1 Combinatoire (début)
+    73,   // Slide 3 - Chapitre 1 Combinatoire (suite)
+    110,   // Slide 4 - Chapitre 1 Combinatoire (fin)
+    136,   // Slide 5 - Chapitre 2 Espace probabilisé (début)
+    179,  // Slide 6 - Chapitre 2 Probabilité conditionnelle, Bayes
+    196,  // Slide 7 - Chapitre 2 Variables aléatoires
+    212,  // Slide 8 - Chapitre 3 Moments d'une v.a.
+    220,  // Slide 9 - Chapitre 3 Lois discrètes usuelles
+    254,  // Slide 10 - Chapitre 3 Lois continues usuelles
+    280,  // Slide 11 - Chapitre 4 Théorèmes limites (lois des grands nombres)
+    314,  // Slide 12 - Chapitre 4 TLC, espérance conditionnelle
+    327,
+    354,
+    376,  // Slide 13 - Chapitre 5 Estimation (introduction)
+    410,  // Slide 14 - Chapitre 5 Estimation ponctuelle
+    416,  // Slide 15 - Chapitre 5 Intervalle de confiance
+    428,  // Slide 16 - Chapitre 5 Maximum de vraisemblance
+    432,  // Slide 17 - Chapitre 6 Tests (introduction, risques)
+    439,  // Slide 18 - Chapitre 6 Lemme de Neyman-Pearson
+    446,  // Slide 19 - Chapitre 6 Test de moyenne, proportion, variance
+    449,  // Slide 20 - Chapitre 6 Comparaison de deux populations
+    476,  // Slide 21 - Chapitre 6 Test du χ² d'indépendance
+    488,  // Slide 22 - Chapitre 7 Régression linéaire (modèle, estimation)
+    
+];
+
+        const totalDuration = 530; // secondes 
+
+        let currentSlide = 0;
+        let isAutoPlaying = false;
+        let syncInterval;
+        
+        const audioPlayer = document.getElementById('audioPlayer');
+        const contentDiv = document.getElementById('content');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const playBtn = document.getElementById('playBtn');
+        const statusDiv = document.getElementById('status');
+        const slideCounter = document.getElementById('slideCounter');
+        const progressFill = document.getElementById('progressFill');
+        const timeDisplay = document.getElementById('timeDisplay');
+
+        function renderSlide(index) {
+            const slide = slides[index];
+            contentDiv.innerHTML = `
+                <div class="slide active">
+                    <h2 class="slide-title">${slide.title}</h2>
+                    <div class="slide-content">${slide.content}</div>
+                </div>
+            `;
+            slideCounter.textContent = `${index + 1}/${slides.length}`;
+            progressFill.style.width = `${((index + 1) / slides.length) * 100}%`;
+            if (!isAutoPlaying) {
+                prevBtn.disabled = index === 0;
+                nextBtn.disabled = index === slides.length - 1;
+            }
+            contentDiv.scrollTop = 0;
+        }
+
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                renderSlide(currentSlide);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                renderSlide(currentSlide);
+            }
+        }
+
+        function updateTimeDisplay() {
+            const current = audioPlayer.currentTime;
+            const minutes = Math.floor(current / 60);
+            const seconds = Math.floor(current % 60);
+            const totalMinutes = Math.floor(totalDuration / 60);
+            const totalSeconds = Math.floor(totalDuration % 60);
+            timeDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} / ${totalMinutes.toString().padStart(2, '0')}:${totalSeconds.toString().padStart(2, '0')}`;
+            const progress = (current / totalDuration) * 100;
+            progressFill.style.width = `${Math.min(progress, 100)}%`;
+        }
+
+        function checkSync() {
+            if (!isAutoPlaying) return;
+            const currentTime = audioPlayer.currentTime;
+            for (let i = timeline.length - 1; i >= 0; i--) {
+                if (currentTime >= timeline[i]) {
+                    if (i !== currentSlide) {
+                        currentSlide = i;
+                        renderSlide(currentSlide);
+                    }
+                    break;
+                }
+            }
+            updateTimeDisplay();
+            if (currentTime >= totalDuration - 1) {
+                stopAutoPlay();
+            }
+        }
+
+        function startAutoPlay() {
+            if (!audioPlayer.src || audioPlayer.src === window.location.href) {
+                alert('Veuillez placer le fichier audio "stat_inf_complet.mp3" dans le même dossier que ce fichier HTML.');
+                return;
+            }
+            isAutoPlaying = true;
+            playBtn.textContent = '⏸ Pause';
+            playBtn.classList.remove('play-btn');
+            playBtn.classList.add('stop-btn');
+            statusDiv.textContent = 'Mode automatique';
+            statusDiv.style.background = 'rgba(52, 152, 219, 0.9)';
+            prevBtn.disabled = true;
+            nextBtn.disabled = true;
+            audioPlayer.play();
+            syncInterval = setInterval(checkSync, 100);
+        }
+
+        function stopAutoPlay() {
+            isAutoPlaying = false;
+            playBtn.textContent = '▶ Lecture automatique';
+            playBtn.classList.remove('stop-btn');
+            playBtn.classList.add('play-btn');
+            statusDiv.textContent = 'Mode navigation';
+            statusDiv.style.background = 'rgba(0,0,0,0.8)';
+            audioPlayer.pause();
+            if (syncInterval) clearInterval(syncInterval);
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === slides.length - 1;
+        }
+
+        function toggleAutoPlay() {
+            if (isAutoPlaying) stopAutoPlay();
+            else startAutoPlay();
+        }
+
+        audioPlayer.addEventListener('ended', () => stopAutoPlay());
+        audioPlayer.addEventListener('timeupdate', () => { if (!isAutoPlaying) updateTimeDisplay(); });
+
+        document.addEventListener('keydown', function(e) {
+            if (isAutoPlaying) return;
+            if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+            else if (e.key === 'ArrowRight') { e.preventDefault(); nextSlide(); }
+            else if (e.key === ' ') { e.preventDefault(); toggleAutoPlay(); }
+        });
+
+        renderSlide(0);
+        updateTimeDisplay();
+        
+        audioPlayer.addEventListener('error', function() {
+            console.warn('Fichier audio non trouvé. Placez "stat_inf_complet.mp3" dans le même dossier.');
+        });
+    </script>
+</body>
+</html>
+    
