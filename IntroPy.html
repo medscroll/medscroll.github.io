@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cours d'Introduction à Python</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Fira Code', 'Cascadia Code', monospace;
+            background: linear-gradient(135deg, #1e3c3c 0%, #2a4a5a 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1300px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #e9ecef;
+            width: 100%;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #306c6c, #1e3c3c);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .header {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .header h1 {
+            color: #1e3c3c;
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+
+        .badge {
+            background: #306c6c;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        .content {
+            padding: 30px;
+            min-height: 500px;
+            max-height: 70vh;
+            overflow-y: auto;
+            background: #ffffff;
+            scroll-behavior: smooth;
+        }
+
+        .slide {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-title {
+            color: #1e3c3c;
+            font-size: 2em;
+            margin-bottom: 25px;
+            font-weight: 700;
+            border-left: 5px solid #306c6c;
+            padding-left: 20px;
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 10;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+        }
+
+        .slide-content {
+            color: #2c3e3e;
+            line-height: 1.8;
+            font-size: 1.1em;
+        }
+
+        .slide-content h3 {
+            color: #306c6c;
+            margin: 25px 0 15px 0;
+            font-size: 1.4em;
+        }
+
+        .slide-content p {
+            margin: 15px 0;
+        }
+
+        .slide-content ul, .slide-content ol {
+            margin: 15px 0 15px 30px;
+        }
+
+        .slide-content li {
+            margin: 10px 0;
+        }
+
+        .definition {
+            background: #e8f0f0;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border-left: 5px solid #306c6c;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .formula {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1.2em;
+            text-align: center;
+            border-left: 5px solid #306c6c;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .code {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            font-family: 'Fira Code', 'Courier New', monospace;
+            font-size: 0.95em;
+            overflow-x: auto;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .code pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .example {
+            background: #fef5e7;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border-left: 5px solid #f39c12;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        th {
+            background: #306c6c;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        td {
+            border: 1px solid #e9ecef;
+            padding: 10px;
+        }
+
+        .controls {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-btn {
+            background: white;
+            color: #306c6c;
+            border: 1px solid #dee2e6;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: #e9ecef;
+            transform: translateY(-1px);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .play-btn {
+            background: linear-gradient(90deg, #306c6c, #1e3c3c);
+            color: white;
+            box-shadow: 0 4px 15px rgba(48, 108, 108, 0.4);
+        }
+
+        .stop-btn {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .counter {
+            color: #6c757d;
+            font-size: 0.95em;
+            background: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+        }
+
+        .status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .keyword {
+            color: #306c6c;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .content { padding: 20px; max-height: 60vh; }
+            .slide-title { font-size: 1.5em; }
+            .controls { flex-direction: column; }
+            button { flex: 1; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <div class="status" id="status">Mode navigation</div>
+    <div class="container">
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="header">
+            <h1>🐍 Introduction à Python - Langage de programmation</h1>
+            <span class="badge" id="slideCounter">1/30</span>
+        </div>
+        <div class="content" id="content"></div>
+        <div class="controls">
+            <div class="nav-buttons">
+                <button class="nav-btn" id="prevBtn">← Précédent</button>
+                <button class="nav-btn" id="nextBtn">Suivant →</button>
+            </div>
+            <button class="play-btn" id="playBtn">▶ Lecture automatique</button>
+            <span class="counter" id="timeDisplay">00:00 / 00:00</span>
+        </div>
+    </div>
+    <audio id="audioPlayer" src="python_intro.mp3" preload="auto"></audio>
+
+    <script>
+        // Données des 30 slides du cours Python
+        const slides = [
+            { title: "Chapitre 1 : Introduction et Historique", content: `
+                <h3>Créateur et Origine</h3>
+                <p>Python a été créé par <strong>Guido van Rossum</strong> en 1989-1990 et est rendu disponible sous licence libre. Son développement est aujourd'hui assuré par la <strong>Python Software Foundation</strong>, fondée en 2001.</p>
+                <div class="definition">
+                    <strong>Python</strong> est un langage interprété fonctionnant sur la plupart des plateformes informatiques (Linux, Windows, macOS).
+                </div>
+                <p>C'est un langage très apprécié des pédagogues qui le considèrent comme un bon langage pour s'initier aux concepts de base de la programmation.</p>
+                <h3>Raisons du choix de Python</h3>
+                <ul>
+                    <li>Langage simple et intuitif, aussi puissant que les concurrents</li>
+                    <li>Open source, contributif</li>
+                    <li>Codes compréhensibles comme un texte en français ou en anglais</li>
+                    <li>Adapté aux tâches quotidiennes avec des délais de développement courts</li>
+                </ul>
+            ` },
+            { title: "Versions et Applications", content: `
+                <h3>Versions de Python</h3>
+                <ul>
+                    <li>Python 2.7.12 (25 juin 2016)</li>
+                    <li>Python 3.5.2 (27 juin 2016)</li>
+                    <li>Version actuelle : <strong>Python 3.13</strong></li>
+                </ul>
+                <p>Python est parmi les dix langages de programmation les plus populaires. C'est un langage de <strong>haut niveau</strong> à usage général.</p>
+                <h3>Applications</h3>
+                <ul>
+                    <li>Langage de script pour applications web</li>
+                    <li>Calculs scientifiques et modélisation</li>
+                    <li>Développement de jeux vidéo</li>
+                    <li>Intelligence artificielle et machine learning</li>
+                </ul>
+            ` },
+            { title: "Mode Interactif et Mode Script", content: `
+                <h3>L'interpréteur Python</h3>
+                <p>L'exécution d'un programme Python se fait à l'aide d'un <strong>interpréteur</strong>. Il traduit les instructions en langage machine ligne par ligne.</p>
+                <div class="definition">
+                    <strong>Python est un langage interprété</strong> : la traduction se fait à la volée.
+                </div>
+                <h3>Mode interactif (console)</h3>
+                <p>Permet d'encoder les instructions une à une. L'invite de commande est <span class="keyword">>>></span>. L'instruction est exécutée immédiatement après ENTER.</p>
+                <div class="code">
+                    <pre>>>> print("Hello World!")
+Hello World!
+>>> exit()  # pour quitter</pre>
+                </div>
+                <h3>Mode script</h3>
+                <p>Les instructions sont écrites dans un fichier avec l'extension <span class="keyword">.py</span>. L'interpréteur lit et exécute le fichier.</p>
+            ` },
+            { title: "Premier Programme : Hello World!", content: `
+                <h3>Hello World!</h3>
+                <p>Le programme classique qui affiche "Hello World!" à l'écran.</p>
+                <div class="code">
+                    <pre>print('Hello World!')</pre>
+                </div>
+                <div class="definition">
+                    <strong>print()</strong> est une fonction prédéfinie de Python qui affiche à l'écran la séquence de caractères qu'on lui fournit.
+                </div>
+                <p>Pour quitter le mode interactif, exécutez <span class="keyword">exit()</span>.</p>
+            ` },
+            { title: "Python comme Calculatrice", content: `
+                <h3>La calculette Python</h3>
+                <p>En mode interactif, Python peut être utilisé comme une calculatrice.</p>
+                <div class="code">
+                    <pre>>>> 42
+42
+>>> 2 * 12
+24
+>>> 2 ** 10
+1024
+>>> ((19.99 * 1.21) - 5) / 4
+4.796975</pre>
+                </div>
+                <div class="example">
+                    <strong>Remarque :</strong> En mode script, seuls les affichages explicites avec print() sont visibles.
+                </div>
+            ` },
+            { title: "Opérateurs Mathématiques", content: `
+                <h3>Opérateurs arithmétiques</h3>
+                <table>
+                    <tr><th>Opérateur</th><th>Description</th><th>Exemple</th></tr>
+                    <tr><td>+</td><td>Addition</td><td>5 + 3 = 8</td></tr>
+                    <tr><td>-</td><td>Soustraction</td><td>10 - 4 = 6</td></tr>
+                    <tr><td>*</td><td>Multiplication</td><td>6 * 7 = 42</td></tr>
+                    <tr><td>/</td><td>Division</td><td>15 / 2 = 7.5</td></tr>
+                    <tr><td>**</td><td>Exponentiation</td><td>2 ** 3 = 8</td></tr>
+                    <tr><td>//</td><td>Division entière</td><td>15 // 2 = 7</td></tr>
+                    <tr><td>%</td><td>Modulo (reste)</td><td>15 % 2 = 1</td></tr>
+                </table>
+            ` },
+            { title: "Variables - Concept et Utilisation", content: `
+                <h3>Qu'est-ce qu'une variable ?</h3>
+                <p>Une variable est un emplacement en mémoire qui permet de stocker une valeur, identifié par un nom.</p>
+                <div class="definition">
+                    <strong>Affectation :</strong> <span class="keyword">nom_variable = valeur</span>
+                </div>
+                <div class="code">
+                    <pre>a = 1
+b = 2
+c = -4
+delta = b ** 2 - 4 * a * c
+print('Le discriminant est :')
+print(delta)</pre>
+                </div>
+                <h3>Deux types d'accès</h3>
+                <ul>
+                    <li><strong>Affectation :</strong> utilisation de l'opérateur =</li>
+                    <li><strong>Accès au contenu :</strong> utilisation du nom de la variable</li>
+                </ul>
+                <p>⚠️ Le symbole = est un opérateur d'affectation, pas un signe d'égalité mathématique.</p>
+            ` },
+            { title: "Exemple : Racines d'un trinôme", content: `
+                <h3>Recherche des racines d'un trinôme</h3>
+                <p>ax² + bx + c</p>
+                <div class="code">
+                    <pre>a = 1
+b = 2
+c = -4
+
+delta = b ** 2 - 4 * a * c
+
+print('Le discriminant est :')
+print(delta)
+
+# Pour les racines
+from math import sqrt
+if delta >= 0:
+    x1 = (-b + sqrt(delta)) / (2 * a)
+    x2 = (-b - sqrt(delta)) / (2 * a)
+    print('Les racines sont :', x1, 'et', x2)</pre>
+                </div>
+            ` },
+            { title: "Types de Données - Les Nombres", content: `
+                <h3>Types numériques en Python</h3>
+                <table>
+                    <tr><th>Type</th><th>Description</th><th>Exemple</th></tr>
+                    <tr><td>int</td><td>Entier (taille illimitée)</td><td>42, -17, 123456789</td></tr>
+                    <tr><td>float</td><td>Nombre à virgule flottante</td><td>3.14, -0.001, 2e-3</td></tr>
+                    <tr><td>complex</td><td>Nombre complexe</td><td>2+3j, 1j, complex(1,2)</td></tr>
+                </table>
+                <div class="code">
+                    <pre>>>> type(123)
+&lt;class 'int'>
+>>> type(3.14)
+&lt;class 'float'>
+>>> type(2+3j)
+&lt;class 'complex'></pre>
+                </div>
+                <p>⚠️ Utilisez le point comme séparateur décimal, pas la virgule.</p>
+            ` },
+            { title: "Types de Données - Chaînes de caractères", content: `
+                <h3>Chaînes de caractères (str)</h3>
+                <p>Une chaîne de caractères est une séquence de caractères délimitée par des guillemets simples ou doubles.</p>
+                <div class="code">
+                    <pre>>>> 'Hello'
+'Hello'
+>>> "Python"
+'Python'
+>>> '123'      # C'est une chaîne, pas un nombre
+'123'
+>>> type('123')
+&lt;class 'str'></pre>
+                </div>
+                <div class="definition">
+                    <strong>Distinction importante :</strong> 123 (int) ≠ '123' (str)
+                </div>
+                <h3>Concaténation</h3>
+                <div class="code">
+                    <pre>>>> 'Bonjour' + ' ' + 'Python'
+'Bonjour Python'</pre>
+                </div>
+            ` },
+            { title: "Fonctions prédéfinies", content: `
+                <h3>Fonctions intégrées à Python</h3>
+                <p>Python propose de nombreuses fonctions prédéfinies.</p>
+                <table>
+                    <tr><th>Fonction</th><th>Description</th><th>Exemple</th></tr>
+                    <tr><td>print()</td><td>Affiche à l'écran</td><td>print("Hello")</td></tr>
+                    <tr><td>type()</td><td>Retourne le type d'un objet</td><td>type(42)</td></tr>
+                    <tr><td>len()</td><td>Retourne la longueur</td><td>len("Python")</td></tr>
+                    <tr><td>int()</td><td>Convertit en entier</td><td>int("123")</td></tr>
+                    <tr><td>float()</td><td>Convertit en flottant</td><td>float("3.14")</td></tr>
+                    <tr><td>str()</td><td>Convertit en chaîne</td><td>str(123)</td></tr>
+                </table>
+                <h3>Fonctions importées</h3>
+                <div class="code">
+                    <pre>from math import sqrt
+resultat = sqrt(16)  # 4.0</pre>
+                </div>
+            ` },
+            { title: "Fonction print() en détail", content: `
+                <h3>La fonction print()</h3>
+                <p>La fonction print affiche une représentation de la donnée sous forme de chaîne et ajoute automatiquement un retour à la ligne.</p>
+                <div class="code">
+                    <pre>>>> print('Né en', 1960, "j'ai", 62, 'ans.')
+Né en 1960 j'ai 62 ans.</pre>
+                </div>
+                <h3>Paramètres nommés : sep et end</h3>
+                <div class="code">
+                    <pre>day = 4
+month = 8
+year = 1960
+
+print('Né le :', end=' ')
+print(day, month, year, sep='/')
+# Affichage : Né le : 4/8/1960</pre>
+                </div>
+                <ul>
+                    <li><span class="keyword">sep</span> : séparateur entre les valeurs (par défaut : espace)</li>
+                    <li><span class="keyword">end</span> : ce qui est ajouté à la fin (par défaut : \\n)</li>
+                </ul>
+            ` },
+            
+            { title: "Fonction input()", content: `
+                <h3>Saisie utilisateur</h3>
+                <p>La fonction <span class="keyword">input()</span> permet de saisir des données au clavier.</p>
+                <div class="code">
+                    <pre>nom = input("Quel est votre nom ? ")
+print(f"Bonjour {nom} !")
+
+age = int(input("Quel est votre âge ? "))
+print(f"Vous avez {age} ans")</pre>
+                </div>
+                <div class="example">
+                    <strong>⚠️ Important :</strong> input() retourne toujours une chaîne de caractères. Utilisez int() ou float() pour convertir.
+                </div>
+            ` },
+            { title: "Sortie formatée", content: `
+                <h3>Formatage de chaînes</h3>
+                <p>Python propose plusieurs façons de formater les chaînes de caractères.</p>
+                <h3>Méthode .format()</h3>
+                <div class="code">
+                    <pre>birthyear = 1960
+age = 62
+print("Né en {} j'ai {} ans".format(birthyear, age))
+# Né en 1960 j'ai 62 ans</pre>
+                </div>
+                <h3>f-strings (Python 3.6+)</h3>
+                <div class="code">
+                    <pre>print(f"Né en {birthyear} j'ai {age} ans")</pre>
+                </div>
+                <div class="definition">
+                    Les f-strings sont la méthode recommandée pour le formatage en Python moderne.
+                </div>
+            ` },
+            { title: "Conversion de types", content: `
+                <h3>Conversion entre types</h3>
+                <p>Python permet de convertir facilement d'un type à un autre.</p>
+                <div class="code">
+                    <pre># Conversion en entier
+x = int("123")        # 123
+y = int(3.14)         # 3 (troncature)
+
+# Conversion en flottant
+a = float("3.14")     # 3.14
+b = float(42)         # 42.0
+
+# Conversion en chaîne
+s = str(123)          # "123"
+t = str(3.14)         # "3.14"
+
+# Conversion en booléen
+b1 = bool(1)          # True
+b2 = bool(0)          # False
+b3 = bool("")         # False
+b4 = bool("Python")   # True</pre>
+                </div>
+            ` },
+            { title: "Règles de nommage des variables", content: `
+                <h3>Règles à respecter</h3>
+                <ul>
+                    <li>Commencer par une lettre ou underscore (_)</li>
+                    <li>Ne peut pas commencer par un chiffre</li>
+                    <li>Contient uniquement lettres, chiffres, underscores</li>
+                    <li>Python est sensible à la casse : <span class="keyword">variable</span> ≠ <span class="keyword">Variable</span></li>
+                    <li>Ne pas utiliser les mots réservés : <span class="keyword">if, else, for, while, print, import, def, class, etc.</span></li>
+                </ul>
+                <div class="code">
+                    <pre># Noms valides
+nom = "Jean"
+_age = 25
+var1 = 10
+nom_utilisateur = "alice"
+
+# Noms invalides
+# 1variable = 10   # Commence par un chiffre
+# mon-nom = "Bob"  # Contient un tiret
+# if = 5           # Mot réservé</pre>
+                </div>
+            ` },
+            { title: "Commentaires et Style", content: `
+                <h3>Commentaires</h3>
+                <p>Les commentaires sont essentiels pour documenter le code.</p>
+                <div class="code">
+                    <pre># Ceci est un commentaire sur une ligne
+
+"""
+Ceci est un commentaire
+sur plusieurs lignes
+(docstring)
+"""
+
+def addition(a, b):
+    """Retourne la somme de a et b"""
+    return a + b</pre>
+                </div>
+                <h3>Conventions de style (PEP 8)</h3>
+                <ul>
+                    <li><span class="keyword">snake_case</span> pour les variables et fonctions</li>
+                    <li><span class="keyword">UPPER_CASE</span> pour les constantes</li>
+                    <li><span class="keyword">CapWords</span> pour les classes</li>
+                    <li>Indentation avec 4 espaces</li>
+                </ul>
+            ` },
+            { title: "Exemple complet : Calculatrice", content: `
+                <h3>Mini-calculatrice Python</h3>
+                <div class="code">
+                    <pre># Mini-calculatrice
+print("=== Calculatrice Python ===")
+
+a = float(input("Entrez le premier nombre : "))
+b = float(input("Entrez le deuxième nombre : "))
+
+print(f"{a} + {b} = {a + b}")
+print(f"{a} - {b} = {a - b}")
+print(f"{a} × {b} = {a * b}")
+
+if b != 0:
+    print(f"{a} ÷ {b} = {a / b}")
+    print(f"{a} // {b} = {a // b}")
+    print(f"{a} % {b} = {a % b}")
+
+print(f"{a} ** {b} = {a ** b}")</pre>
+                </div>
+            ` },
+            { title: "Exemple complet : Conversion d'unités", content: `
+                <h3>Convertisseur de températures</h3>
+                <div class="code">
+                    <pre># Convertisseur Celsius ↔ Fahrenheit
+def celsius_vers_fahrenheit(c):
+    return c * 9/5 + 32
+
+def fahrenheit_vers_celsius(f):
+    return (f - 32) * 5/9
+
+print("=== Convertisseur de températures ===")
+print("1: Celsius → Fahrenheit")
+print("2: Fahrenheit → Celsius")
+
+choix = input("Votre choix : ")
+
+if choix == "1":
+    c = float(input("Température en °C : "))
+    f = celsius_vers_fahrenheit(c)
+    print(f"{c}°C = {f}°F")
+elif choix == "2":
+    f = float(input("Température en °F : "))
+    c = fahrenheit_vers_celsius(f)
+    print(f"{f}°F = {c}°C")
+else:
+    print("Choix invalide")</pre>
+                </div>
+            ` },
+            { title: "Bonnes pratiques", content: `
+                <h3>Bonnes pratiques en Python</h3>
+                <ul>
+                    <li>Utiliser des noms de variables explicites</li>
+                    <li>Commenter le code, mais éviter les commentaires évidents</li>
+                    <li>Respecter la PEP 8 pour le style</li>
+                    <li>Tester régulièrement son code</li>
+                    <li>Utiliser des fonctions pour organiser le code</li>
+                    <li>Gérer les erreurs avec try/except</li>
+                </ul>
+                <div class="definition">
+                    <strong>Python Zen (import this) :</strong> "Simple vaut mieux que complexe", "Lisible compte", "Il devrait y avoir une — et une seule — façon évidente de faire les choses."
+                </div>
+            ` },
+            { title: "Exercices - Partie 1", content: `
+                <h3>Exercice 1 : Affichage</h3>
+                <p>Affichez "Bienvenue en Python" à l'écran.</p>
+                <details>
+                    <summary>Solution</summary>
+                    <div class="code"><pre>print("Bienvenue en Python")</pre></div>
+                </details>
+                <h3>Exercice 2 : Opérations</h3>
+                <p>Calculez et affichez : 15 + 23, 100 - 47, 12 × 8, 144 ÷ 12</p>
+                <details>
+                    <summary>Solution</summary>
+                    <div class="code"><pre>print(15 + 23)
+print(100 - 47)
+print(12 * 8)
+print(144 / 12)</pre></div>
+                </details>
+            ` },
+            { title: "Exercices - Partie 2", content: `
+                <h3>Exercice 3 : Variables</h3>
+                <p>Créez une variable <span class="keyword">prenom</span> contenant votre prénom, et une variable <span class="keyword">age</span> contenant votre âge. Affichez "Je m'appelle [prenom] et j'ai [age] ans".</p>
+                <details>
+                    <summary>Solution</summary>
+                    <div class="code"><pre>prenom = "Alice"
+age = 25
+print(f"Je m'appelle {prenom} et j'ai {age} ans")</pre></div>
+                </details>
+                <h3>Exercice 4 : Saisie utilisateur</h3>
+                <p>Demandez deux nombres à l'utilisateur et affichez leur somme.</p>
+                <details>
+                    <summary>Solution</summary>
+                    <div class="code"><pre>a = float(input("Premier nombre : "))
+b = float(input("Deuxième nombre : "))
+print(f"Somme : {a + b}")</pre></div>
+                </details>
+            ` },
+            { title: "Exercices - Partie 3", content: `
+                <h3>Exercice 5 : Périmètre d'un cercle</h3>
+                <p>Écrire un programme qui calcule le périmètre d'un cercle (2 × π × r) à partir du rayon saisi par l'utilisateur. Utilisez π ≈ 3.14159.</p>
+                <details>
+                    <summary>Solution</summary>
+                    <div class="code"><pre>import math
+r = float(input("Rayon du cercle : "))
+perimetre = 2 * math.pi * r
+print(f"Périmètre : {perimetre:.2f}")</pre></div>
+                </details>
+                <h3>Exercice 6 : Conversion euro → dollar</h3>
+                <p>Créez un programme qui convertit un montant en euros en dollars (taux 1 € = 1.10 $).</p>
+                <details>
+                    <summary>Solution</summary>
+                    <div class="code"><pre>euros = float(input("Montant en euros : "))
+dollars = euros * 1.10
+print(f"{euros} € = {dollars} $")</pre></div>
+                </details>
+            ` },
+            { title: "Récapitulatif - Concepts clés", content: `
+                <h3>Ce qu'il faut retenir</h3>
+                <ul>
+                    <li><strong>Python</strong> est un langage interprété, simple et puissant</li>
+                    <li><strong>print()</strong> pour afficher, <strong>input()</strong> pour saisir</li>
+                    <li><strong>Variables</strong> : conteneurs de données avec nom explicite</li>
+                    <li><strong>Types</strong> : int, float, str, complex, bool</li>
+                    <li><strong>Opérateurs</strong> : +, -, *, /, **, //, %</li>
+                    <li><strong>Conversion</strong> : int(), float(), str()</li>
+                    <li><strong>Formatage</strong> : f-strings, .format()</li>
+                </ul>
+            ` },
+            { title: "Résumé des commandes", content: `
+                <h3>Commandes essentielles</h3>
+                <div class="code">
+                    <pre># Afficher
+print("Texte")
+
+# Variables
+x = 10
+nom = "Python"
+
+# Saisie
+valeur = input("Message : ")
+
+# Conversion
+nombre = int(valeur)
+
+# Opérations
+somme = a + b
+produit = a * b
+puissance = a ** b
+division_entiere = a // b
+reste = a % b
+
+# Formatage
+print(f"{nom} = {x}")
+print("{} = {}".format(nom, x))</pre>
+                </div>
+            ` },
+            { title: "Pour aller plus loin", content: `
+                <h3>Prochaines étapes</h3>
+                <ul>
+                    <li>Structures conditionnelles : if, elif, else</li>
+                    <li>Boucles : for, while</li>
+                    <li>Structures de données : listes, tuples, dictionnaires</li>
+                    <li>Fonctions et modules</li>
+                    <li>Gestion des exceptions (try/except)</li>
+                    <li>Programmation orientée objet</li>
+                    <li>Bibliothèques : numpy, pandas, matplotlib</li>
+                </ul>
+                <div class="definition">
+                    <strong>Ressources :</strong> Documentation officielle : docs.python.org
+                </div>
+            ` },
+            { title: "Conclusion", content: `
+                <h3>Félicitations !</h3>
+                <p>Vous avez maintenant les bases essentielles pour commencer à programmer en Python.</p>
+                <p>Python est un langage accessible qui permet de réaliser des projets très variés :</p>
+                <ul>
+                    <li>Automatisation de tâches</li>
+                    <li>Analyse de données</li>
+                    <li>Développement web</li>
+                    <li>Intelligence artificielle</li>
+                    <li>Scripts système</li>
+                </ul>
+                <p><strong>La pratique est la clé !</strong> N'hésitez pas à expérimenter par vous-même.</p>
+                <div class="example">
+                    Bonne continuation dans votre apprentissage de Python ! 🐍
+                </div>
+            ` }
+        ];
+
+        let currentSlide = 0, isAutoPlaying = false, syncInterval;
+        const audioPlayer = document.getElementById('audioPlayer');
+        const contentDiv = document.getElementById('content');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const playBtn = document.getElementById('playBtn');
+        const statusDiv = document.getElementById('status');
+        const slideCounter = document.getElementById('slideCounter');
+        const progressFill = document.getElementById('progressFill');
+        const timeDisplay = document.getElementById('timeDisplay');
+        
+        // Timings estimés pour chaque slide (en secondes)
+        const timeline = [
+            0, 64,130, 181, 258, 279, 317, 368, 372, 445, 474, 504, 559, 576, 588, 589, 627
+        ];
+
+        const totalDuration = 670;
+
+    function renderSlide(index) {
+            const slide = slides[index];
+            contentDiv.innerHTML = `
+                <div class="slide active">
+                    <h2 class="slide-title">${slide.title}</h2>
+                    <div class="slide-content">${slide.content}</div>
+                </div>
+            `;
+            slideCounter.textContent = `${index + 1}/${slides.length}`;
+            progressFill.style.width = `${((index + 1) / slides.length) * 100}%`;
+            if (!isAutoPlaying) {
+                prevBtn.disabled = index === 0;
+                nextBtn.disabled = index === slides.length - 1;
+            }
+            contentDiv.scrollTop = 0;
+        }
+    function nextSlide(){ if(currentSlide < slides.length-1){ 
+    currentSlide++;
+    renderSlide(currentSlide); } }
+    function prevSlide(){ if(currentSlide > 0){ currentSlide--; renderSlide(currentSlide); } }
+    function updateTimeDisplay(){
+        let t = audioPlayer.currentTime;
+        let mins = Math.floor(t/60).toString().padStart(2,'0');
+        let secs = Math.floor(t%60).toString().padStart(2,'0');
+        let totalMins = Math.floor(totalDuration/60).toString().padStart(2,'0');
+        let totalSecs = Math.floor(totalDuration%60).toString().padStart(2,'0');
+        timeDisplay.innerText = `${mins}:${secs} / ${totalMins}:${totalSecs}`;
+        progressFill.style.width = `${(t/totalDuration)*100}%`;
+    }
+    function syncSlideFromTime(){
+        if (!isAutoPlaying) return;
+            const currentTime = audioPlayer.currentTime;
+            for (let i = timeline.length - 1; i >= 0; i--) {
+                if (currentTime >= timeline[i]) {
+                    if (i !== currentSlide) {
+                        currentSlide = i;
+                        renderSlide(currentSlide);
+                    }
+                    break;
+                }
+            }
+            updateTimeDisplay();
+            if (currentTime >= totalDuration - 1) {
+                stopAutoPlay();
+            }
+    }
+    function startAutoPlay(){
+        if(!audioPlayer.src || audioPlayer.src === window.location.href) console.warn("audio src not set");
+        isAutoPlaying = true;
+        playBtn.innerText = "⏸ Pause";
+        playBtn.classList.remove('play-btn');
+        playBtn.classList.add('stop-btn');
+        statusDiv.innerText = "Mode automatique (synchro)";
+        statusDiv.style.background = "rgba(38,115,77,0.92)";
+        prevBtn.disabled = true;
+        nextBtn.disabled = true;
+        audioPlayer.play().catch(e => console.log("auto-play bloque par navigateur, interaction requise"));
+        if(syncInterval) clearInterval(syncInterval);
+        syncInterval = setInterval(syncSlideFromTime, 280);
+    }
+    function stopAutoPlay(){
+        isAutoPlaying = false;
+        playBtn.innerText = "▶ Lecture auto";
+        playBtn.classList.remove('stop-btn');
+        playBtn.classList.add('play-btn');
+        statusDiv.innerText = "Mode navigation";
+        statusDiv.style.background = "rgba(0,0,0,0.75)";
+        audioPlayer.pause();
+        if(syncInterval){ clearInterval(syncInterval); syncInterval = null; }
+        prevBtn.disabled = (currentSlide===0);
+        nextBtn.disabled = (currentSlide===slides.length-1);
+    }
+    function toggleAutoPlay(){
+        if(isAutoPlaying) stopAutoPlay();
+        else startAutoPlay();
+    }
+
+    document.addEventListener('keydown', (e)=>{
+        if(isAutoPlaying) return;
+        if(e.key === 'ArrowLeft'){ e.preventDefault(); prevSlide(); }
+        else if(e.key === 'ArrowRight'){ e.preventDefault(); nextSlide(); }
+        else if(e.key === ' '){ e.preventDefault(); toggleAutoPlay(); }
+    });
+    prevBtn.onclick = prevSlide;
+    nextBtn.onclick = nextSlide;
+    playBtn.onclick = toggleAutoPlay;
+    audioPlayer.addEventListener('ended', stopAutoPlay);
+    audioPlayer.addEventListener('timeupdate', ()=>{
+        if(!isAutoPlaying) updateTimeDisplay();
+    });
+
+    renderSlide(0);
+    updateTimeDisplay();
+
+    // petite alerte indicative
+    setTimeout(()=>{
+        console.log("Cours d'histologie prêt – placez 'histologie_medicale.mp3' généré par gTTS dans le dossier");
+    }, 200);
+</script>
+</body>
+</html>
