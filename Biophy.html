@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cours de Biophysique Médicale</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #0a2a3a 0%, #1a4a6a 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1300px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #e9ecef;
+            width: 100%;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #1a6a8a, #2a9aba);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .header {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .header h1 {
+            color: #0a2a3a;
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+
+        .badge {
+            background: #1a6a8a;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        .content {
+            padding: 30px;
+            min-height: 500px;
+            max-height: 70vh;
+            overflow-y: auto;
+            background: #ffffff;
+            scroll-behavior: smooth;
+        }
+
+        .slide {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-title {
+            color: #0a2a3a;
+            font-size: 2em;
+            margin-bottom: 25px;
+            font-weight: 700;
+            border-left: 5px solid #1a6a8a;
+            padding-left: 20px;
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 10;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+
+        .slide-content {
+            color: #2c3e50;
+            line-height: 1.8;
+            font-size: 1.1em;
+        }
+
+        .slide-content h3 {
+            color: #1a6a8a;
+            margin: 25px 0 15px 0;
+            font-size: 1.4em;
+        }
+
+        .slide-content h4 {
+            color: #2c3e50;
+            margin: 20px 0 10px 0;
+            font-size: 1.2em;
+        }
+
+        .slide-content p {
+            margin: 15px 0;
+        }
+
+        .slide-content ul, .slide-content ol {
+            margin: 15px 0 15px 30px;
+        }
+
+        .slide-content li {
+            margin: 10px 0;
+        }
+
+        .definition {
+            background: #e8f0f8;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border-left: 5px solid #1a6a8a;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .formula {
+            background: #f0f4f8;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+            font-size: 1.2em;
+            overflow-x: auto;
+            border-left: 5px solid #2a9aba;
+        }
+
+        .warning {
+            background: #fef5e7;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border-left: 5px solid #f39c12;
+        }
+
+        .danger {
+            background: #fdeded;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border-left: 5px solid #e74c3c;
+        }
+
+        .protocol {
+            background: #e8f8f0;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border-left: 5px solid #27ae60;
+        }
+
+        .info {
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border-left: 5px solid #2196f3;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            font-size: 0.9em;
+        }
+        th {
+            background: #0a2a3a;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        td {
+            border: 1px solid #e9ecef;
+            padding: 10px;
+        }
+
+        .controls {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-btn {
+            background: white;
+            color: #0a2a3a;
+            border: 1px solid #dee2e6;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: #e9ecef;
+            transform: translateY(-1px);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .play-btn {
+            background: linear-gradient(90deg, #1a6a8a, #2a9aba);
+            color: white;
+            box-shadow: 0 4px 15px rgba(26, 106, 138, 0.4);
+        }
+
+        .stop-btn {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .counter {
+            color: #6c757d;
+            font-size: 0.95em;
+            background: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+        }
+
+        .status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        @media (max-width: 768px) {
+            .content { padding: 20px; max-height: 60vh; }
+            .slide-title { font-size: 1.5em; }
+            .controls { flex-direction: column; }
+            button { flex: 1; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <div class="status" id="status">📖 Mode navigation</div>
+    <div class="container">
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="header">
+            <h1>🧬 Biophysique Médicale - Physico-Chimie du milieu liquidien</h1>
+            <span class="badge" id="slideCounter">1/45</span>
+        </div>
+        <div class="content" id="content"></div>
+        <div class="controls">
+            <div class="nav-buttons">
+                <button class="nav-btn" id="prevBtn">← Précédent</button>
+                <button class="nav-btn" id="nextBtn">Suivant →</button>
+            </div>
+            <button class="play-btn" id="playBtn">▶ Lecture automatique</button>
+            <span class="counter" id="timeDisplay">00:00 / 00:00</span>
+        </div>
+    </div>
+    <audio id="audioPlayer" src="biophysique.mp3" preload="auto"></audio>
+
+    <script>
+        alert("📢 Cours de Biophysique Médicale\n\nMode navigation : utilisez les flèches gauche/droite\nLecture auto : synchronisée avec l'audio\nAppuyez sur Espace pour lire/pause");
+
+        // Structure des diapositives basée sur le cours PDF
+        const slides = [
+            { title: "Plan du Cours", content: `
+                <div class="definition">
+                    <strong>COURS DE BIOPHYSIQUE MEDICALE</strong><br>
+                    Physico-Chimie du milieu 
+                </div>
+                <h3>Plan du cours</h3>
+                <ul>
+                    <li>I. L’EAU ET LE MILIEU PHYSIOLOGIQUE</li>
+                    <li>II. LES BIOMACROMOLECULES, LES SOLUTIONS COLLOIDALES</li>
+                    <li>III. LA BIOENERGETIQUE</li>
+                    <li>IV. LES MEMBRANES BIOLOGIQUES ET LES TRANSPORTS</li>
+                    <li>V. BIOPHYSIQUE DE LA CIRCULATION SANGUINE</li>
+                    <li>VI. PHENOMENES BIOELECTRIQUES ET ELECTROPHYSIOLOGIE</li>
+                </ul>
+            ` },
+            { title: "L'Eau et le Milieu Physiologique", content: `
+                <h3>L'eau, molécule de la vie</h3>
+                <p>Le corps d’un homme adulte est constitué globalement de <strong>60 à 70 % d’eau</strong>. Il n’y a donc pas de vie possible sans eau.</p>
+                <div class="definition">
+                    L'eau est le liquide de référence. Les propriétés des autres liquides sont définies par rapport à celles de l’eau.
+                </div>
+                <h3>Répartition de l’eau</h3>
+                <ul>
+                    <li>Compartiment intracellulaire : 40% du poids corporel</li>
+                    <li>Compartiment extracellulaire : 20% (dont 15% interstitiel, 5% plasmatique)</li>
+                    <li>Liquides transcellulaires : 1-3% (LCR, sécrétions digestives, séreuses)</li>
+                </ul>
+            ` },
+            { title: "Structure de l'Eau - Ponts Hydrogène", content: `
+                <h3>Structure tétraédrique</h3>
+                <p>Les interactions électrostatiques entre les dipôles de 2 molécules d’eau créent des <strong>liaisons hydrogène</strong>.</p>
+                <div class="formula">
+                    O-H···O<br>
+                    Liaison hydrogène = "liaison de la vie"
+                </div>
+                <div class="info">
+                    <strong>Conséquence majeure :</strong> L’eau est l’une des très rares substances qui se dilate au cours du gel.<br>
+                    La glace est moins dense que l’eau liquide → elle flotte.
+                </div>
+            ` },
+            { title: "Régulation Thermique par l'Eau", content: `
+                <h3>Homéothermie</h3>
+                <p>Résistance aux variations extérieures de température.</p>
+                <div class="formula">
+                    Q = m·c·ΔT &nbsp;&nbsp;&nbsp;⇒&nbsp;&nbsp;&nbsp; ΔT = Q/(m·c)
+                </div>
+                <p>La <strong>chaleur massique élevée</strong> de l’eau (c = 1 cal/g/°C) amortit les variations de température.</p>
+                <p>La <strong>conductivité calorifique</strong> évite les élévations locales de température par accumulation de chaleur.</p>
+            ` },
+            { title: "L'Eau comme Solvant Universel", content: `
+                <h3>Pouvoir dissolvant</h3>
+                <p>Principe : <strong>"Like dissolves like"</strong> → Les substances hydrophiles (—OH, —COOH, —NH₂) sont solubles.</p>
+                <div class="formula">
+                    Solvatation / Hydratation
+                </div>
+                <h3>Pouvoir dissociant</h3>
+                <p>La <strong>constante diélectrique élevée de l'eau</strong> (ε = 80) réduit la force électrostatique entre ions opposés.</p>
+                <div class="definition">
+                    Force de Coulomb : F = (1/4πε) · (q₁q₂/r²)<br>
+                    Plus ε est grand, plus la force diminue.
+                </div>
+            ` },
+            { title: "Milieu Physiologique - Composition Ionique", content: `
+                <h3>Concentrations ioniques (mmol/L d'eau)</h3>
+                <table>
+                    <tr><th>Ion</th><th>Plasma</th><th>Interstitiel</th><th>Intracellulaire</th></tr>
+                    <tr><td>Na⁺</td><td>142</td><td>144</td><td>10</td></tr>
+                    <tr><td>K⁺</td><td>4</td><td>4</td><td>160</td></tr>
+                    <tr><td>Ca²⁺</td><td>1.5</td><td>1.5</td><td>4</td></tr>
+                    <tr><td>Cl⁻</td><td>103</td><td>114</td><td>6</td></tr>
+                    <tr><td>HCO₃⁻</td><td>26</td><td>29</td><td>8</td></tr>
+                </table>
+                <div class="info">
+                    <strong>Solution physiologique :</strong> NaCl à 0,9%<br>
+                    <strong>Natrémie normale :</strong> 140 ± 5 mmol/L
+                </div>
+            ` },
+            { title: "Osmolarité et Équilibre Hydro-Sodé", content: `
+                <h3>Osmolarité efficace</h3>
+                <div class="formula">
+                    [osM<sub>eff</sub>] = [osM] – [osM<sub>non-eff</sub>]
+                </div>
+                <p><strong>Composés osmotiquement efficaces :</strong> Na⁺, K⁺, Cl⁻, HCO₃⁻, Ca²⁺<br>
+                <strong>Composés non efficaces :</strong> eau, urée</p>
+                <div class="definition">
+                    L'osmolarité efficace est l'indicateur de l’état d’hydratation cellulaire.
+                </div>
+                <h3>Régulation par l'ADH</h3>
+                <p>L'hormone antidiurétique (ADH) est sécrétée par l'hypothalamus pour réguler l'eau.</p>
+            ` },
+            { title: "Équilibre Acido-Basique", content: `
+                <h3>pH physiologique</h3>
+                <div class="formula">
+                    pH = 7,40 ± 0,02
+                </div>
+                <h3>Solutions tampons</h3>
+                <p>Mélange d’un acide faible (AH) et de sa base conjuguée (A⁻).</p>
+                <div class="formula">
+                    pH = pKa + log([A⁻]/[AH]) &nbsp;&nbsp;&nbsp;(Henderson-Hasselbalch)
+                </div>
+                <p>Domaine d’efficacité : pH = pKa ± 1</p>
+                <h3>Tampons biologiques ouverts</h3>
+                <div class="formula">
+                    pH = 6,1 + log([HCO₃⁻]/[CO₂]d)
+                </div>
+            ` },
+            { title: "Régulation du pH - Poumons et Reins", content: `
+                <h3>Régulation par les poumons</h3>
+                <div class="formula">
+                    CO₂ + H₂O ⇌ H₂CO₃ ⇌ H⁺ + HCO₃⁻
+                </div>
+                <p>Élimination du CO₂ par ventilation → déplacement de l'équilibre</p>
+                <h3>Régulation par les reins</h3>
+                <ul>
+                    <li>Élimination des H⁺ dans l'urine</li>
+                    <li>Combinaison avec HPO₄²⁻ ou NH₃</li>
+                    <li>Réabsorption des bicarbonates</li>
+                </ul>
+                <div class="info">
+                    Valeurs normales : PCO₂ = 40 ± 3 mmHg, HCO₃⁻ = 24 ± 2,5 mmol/L
+                </div>
+            ` },
+            { title: "Biomacromolécules - Protéines", content: `
+                <h3>Les protéines</h3>
+                <p>Formées à partir de 20 acides aminés différents (Ala, Arg, Asn, Asp, Cys, Glu, Gln, Gly, His, Ile, Leu, Lys, Met, Phe, Pro, Ser, Thr, Trp, Tyr, Val).</p>
+                <h3>Structure de l'hémoglobine</h3>
+                <ul>
+                    <li>Structure quaternaire : 4 chaînes (2α, 2β)</li>
+                    <li>Chaque chaîne contient un hème avec un atome de fer</li>
+                    <li>Fixation coopérative de l'oxygène</li>
+                </ul>
+            ` },
+            { title: "Drépanocytose (Anémie SS)", content: `
+                <div class="danger">
+                    <strong>Première maladie moléculaire</strong><br>
+                    Mutation : remplacement de l'acide glutamique par la valine en position β6 de l’hémoglobine
+                </div>
+                <h3>Conséquences</h3>
+                <ul>
+                    <li>Polymérisation de la désoxyHbS</li>
+                    <li>Déformation des globules rouges (forme de faucille)</li>
+                    <li>Durée de vie des GR : 60 jours (au lieu de 120)</li>
+                </ul>
+                <h3>Signes cliniques</h3>
+                <ul>
+                    <li>Crises douloureuses</li>
+                    <li>Anémie hémolytique chronique</li>
+                    <li>Accidents vaso-occlusifs (thrombose)</li>
+                </ul>
+            ` },
+            { title: "Solutions Colloïdales", content: `
+                <h3>Définition</h3>
+                <p>Phase dispersée (particules de 2 à 200 nm) + Phase dispersante</p>
+                <table>
+                    <tr><th>Phase dispersante</th><th>Phase dispersée</th><th>Exemple</th></tr>
+                    <tr><td>Gaz</td><td>Liquide</td><td>Brouillard</td></tr>
+                    <tr><td>Gaz</td><td>Solide</td><td>Fumée</td></tr>
+                    <tr><td>Liquide</td><td>Liquide</td><td>Émulsion</td></tr>
+                    <tr><td>Liquide</td><td>Solide</td><td>Sol (gel)</td></tr>
+                    <tr><td>Solide</td><td>Solide</td><td>Alliages</td></tr>
+                </table>
+            ` },
+            { title: "Centrifugation et Ultracentrifugation", content: `
+                <h3>Principe</h3>
+                <p>Séparation des particules selon leur masse sous l'effet de la force centrifuge.</p>
+                <div class="formula">
+                    F_c = m·ω²·x = m·4π²·N²·x
+                </div>
+                <p>ω = vitesse angulaire, N = tours/seconde, x = distance à l'axe</p>
+                <div class="info">
+                    L'ultracentrifugation peut générer des forces de 10⁴ à 10⁸ fois supérieures à g.
+                </div>
+                <h3>Coefficient de sédimentation (Svedberg)</h3>
+                <p>1 S = 10⁻¹³ seconde. Exemple : Myoglobine (2,04 S), Catalase (11,2 S)</p>
+            ` },
+            { title: "Applications - VS et Hématocrite", content: `
+                <h3>Vitesse de Sédimentation Globulaire (VS)</h3>
+                <p><strong>Homme :</strong> 1ʳᵉ heure ~3 mm, 2ᵉ heure ~8 mm, 24h ~50 mm<br>
+                <strong>Femme :</strong> 1ʳᵉ heure ~6 mm, 2ᵉ heure ~16 mm, 24h ~70 mm</p>
+                <h3>Hématocrite</h3>
+                <div class="formula">
+                    Ht = Volume des érythrocytes / Volume total du sang = h/H
+                </div>
+                <p>Valeurs normales : Homme 0,46 ± 0,06 ; Femme 0,42 ± 0,06</p>
+                <div class="definition">
+                    L'hématocrite est une mesure indirecte du taux d'hémoglobine.
+                </div>
+            ` },
+            { title: "Électrophorèse - Principe", content: `
+                <h3>Principe</h3>
+                <p>Déplacement des particules chargées sous l’effet d’un champ électrique.</p>
+                <div class="formula">
+                    F_él = q·E &nbsp;&nbsp;&nbsp;→&nbsp;&nbsp;&nbsp; v = qE/f
+                </div>
+                <p><strong>Mobilité électrophorétique :</strong> u = v/E = q/f</p>
+                <div class="info">
+                    Au point isoélectrique (pH où charges + et - sont égales), la mobilité est nulle.<br>
+                    Arne Tiselius (Prix Nobel 1948) a décrit la technique en 1937.
+                </div>
+            ` },
+            { title: "Types d'Électrophorèse", content: `
+                <h3>Électrophorèse sur papier</h3>
+                <p>Sur bande de papier filtre ou acétate de cellulose imbibée de tampon.</p>
+                <h3>SDS-PAGE</h3>
+                <p>Le SDS (dodécylsulfate de sodium) se lie aux protéines (1,4 g/g protéine).<br>
+                La charge négative masque la charge intrinsèque → séparation selon la masse moléculaire.</p>
+                <h3>Isoélectrofocalisation</h3>
+                <p>Séparation selon le point isoélectrique (pH où charge nette = 0).</p>
+                <h3>Électrophorèse capillaire</h3>
+                <p>Tube capillaire (1-10 μm) → champs électriques élevés → séparation en minutes.</p>
+            ` },
+            { title: "Spectrophotométrie UV-Visible", content: `
+                <h3>Loi de Lambert-Beer</h3>
+                <div class="formula">
+                    I = I₀·10⁻ᵈᵋᶜ &nbsp;&nbsp;&nbsp;→&nbsp;&nbsp;&nbsp; DO = log(I₀/I) = d·ε·C
+                </div>
+                <ul>
+                    <li>DO = Densité optique (absorbance)</li>
+                    <li>d = trajet optique (cm)</li>
+                    <li>ε = coefficient d'extinction molaire</li>
+                    <li>C = concentration (mol/L)</li>
+                </ul>
+                <div class="info">
+                    La loi est valable en solution diluée (C ≤ 10⁻² M).
+                </div>
+            ` },
+            { title: "Bioénergétique - Thermodynamique", content: `
+                <h3>Premier principe</h3>
+                <p>Conservation de l'énergie : ΔE = Q + W</p>
+                <h3>Enthalpie</h3>
+                <div class="formula">
+                    H = E + PV &nbsp;&nbsp;&nbsp;→&nbsp;&nbsp;&nbsp; ΔH = Q (à pression constante)
+                </div>
+                <h3>Second principe</h3>
+                <p>Entropie S = k·lnΩ (Ω = nombre de complexions)<br>
+                ΔS ≥ 0 pour un système isolé (spontané)</p>
+                <h3>Energie libre de Gibbs</h3>
+                <div class="formula">
+                    G = H - TS &nbsp;&nbsp;&nbsp;→&nbsp;&nbsp;&nbsp; ΔG = ΔH - TΔS
+                </div>
+            ` },
+            { title: "Critères de Spontanéité", content: `
+                <h3>Signe de ΔG</h3>
+                <ul>
+                    <li><strong>ΔG < 0 :</strong> spontané, exergonique, irréversible</li>
+                    <li><strong>ΔG > 0 :</strong> non spontané, endergonique, nécessite de l'énergie</li>
+                    <li><strong>ΔG = 0 :</strong> équilibre, réversible</li>
+                </ul>
+                <div class="formula">
+                    ΔG° = -RT·ln K &nbsp;&nbsp;&nbsp;(relation de Van't Hoff)
+                </div>
+                <div class="definition">
+                    ln K = ΔS°/R - (ΔH°/R)·(1/T)
+                </div>
+            ` },
+            { title: "ATP - Monnaie Énergétique", content: `
+                <h3>Rôle de l'ATP</h3>
+                <p>L'ATP est la "banque d'énergie" universelle des cellules.</p>
+                <div class="formula">
+                    ATP + H₂O → ADP + Pᵢ &nbsp;&nbsp;&nbsp;ΔG = -31 kJ/mol
+                </div>
+                <p>Hydrolyse exergonique couplée à des réactions endergoniques :</p>
+                <ul>
+                    <li>Travail chimique (biosynthèse)</li>
+                    <li>Travail mécanique (muscles)</li>
+                    <li>Travail de transfert (transport actif)</li>
+                </ul>
+            ` },
+            { title: "Membranes Biologiques", content: `
+                <h3>Composition</h3>
+                <ul>
+                    <li>Lipides (double couche phospholipidique)</li>
+                    <li>Protéines (intégrales ou périphériques)</li>
+                    <li>Glucides (glycocalyx)</li>
+                </ul>
+                <h3>Propriétés physiques</h3>
+                <ul>
+                    <li><strong>Fluidité :</strong> dépend des lipides et de la température</li>
+                    <li><strong>Asymétrie :</strong> les deux feuillets sont différents</li>
+                    <li><strong>Propriétés électriques :</strong> résistance R<sub>m</sub> et capacité C<sub>m</sub> ≈ 1 μF/m²</li>
+                </ul>
+            ` },
+            { title: "Types de Membranes", content: `
+                <h3>Classification par perméabilité</h3>
+                <ul>
+                    <li><strong>Semi-perméable :</strong> laisse passer le solvant, pas les solutés</li>
+                    <li><strong>Dialysante :</strong> arrête les grosses molécules (protéines), laisse passer les petits ions</li>
+                    <li><strong>Perméable :</strong> laisse passer toutes les particules</li>
+                </ul>
+                <div class="info">
+                    La perméabilité P<sub>d</sub> est différente selon la substance.
+                </div>
+            ` },
+            { title: "Transport Passif - Diffusion Simple", content: `
+                <h3>Première loi de Fick</h3>
+                <div class="formula">
+                    Φ = -D·A·(dC/dx)
+                </div>
+                <p>D = coefficient de diffusion</p>
+                <h3>Caractéristiques</h3>
+                <ul>
+                    <li>Va du + concentré vers le - concentré</li>
+                    <li>ΔG < 0 → spontané, sans énergie</li>
+                    <li>Aboutit à l'équilibre (ΔC = 0 → flux nul)</li>
+                </ul>
+                <div class="formula">
+                    Φ = P<sub>d</sub>·ΔC &nbsp;&nbsp;&nbsp;avec P<sub>d</sub> = D·γ/x
+                </div>
+            ` },
+            { title: "Transport Facilité", content: `
+                <h3>Par transporteurs (carriers)</h3>
+                <ul>
+                    <li>Spécificité (ex: GLUT pour glucose)</li>
+                    <li>Cinétique de saturation</li>
+                    <li>Exemple : Valinomycine (ionophore, ~1000 K⁺/s)</li>
+                </ul>
+                <h3>Par canaux ou pores</h3>
+                <ul>
+                    <li>Protéines transmembranaires formant des pores hydrophiles</li>
+                    <li>Beaucoup plus rapides</li>
+                    <li>Exemple : Gramicidine (~10⁷ ions/s)</li>
+                </ul>
+            ` },
+            { title: "Transport Actif", content: `
+                <div class="warning">
+                    <strong>Transport actif = "Up Hill"</strong><br>
+                    Nécessite de l'énergie (ΔG > 0), va contre le gradient
+                </div>
+                <h3>Transport actif primaire</h3>
+                <p>Couplé directement à l'hydrolyse de l'ATP (ATPases)</p>
+                <h3>Transport actif secondaire</h3>
+                <p>Couplé à un gradient ionique (ex: symport Na⁺-glucose)</p>
+            ` },
+            { title: "Pompe Na⁺/K⁺ ATPase", content: `
+                <h3>Fonctionnement</h3>
+                <ul>
+                    <li>3 Na⁺ sortent, 2 K⁺ entrent</li>
+                    <li>Pompe électrogénique (transfert d'une charge nette)</li>
+                    <li>Découverte par Jens Skou (1957)</li>
+                </ul>
+                <h3>Mécanisme en 5 étapes</h3>
+                <ol>
+                    <li>Fixation de 3 Na⁺ et ATP (forme E₁)</li>
+                    <li>Phosphorylation → E₁-P</li>
+                    <li>Changement de conformation → relargage Na⁺, fixation 2 K⁺</li>
+                    <li>Déphosphorylation → E₂</li>
+                    <li>Retour à E₁, relargage K⁺</li>
+                </ol>
+            ` },
+            { title: "Uniport, Symport, Antiport", content: `
+                <h3>Classification selon la stoechiométrie</h3>
+                <ul>
+                    <li><strong>Uniport :</strong> transporte une seule substance</li>
+                    <li><strong>Symport :</strong> transporte deux substances dans le même sens</li>
+                    <li><strong>Antiport :</strong> transporte deux substances en sens inverse</li>
+                </ul>
+                <div class="definition">
+                    La pompe Na⁺/K⁺ est un antiport électrogénique.
+                </div>
+                <div class="info">
+                    Exemple de symport : Na⁺-glucose dans l'épithélium intestinal.
+                </div>
+            ` },
+            { title: "Transport de l'Eau - Osmose", content: `
+                <h3>Pression osmotique</h3>
+                <div class="formula">
+                    π = R·T·C &nbsp;&nbsp;&nbsp;(pour un seul soluté)
+                </div>
+                <div class="formula">
+                    Δπ = R·T·(ΣC<sub>int</sub> - ΣC<sub>ext</sub>)
+                </div>
+                <h3>Coefficient de réflexion σ</h3>
+                <p>π* = σ·π = σ·R·T·C</p>
+                <ul>
+                    <li>σ = 1 : membrane semi-perméable</li>
+                    <li>σ = 0 : membrane totalement perméable</li>
+                </ul>
+            ` },
+            { title: "Aquaporines", content: `
+                <h3>Découverte</h3>
+                <p>Première aquaporine découverte par l'équipe de <strong>Peter Agre</strong> (Prix Nobel de chimie 2003).</p>
+                <div class="info">
+                    Les aquaporines sont des canaux spécifiques à l'eau, facilitant son transport passif.
+                </div>
+                <div class="warning">
+                    <strong>Diabète insipide :</strong> déficience en ADH ou mutations des aquaporines → émission de grandes quantités d'urine (jusqu'à 30 L/jour).
+                </div>
+            ` },
+            { title: "Transport des Gaz - Loi de Henry", content: `
+                <h3>Loi de Henry</h3>
+                <div class="formula">
+                    V = s·P
+                </div>
+                <p>Le volume de gaz dissous est proportionnel à la pression partielle.</p>
+                <h3>Applications</h3>
+                <ul>
+                    <li><strong>Effet d'altitude :</strong> diminution de P → diminution de l'oxygène dissous</li>
+                    <li><strong>Plongée sous-marine :</strong> l'azote se dissout sous pression → risque d'accident de décompression</li>
+                </ul>
+            ` },
+            { title: "Hémodynamique - Pressions Sanguines", content: `
+                <h3>Pressions artérielles normales (OMS)</h3>
+                <ul>
+                    <li><strong>Systolique :</strong> 100-140 mmHg</li>
+                    <li><strong>Diastolique :</strong> 60-90 mmHg</li>
+                </ul>
+                <h3>Viscosité sanguine</h3>
+                <ul>
+                    <li>Sérum : 1,1-1,3 × 10⁻³ Pa·s</li>
+                    <li>Plasma : 1,4 × 10⁻³ Pa·s</li>
+                </ul>
+                <div class="info">
+                    Une forte augmentation de l'hématocrite peut entraîner une polyglobulie (maladie de Vaquez).
+                </div>
+            ` },
+            { title: "Potentiel d'Équilibre - Équation de Nernst", content: `
+                <h3>Équation de Nernst</h3>
+                <div class="formula">
+                    E = (RT/zF) · ln([ion]ₑₓₜ/[ion]ᵢₙₜ)
+                </div>
+                <p>À 37°C (310 K), pour z = 1 :</p>
+                <div class="formula">
+                    E = 61,5 · log([ion]ₑₓₜ/[ion]ᵢₙₜ)  (en mV)
+                </div>
+                <p>F = constante de Faraday ≈ 96500 C/mol</p>
+            ` },
+            { title: "Potentiel de Repos - Équation de Goldman", content: `
+                <h3>Potentiel de membrane au repos</h3>
+                <div class="formula">
+                    E_m = (RT/F) · ln( Σ P_K[K⁺]ₑₓₜ + Σ P_Na[Na⁺]ₑₓₜ + Σ P_Cl[Cl⁻]ᵢₙₜ / Σ P_K[K⁺]ᵢₙₜ + Σ P_Na[Na⁺]ᵢₙₜ + Σ P_Cl[Cl⁻]ₑₓₜ )
+                </div>
+                <div class="info">
+                    À l'origine du potentiel de repos :<br>
+                    - Perméabilité membranaire sélective (P_K >> P_Na)<br>
+                    - Pompe Na⁺/K⁺ (maintient les gradients)
+                </div>
+            ` },
+            { title: "Canaux Ioniques", content: `
+                <h3>Rôle des canaux ioniques</h3>
+                <ul>
+                    <li>Contrôle sélectif du passage des ions</li>
+                    <li>Responsables du potentiel d'action</li>
+                    <li>Canaux voltage-dépendants (Na⁺, K⁺, Ca²⁺)</li>
+                    <li>Canaux ligand-dépendants (neurotransmetteurs)</li>
+                </ul>
+                <div class="definition">
+                    Roderick MacKinnon a élucidé la structure des canaux ioniques (Prix Nobel 2003).
+                </div>
+            ` },
+            { title: "Potentiel d'Action", content: `
+                <h3>Phases du potentiel d'action</h3>
+                <ol>
+                    <li><strong>Dépolarisation :</strong> ouverture des canaux Na⁺ → entrée massive de Na⁺</li>
+                    <li><strong>Repolarisation :</strong> inactivation des canaux Na⁺, ouverture des canaux K⁺ → sortie de K⁺</li>
+                    <li><strong>Hyperpolarisation :</strong> sortie excessive de K⁺</li>
+                    <li><strong>Période réfractaire :</strong> impossibilité de déclencher un nouveau PA</li>
+                </ol>
+                <div class="info">
+                    Loi du "tout ou rien" : le potentiel d'action se propage sans atténuation.
+                </div>
+            ` },
+            { title: "Électrocardiographie", content: `
+                <h3>Activité électrique du cœur</h3>
+                <ul>
+                    <li>Nœud sinusal (pacemaker naturel) : 60-100 impulsions/min</li>
+                    <li>Onde P : dépolarisation des oreillettes</li>
+                    <li>Complexe QRS : dépolarisation des ventricules</li>
+                    <li>Onde T : repolarisation des ventricules</li>
+                </ul>
+                <div class="definition">
+                    L'ECG permet de diagnostiquer les troubles du rythme, les ischémies, les infarctus.
+                </div>
+            ` },
+            { title: "Récapitulatif - Points Clés", content: `
+                <div class="protocol">
+                    <h3>À retenir absolument</h3>
+                    <ol>
+                        <li><strong>L'eau :</strong> molécule de la vie, ponts H, pouvoir solvant/dissociant</li>
+                        <li><strong>Milieu intérieur :</strong> composition ionique, équilibre hydro-sodé, pH = 7,4</li>
+                        <li><strong>Transport membranaire :</strong> passif (diffusion, facilité) vs actif (ATP)</li>
+                        <li><strong>Pompe Na⁺/K⁺ :</strong> 3 Na⁺ sortent, 2 K⁺ entrent, électrogénique</li>
+                        <li><strong>Potentiel de repos :</strong> équation de Goldman, perméabilité K⁺</li>
+                        <li><strong>Potentiel d'action :</strong> canaux Na⁺ et K⁺ voltage-dépendants</li>
+                    </ol>
+                </div>
+            ` },
+            { title: "Conclusion", content: `
+                <h3>Biophysique médicale</h3>
+                <p>La biophysique médicale est essentielle pour comprendre :</p>
+                <ul>
+                    <li>Les mécanismes fondamentaux du vivant à l'échelle moléculaire</li>
+                    <li>Les bases physico-chimiques des déséquilibres pathologiques</li>
+                    <li>Les principes des techniques diagnostiques (spectro, électrophorèse, ECG)</li>
+                    <li>Les cibles thérapeutiques (canaux, pompes, récepteurs)</li>
+                </ul>
+                <div class="definition">
+                    <strong>« Nul n'est bon clinicien sans une solide connaissance des bases biophysiques. »</strong>
+                </div>
+                <p style="margin-top: 30px;">📚 Fin du cours. Bonne révision !</p>
+            ` }
+        ];
+
+        let currentSlide = 0, isAutoPlaying = false, syncInterval;
+        const audioPlayer = document.getElementById('audioPlayer');
+        const contentDiv = document.getElementById('content');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const playBtn = document.getElementById('playBtn');
+        const statusDiv = document.getElementById('status');
+        const slideCounter = document.getElementById('slideCounter');
+        const progressFill = document.getElementById('progressFill');
+        const timeDisplay = document.getElementById('timeDisplay');
+        
+        // Timeline: temps (secondes) correspondant à chaque diapositive
+        // Ajustez ces valeurs selon la durée réelle de votre audio
+        const timeline = [
+            0,32,70,97,123,160,198,230,275,318,345,395,417,429,477,515,527,574,655,687,720,760,783,815,863,891,939,957,991,1022,1052,1096,1118,1126,1137,1157,1181.5,1225
+        ];
+        const totalDuration = 1265; // 13 minutes (ajuster selon audio réel)
+
+        function renderSlide(index) {
+            const slide = slides[index];
+            contentDiv.innerHTML = `
+                <div class="slide active">
+                    <h2 class="slide-title">${slide.title}</h2>
+                    <div class="slide-content">${slide.content}</div>
+                </div>
+            `;
+            slideCounter.textContent = `${index + 1}/${slides.length}`;
+            if (!isAutoPlaying) {
+                prevBtn.disabled = index === 0;
+                nextBtn.disabled = index === slides.length - 1;
+            }
+            contentDiv.scrollTop = 0;
+        }
+
+        function nextSlide() { if (currentSlide < slides.length-1) { currentSlide++; renderSlide(currentSlide); } }
+        function prevSlide() { if (currentSlide > 0) { currentSlide--; renderSlide(currentSlide); } }
+        
+        function updateTimeDisplay() {
+            let t = audioPlayer.currentTime;
+            let mins = Math.floor(t/60).toString().padStart(2,'0');
+            let secs = Math.floor(t%60).toString().padStart(2,'0');
+            let totalMins = Math.floor(totalDuration/60).toString().padStart(2,'0');
+            let totalSecs = Math.floor(totalDuration%60).toString().padStart(2,'0');
+            timeDisplay.innerText = `${mins}:${secs} / ${totalMins}:${totalSecs}`;
+            progressFill.style.width = `${(t/totalDuration)*100}%`;
+        }
+        
+        function syncSlideFromTime() {
+            if (!isAutoPlaying) return;
+            const currentTime = audioPlayer.currentTime;
+            for (let i = timeline.length - 1; i >= 0; i--) {
+                if (currentTime >= timeline[i]) {
+                    if (i !== currentSlide && i < slides.length) {
+                        currentSlide = i;
+                        renderSlide(currentSlide);
+                    }
+                    break;
+                }
+            }
+            updateTimeDisplay();
+            if (currentTime >= totalDuration - 1) {
+                stopAutoPlay();
+            }
+        }
+        
+        function startAutoPlay() {
+            isAutoPlaying = true;
+            playBtn.innerText = "⏸ Pause";
+            playBtn.classList.remove('play-btn');
+            playBtn.classList.add('stop-btn');
+            statusDiv.innerText = "🎤 Mode automatique (synchro)";
+            statusDiv.style.background = "rgba(26, 106, 138, 0.92)";
+            prevBtn.disabled = true;
+            nextBtn.disabled = true;
+            audioPlayer.play().catch(e => console.log("auto-play bloqué", e));
+            if(syncInterval) clearInterval(syncInterval);
+            syncInterval = setInterval(syncSlideFromTime, 280);
+        }
+        
+        function stopAutoPlay() {
+            isAutoPlaying = false;
+            playBtn.innerText = "▶ Lecture auto";
+            playBtn.classList.remove('stop-btn');
+            playBtn.classList.add('play-btn');
+            statusDiv.innerText = "📖 Mode navigation";
+            statusDiv.style.background = "rgba(0,0,0,0.75)";
+            audioPlayer.pause();
+            if(syncInterval) { clearInterval(syncInterval); syncInterval = null; }
+            prevBtn.disabled = (currentSlide === 0);
+            nextBtn.disabled = (currentSlide === slides.length-1);
+        }
+        
+        function toggleAutoPlay() {
+            if (isAutoPlaying) stopAutoPlay();
+            else startAutoPlay();
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (isAutoPlaying) return;
+            if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+            else if (e.key === 'ArrowRight') { e.preventDefault(); nextSlide(); }
+            else if (e.key === ' ' || e.key === 'Space') { e.preventDefault(); toggleAutoPlay(); }
+        });
+        
+        prevBtn.onclick = prevSlide;
+        nextBtn.onclick = nextSlide;
+        playBtn.onclick = toggleAutoPlay;
+        audioPlayer.addEventListener('ended', stopAutoPlay);
+        audioPlayer.addEventListener('timeupdate', () => {
+            if (!isAutoPlaying) updateTimeDisplay();
+        });
+
+        renderSlide(0);
+        updateTimeDisplay();
+    </script>
+</body>
+</html>

@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cours d'Histologie Générale - L1 Médecine</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #1e3c2c 0%, #2a5a3a 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1300px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #e9ecef;
+            width: 100%;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #1e6f3f, #2ecc71);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .header {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .header h1 {
+            color: #1e3c2c;
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+
+        .badge {
+            background: #1e6f3f;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        .content {
+            padding: 30px;
+            min-height: 500px;
+            max-height: 70vh;
+            overflow-y: auto;
+            background: #ffffff;
+            scroll-behavior: smooth;
+        }
+
+        .slide {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-title {
+            color: #1e3c2c;
+            font-size: 2em;
+            margin-bottom: 25px;
+            font-weight: 700;
+            border-left: 5px solid #1e6f3f;
+            padding-left: 20px;
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 10;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+        }
+
+        .slide-content {
+            color: #2c3e50;
+            line-height: 1.8;
+            font-size: 1.1em;
+        }
+
+        .slide-content h3 {
+            color: #1e6f3f;
+            margin: 25px 0 15px 0;
+            font-size: 1.4em;
+        }
+
+        .slide-content h4 {
+            color: #2c3e50;
+            margin: 20px 0 10px 0;
+            font-size: 1.2em;
+        }
+
+        .slide-content p {
+            margin: 15px 0;
+        }
+
+        .slide-content ul, .slide-content ol {
+            margin: 15px 0 15px 30px;
+        }
+
+        .slide-content li {
+            margin: 10px 0;
+        }
+
+        .definition {
+            background: #e8f0f8;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border-left: 5px solid #1e6f3f;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .warning {
+            background: #fef5e7;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border-left: 5px solid #f39c12;
+        }
+
+        .danger {
+            background: #fdeded;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border-left: 5px solid #e74c3c;
+        }
+
+        .protocol {
+            background: #e8f8f0;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border-left: 5px solid #27ae60;
+        }
+
+        .info {
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border-left: 5px solid #2196f3;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        th {
+            background: #1e3c2c;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        td {
+            border: 1px solid #e9ecef;
+            padding: 10px;
+        }
+
+        .controls {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-btn {
+            background: white;
+            color: #1e3c2c;
+            border: 1px solid #dee2e6;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: #e9ecef;
+            transform: translateY(-1px);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .play-btn {
+            background: linear-gradient(90deg, #1e6f3f, #2ecc71);
+            color: white;
+            box-shadow: 0 4px 15px rgba(30, 111, 63, 0.4);
+        }
+
+        .stop-btn {
+            background: #2c3e6d;
+            color: white;
+        }
+
+        .counter {
+            color: #6c757d;
+            font-size: 0.95em;
+            background: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+        }
+
+        .status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .keyword {
+            color: #1e6f3f;
+            font-weight: bold;
+        }
+
+        details {
+            margin: 15px 0;
+        }
+
+        summary {
+            cursor: pointer;
+            color: #1e6f3f;
+            font-weight: bold;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .content { padding: 20px; max-height: 60vh; }
+            .slide-title { font-size: 1.5em; }
+            .controls { flex-direction: column; }
+            button { flex: 1; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <div class="status" id="status">Mode navigation</div>
+    <div class="container">
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="header">
+            <h1>🔬 Histologie Générale - L1 Médecine</h1>
+            <span class="badge" id="slideCounter">1/35</span>
+        </div>
+        <div class="content" id="content"></div>
+        <div class="controls">
+            <div class="nav-buttons">
+                <button class="nav-btn" id="prevBtn">← Précédent</button>
+                <button class="nav-btn" id="nextBtn">Suivant →</button>
+            </div>
+            <button class="play-btn" id="playBtn">▶ Lecture automatique</button>
+            <span class="counter" id="timeDisplay">00:00 / 00:00</span>
+        </div>
+    </div>
+    <audio id="audioPlayer" src="histologie_complet.mp3" preload="auto"></audio>
+
+    <script>
+        alert("Cours d'histologie générale - Utilisez les flèches ou la lecture auto. Pause pour lire les détails.");
+
+        const slides = [
+            { title: "Introduction à l'Histologie", content: `
+                <div class="definition">
+                    <strong>Histologie</strong> : étude de la structure des organismes vivants et des rapports structuraux et fonctionnels entre leurs éléments constitutifs.
+                </div>
+                <p>Elle se situe à l'interface entre la biologie cellulaire, la physiologie et l'anatomie pathologique. La connaissance du tissu normal est indispensable pour comprendre les altérations pathologiques.</p>
+                <h3>Objectifs du cours</h3>
+                <ul>
+                    <li>Connaître la structure microscopique du corps humain normal</li>
+                    <li>Comprendre l'organisation de la cellule aux tissus</li>
+                    <li>Maîtriser les bases techniques de préparation des échantillons</li>
+                </ul>
+            ` },
+            { title: "Microscopie optique", content: `
+                <h3>Principe</h3>
+                <p>Utilise la lumière visible et des lentilles pour agrandir l'image de coupes minces de tissus (3 à 5 µm d'épaisseur).</p>
+                <h3>Préparation classique</h3>
+                <ul>
+                    <li>Fixation (formol, Bouin)</li>
+                    <li>Déshydratation (bains d'alcool)</li>
+                    <li>Éclaircissement (xylol)</li>
+                    <li>Inclusion en paraffine</li>
+                    <li>Coupe au microtome</li>
+                    <li>Coloration (hématoxyline-éosine)</li>
+                </ul>
+                <div class="info">💡 La coloration de routine permet de visualiser les noyaux (violet) et le cytoplasme (rose).</div>
+            ` },
+            { title: "Colorations usuelles", content: `
+                <table>
+                    <tr><th>Coloration</th><th>Cible</th><th>Aspect</th></tr>
+                    <tr><td>Hématoxyline-Éosine (HE)</td><td>Noyaux / Cytoplasme</td><td>Bleu-violet / Rose</td></tr>
+                    <tr><td>Trichrome de Masson</td><td>Collagène, muscle</td><td>Vert / Rouge</td></tr>
+                    <tr><td>PAS (Periodic Acid Schiff)</td><td>Glycogène, membranes basales</td><td>Magenta</td></tr>
+                    <tr><td>Bleu Alcian</td><td>Mucines acides</td><td>Bleu</td></tr>
+                    <tr><td>Imprégnation argentique</td><td>Fibres réticulines</td><td>Noir</td></tr>
+                </table>
+            ` },
+            { title: "Microscopie électronique", content: `
+                <h3>Microscopie électronique à transmission (MET)</h3>
+                <p>Utilise un faisceau d'électrons pour observer des coupes ultrafines (50-100 nm). Révèle les organites : mitochondries, réticulum, appareil de Golgi, etc.</p>
+                <h3>Microscopie électronique à balayage (MEB)</h3>
+                <p>Observe la surface des tissus en 3D après métallisation. Permet de visualiser les microvillosités, les cils, etc.</p>
+                <div class="definition">Contraste : l'acétate d'uranyle et le citrate de plomb donnent un contraste aux membranes et aux protéines.</div>
+            ` },
+            { title: "Histochimie et Immunohistochimie", content: `
+                <h3>Histochimie</h3>
+                <p>Utilise des colorants spécifiques pour révéler des substances chimiques : lipides (Noir Soudan), enzymes (phosphatase acide), etc.</p>
+                <h3>Immunohistochimie (IHC)</h3>
+                <p>Emploie des anticorps dirigés contre des antigènes spécifiques (protéines, marqueurs). Visualisation par fluorescence ou peroxydase.</p>
+                <div class="info">Exemple : marquage des cytokératines dans les épithéliums, des CD45 dans les leucocytes.</div>
+            ` },
+            { title: "La cellule - Généralités", content: `
+                <p>La cellule est l'unité fonctionnelle fondamentale des êtres vivants. Elle comprend deux grandes parties : le <strong>cytoplasme</strong> et le <strong>noyau</strong>.</p>
+                <ul>
+                    <li>Membrane plasmique : limite la cellule</li>
+                    <li>Cytoplasme : contient les organites et le cytosquelette</li>
+                    <li>Noyau : contient le matériel génétique (ADN)</li>
+                </ul>
+                <div class="definition">Différenciation cellulaire : processus par lequel les cellules se spécialisent pour accomplir une fonction particulière.</div>
+            ` },
+            { title: "Membrane cellulaire", content: `
+                <p>Structure en bicouche lipidique (7,5-10 nm) avec protéines intégrées et périphériques.</p>
+                <ul>
+                    <li><strong>Lipides</strong> : phospholipides, cholestérol, glycolipides</li>
+                    <li><strong>Protéines</strong> : transport, récepteurs, enzymes, adhésion</li>
+                    <li><strong>Glucides</strong> : glycocalyx (reconnaissance cellulaire)</li>
+                </ul>
+                <div class="info">Fonctions : barrière sélective, communication, adhérence, signalisation.</div>
+            ` },
+            { title: "Mitochondries", content: `
+                <p>Organites ovoïdes à double membrane. La membrane interne forme des crêtes. Matrice contenant l'ADN mitochondrial.</p>
+                <div class="definition">Rôle principal : production d'ATP par phosphorylation oxydative (respiration cellulaire).</div>
+                <p>Le nombre de mitochondries est proportionnel à l'activité métabolique de la cellule (ex : muscle, foie).</p>
+            ` },
+            { title: "Réticulum endoplasmique et ribosomes", content: `
+                <h3>Réticulum endoplasmique rugueux (RER)</h3>
+                <p>Présence de ribosomes fixés. Synthèse des protéines destinées à la sécrétion ou à la membrane.</p>
+                <h3>Réticulum endoplasmique lisse (REL)</h3>
+                <p>Sans ribosomes. Synthèse des lipides, détoxification, stockage du calcium (muscle).</p>
+                <div class="info">Les ribosomes libres synthétisent les protéines cytoplasmiques.</div>
+            ` },
+            { title: "Appareil de Golgi et lysosomes", content: `
+                <h3>Appareil de Golgi</h3>
+                <p>Empilement de citernes aplaties. Modification, tri et emballage des protéines dans des vésicules.</p>
+                <h3>Lysosomes</h3>
+                <p>Vésicules contenant des enzymes hydrolytiques (pH acide). Digestion intracellulaire (hétérophagie et autophagie).</p>
+                <div class="warning">Pathologie : maladies de surcharge lysosomale (ex : maladie de Tay-Sachs).</div>
+            ` },
+            { title: "Cytosquelette", content: `
+                <p>Réseau de filaments protéiques donnant la forme et la mobilité à la cellule.</p>
+                <ul>
+                    <li><strong>Microtubules</strong> (25 nm) : tubuline, transport intracellulaire, fuseau mitotique</li>
+                    <li><strong>Microfilaments</strong> (5-7 nm) : actine, contraction, maintien de la forme</li>
+                    <li><strong>Filaments intermédiaires</strong> (10 nm) : résistance mécanique (kératine, desmine, neurofilaments)</li>
+                </ul>
+            ` },
+            { title: "Noyau et division cellulaire", content: `
+                <p>Le noyau est entouré d'une double membrane (enveloppe nucléaire) percée de pores. Il contient la chromatine (ADN + histones) et le nucléole (synthèse des ribosomes).</p>
+                <h3>Mitose</h3>
+                <p>Division cellulaire aboutissant à deux cellules filles identiques. Phases : prophase, métaphase, anaphase, télophase.</p>
+                <div class="info">La chromatine sexuelle (corps de Barr) correspond au chromosome X inactivé chez la femme.</div>
+            ` },
+            { title: "Cycle cellulaire", content: `
+                <div class="protocol">
+                    <ul>
+                        <li><strong>G1</strong> : croissance, synthèse protéique</li>
+                        <li><strong>S</strong> : réplication de l'ADN</li>
+                        <li><strong>G2</strong> : préparation à la mitose</li>
+                        <li><strong>M</strong> : mitose et cytodiérèse</li>
+                        <li><strong>G0</strong> : phase de quiescence</li>
+                    </ul>
+                </div>
+                <p>Régulation par les cyclines et CDK. Les mutations des gènes régulateurs (p53, Rb) sont impliquées dans les cancers.</p>
+            ` },
+            { title: "Tissu épithélial - Caractéristiques", content: `
+                <p>Cellules juxtaposées avec peu de substance intercellulaire. Reposent sur une lame basale. Avascularisation (nutrition par diffusion).</p>
+                <ul>
+                    <li>Fonctions : protection, absorption, sécrétion, sensation</li>
+                    <li>Polarité : pôle apical (libre) et pôle basal (fixé à la lame basale)</li>
+                </ul>
+                <div class="definition">Les épithéliums dérivent des trois feuillets embryonnaires (ectoderme, endoderme, mésoderme).</div>
+            ` },
+            { title: "Jonctions intercellulaires", content: `
+                <h3>Types de jonctions</h3>
+                <ul>
+                    <li><strong>Jonctions serrées (zonula occludens)</strong> : étanchéité</li>
+                    <li><strong>Desmosomes (macula adherens)</strong> : résistance mécanique</li>
+                    <li><strong>Jonctions communicantes (gap)</strong> : échange d'ions et de petites molécules</li>
+                    <li><strong>Hémidesmosomes</strong> : ancrage à la lame basale</li>
+                </ul>
+                <div class="info">Les cadhérines et les intégrines sont des protéines clés de l'adhésion.</div>
+            ` },
+            { title: "Spécialisations de surface", content: `
+                <ul>
+                    <li><strong>Microvillosites</strong> : augmentent la surface d'absorption (intestin, rein). Axe d'actine.</li>
+                    <li><strong>Stéréocils</strong> : longs microvillosités immobiles (épididyme).</li>
+                    <li><strong>Cils</strong> : mobiles, structure en axonème (9+2). Battement synchronisé (voies respiratoires, trompe utérine).</li>
+                </ul>
+                <div class="definition">Les cils primaires sont immobiles et jouent un rôle sensoriel (rein, cartilage).</div>
+            ` },
+            { title: "Classification des épithéliums de revêtement", content: `
+                <h3>Selon le nombre de couches</h3>
+                <ul><li>Simple : une seule couche</li><li>Stratifié : plusieurs couches</li><li>Pseudostratifié : toutes les cellules reposent sur la lame basale mais les noyaux sont à différents niveaux</li></ul>
+                <h3>Selon la forme des cellules superficielles</h3>
+                <ul><li>Pavimenteux (squameux)</li><li>Cubique</li><li>Cylindrique (colonnaire)</li><li>Transitionnel (urothélium)</li></ul>
+            ` },
+            { title: "Épithélium glandulaire", content: `
+                <p>Spécialisé dans la sécrétion. Les glandes peuvent être :</p>
+                <ul>
+                    <li><strong>Exocrines</strong> : sécrétion déversée par un canal (sudoripares, salivaires, pancréas exocrine)</li>
+                    <li><strong>Endocrines</strong> : sécrétion dans le sang (thyroïde, surrénales, hypophyse)</li>
+                </ul>
+                <h3>Modes de sécrétion</h3>
+                <ul><li>Mérocrine (exocrine) : exocytose</li><li>Apocrine : perte d'une partie du cytoplasme</li><li>Holocrine : destruction de la cellule (glandes sébacées)</li></ul>
+            ` },
+            { title: "Tissu conjonctif - Généralités", content: `
+                <p>Tissu caractérisé par une abondante matrice extracellulaire contenant des fibres (collagène, élastique, réticuline) et une substance fondamentale (glycosaminoglycanes, protéoglycanes).</p>
+                <p>Origine : mésenchyme embryonnaire.</p>
+                <div class="definition">Fonctions : soutien, nutrition, défense, réparation, stockage (tissu adipeux).</div>
+            ` },
+            { title: "Cellules du tissu conjonctif", content: `
+                <ul>
+                    <li><strong>Fibroblastes</strong> : synthèse de la matrice (collagène, élastine, GAG).</li>
+                    <li><strong>Macrophages</strong> : phagocytose, présentation antigénique.</li>
+                    <li><strong>Mastocytes</strong> : libération d'histamine, héparine (allergie).</li>
+                    <li><strong>Plasmocytes</strong> : production d'anticorps (issus des lymphocytes B).</li>
+                    <li><strong>Adipocytes</strong> : stockage des lipides.</li>
+                </ul>
+            ` },
+            { title: "Fibres et matrice extracellulaire", content: `
+                <h3>Fibres collagènes</h3>
+                <p>Type I (peau, os, tendon), résistent à la tension. Striations transversales périodiques (64 nm).</p>
+                <h3>Fibres élastiques</h3>
+                <p>Élastine + fibrilline, extensibilité (vaisseaux, poumons).</p>
+                <h3>Fibres réticulaires</h3>
+                <p>Collagène type III, argyrophiles (stroma des organes lymphoïdes).</p>
+            ` },
+            { title: "Types de tissu conjonctif", content: `
+                <ul>
+                    <li><strong>Lâche</strong> : abondante substance fondamentale, cellules variées (derme papillaire).</li>
+                    <li><strong>Dense régulier</strong> : fibres collagènes orientées (tendons).</li>
+                    <li><strong>Dense irrégulier</strong> : fibres entrecroisées (derme réticulaire).</li>
+                    <li><strong>Adipeux</strong> : uniloculaire (blanc) ou multiloculaire (brun).</li>
+                    <li><strong>Cartilage et os</strong> : tissus conjonctifs spécialisés.</li>
+                </ul>
+            ` },
+            { title: "Cartilage", content: `
+                <p>Tissu conjonctif rigide mais élastique, avasculaire. Cellules : chondrocytes dans des lacunes. Matrice : collagène type II, protéoglycanes (aggrécane).</p>
+                <ul>
+                    <li><strong>Hyalin</strong> : le plus répandu (trachée, articulation, os en développement).</li>
+                    <li><strong>Élastique</strong> : riche en fibres élastiques (oreille, épiglotte).</li>
+                    <li><strong>Fibrocartilage</strong> : collagène type I (disques intervertébraux).</li>
+                </ul>
+                <div class="info">Le périchondre est une enveloppe conjonctive vascularisée (sauf cartilage articulaire).</div>
+            ` },
+            { title: "Tissu osseux", content: `
+                <p>Matrice calcifiée (hydroxyapatite) + collagène type I. Cellules : ostéoblastes (formation), ostéocytes (maintien), ostéoclastes (résorption).</p>
+                <h3>Structure</h3>
+                <ul><li>Os compact : systèmes haversiens (ostéons)</li><li>Os spongieux : travées</li></ul>
+                <p>Périoste et endoste assurent la croissance et la réparation.</p>
+            ` },
+            { title: "Tissu musculaire - Généralités", content: `
+                <p>Cellules contractiles d'origine mésodermique. Trois types :</p>
+                <ul>
+                    <li><strong>Muscle strié squelettique</strong> : volontaire, multinucléé, striations transversales.</li>
+                    <li><strong>Muscle cardiaque</strong> : involontaire, cellules avec disques intercalaires, un ou deux noyaux centraux.</li>
+                    <li><strong>Muscle lisse</strong> : involontaire, cellules fusiformes, pas de striations, noyau unique central.</li>
+                </ul>
+            ` },
+            { title: "Muscle strié squelettique", content: `
+                <p>Fibre musculaire = myofibre (syncytium). Noyaux périphériques. Sarcomère = unité contractile (bandes A, I, H, ligne Z). Protéines : actine (filaments fins), myosine (filaments épais), troponine, tropomyosine.</p>
+                <div class="definition">La contraction est déclenchée par la libération de Ca²⁺ du réticulum sarcoplasmique après stimulation nerveuse (plaque motrice).</div>
+            ` },
+            { title: "Muscle cardiaque et muscle lisse", content: `
+                <h3>Cardiaque</h3>
+                <p>Cellules ramifiées, striées, disques intercalaires (jonctions gap et desmosomes). Contraction rythmique automatique (cellules nodales).</p>
+                <h3>Lisse</h3>
+                <p>Cellules fusiformes, pas de striations, contraction lente et soutenue. Innervation par le système nerveux autonome. Rôle dans les viscères (vaisseaux, intestin, utérus).</p>
+            ` },
+            { title: "Tissu nerveux - Neurones", content: `
+                <p>Neurone = unité fonctionnelle. Parties : corps cellulaire (péricaryon), dendrites (réception), axone (transmission).</p>
+                <ul>
+                    <li>Neurones multipolaires, bipolaires, pseudounipolaires</li>
+                    <li>Substance de Nissl = RER + ribosomes (basophilie)</li>
+                    <li>Synapse : transmission chimique (neurotransmetteurs) ou électrique</li>
+                </ul>
+            ` },
+            { title: "Névroglie et fibres nerveuses", content: `
+                <p>Cellules gliales : astrocytes, oligodendrocytes (myéline SNC), cellules de Schwann (myéline SNP), microglie (macrophages), cellules épendymaires.</p>
+                <h3>Fibres myélinisées</h3>
+                <p>Gaine de myéline isolante, accélère la conduction. Nœuds de Ranvier (conduction saltatoire).</p>
+            ` },
+            { title: "Système nerveux central et périphérique", content: `
+                <p><strong>SNC</strong> : encéphale + moelle épinière. Substance grise (péricaryons) et substance blanche (axones myélinisés).</p>
+                <p><strong>SNP</strong> : nerfs crâniens, spinaux, ganglions. Nerfs sensitifs, moteurs ou mixtes.</p>
+                <div class="info">Le système nerveux autonome (sympathique et parasympathique) régule les fonctions végétatives.</div>
+            ` },
+            { title: "Le sang - Composition", content: `
+                <p>Tissu conjonctif liquide. Éléments figurés :</p>
+                <ul>
+                    <li>Érythrocytes (globules rouges) : 4,5-5,5 millions/mm³, transport O₂/CO₂</li>
+                    <li>Leucocytes : 6000-8000/mm³ (défense)</li>
+                    <li>Plaquettes : 150 000-400 000/mm³ (hémostase)</li>
+                </ul>
+                <p>Plasma (55 %) : eau, protéines, électrolytes, nutriments, hormones.</p>
+            ` },
+            { title: "Globules rouges, blancs, plaquettes", content: `
+                <h3>Érythrocytes</h3>
+                <p>Disques biconcaves, anucléés, hémoglobine. Durée de vie 120 jours.</p>
+                <h3>Leucocytes</h3>
+                <p>Polynucléaires (neutrophiles, éosinophiles, basophiles) et mononucléaires (lymphocytes, monocytes).</p>
+                <h3>Plaquettes</h3>
+                <p>Fragments cytoplasmiques des mégacaryocytes. Adhésion, agrégation, coagulation.</p>
+            ` },
+            { title: "Hématopoïèse", content: `
+                <p>Formation des cellules sanguines dans la moelle osseuse (adulte). Cellule souche hématopoïétique pluripotente → progéniteurs lymphoïdes et myéloïdes.</p>
+                <ul>
+                    <li>Érythropoïèse : érythroblastes → réticulocytes → érythrocytes (contrôle par érythropoïétine)</li>
+                    <li>Granulopoïèse : myéloblastes → promyélocytes → myélocytes → métamyélocytes → polynucléaires</li>
+                    <li>Thrombopoïèse : mégacaryoblastes → mégacaryocytes → plaquettes</li>
+                </ul>
+            ` },
+            { title: "Conclusion", content: `
+                <p>L'histologie est la base de la compréhension du fonctionnement normal et pathologique des organes. Elle permet de relier la biologie moléculaire à l'anatomie macroscopique.</p>
+                <div class="definition">Message clé : « La structure détermine la fonction. »</div>
+                <p>Maîtriser l'histologie normale est indispensable pour interpréter les biopsies et comprendre les mécanismes des maladies.</p>
+                <p>Merci pour votre attention !</p>
+            ` }
+        ];
+
+        let currentSlide = 0, isAutoPlaying = false, syncInterval;
+        const audioPlayer = document.getElementById('audioPlayer');
+        const contentDiv = document.getElementById('content');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const playBtn = document.getElementById('playBtn');
+        const statusDiv = document.getElementById('status');
+        const slideCounter = document.getElementById('slideCounter');
+        const progressFill = document.getElementById('progressFill');
+        const timeDisplay = document.getElementById('timeDisplay');
+
+        // Timeline estimée (secondes) pour 35 slides - à ajuster si nécessaire
+        // Calculée approximativement à partir de la longueur du texte (environ 20-25 min)
+        const timeline = [
+            0,42,81,104,139,173,205,242,271,303,334,372,406,437, 474,505,537,571,606,638,667,698,731,775,
+803,836,872,905,939,970,1003,1047,1078,1121
+        ];
+        const totalDuration = 1160; // secondes
+
+        function renderSlide(index) {
+            const slide = slides[index];
+            contentDiv.innerHTML = `
+                <div class="slide active">
+                    <h2 class="slide-title">${slide.title}</h2>
+                    <div class="slide-content">${slide.content}</div>
+                </div>
+            `;
+            slideCounter.textContent = `${index + 1}/${slides.length}`;
+            if (!isAutoPlaying) {
+                prevBtn.disabled = index === 0;
+                nextBtn.disabled = index === slides.length - 1;
+            }
+            contentDiv.scrollTop = 0;
+        }
+
+        function nextSlide(){ if(currentSlide < slides.length-1){ currentSlide++; renderSlide(currentSlide); } }
+        function prevSlide(){ if(currentSlide > 0){ currentSlide--; renderSlide(currentSlide); } }
+        
+        function updateTimeDisplay(){
+            let t = audioPlayer.currentTime;
+            let mins = Math.floor(t/60).toString().padStart(2,'0');
+            let secs = Math.floor(t%60).toString().padStart(2,'0');
+            let totalMins = Math.floor(totalDuration/60).toString().padStart(2,'0');
+            let totalSecs = Math.floor(totalDuration%60).toString().padStart(2,'0');
+            timeDisplay.innerText = `${mins}:${secs} / ${totalMins}:${totalSecs}`;
+            progressFill.style.width = `${(t/totalDuration)*100}%`;
+        }
+        
+        function syncSlideFromTime(){
+            if (!isAutoPlaying) return;
+            const currentTime = audioPlayer.currentTime;
+            for (let i = timeline.length - 1; i >= 0; i--) {
+                if (currentTime >= timeline[i]) {
+                    if (i !== currentSlide) {
+                        currentSlide = i;
+                        renderSlide(currentSlide);
+                    }
+                    break;
+                }
+            }
+            updateTimeDisplay();
+            if (currentTime >= totalDuration - 1) {
+                stopAutoPlay();
+            }
+        }
+        
+        function startAutoPlay(){
+            isAutoPlaying = true;
+            playBtn.innerText = "⏸ Pause";
+            playBtn.classList.remove('play-btn');
+            playBtn.classList.add('stop-btn');
+            statusDiv.innerText = "Mode automatique (synchro)";
+            statusDiv.style.background = "rgba(30, 111, 63, 0.92)";
+            prevBtn.disabled = true;
+            nextBtn.disabled = true;
+            audioPlayer.play().catch(e => console.log("auto-play bloqué"));
+            if(syncInterval) clearInterval(syncInterval);
+            syncInterval = setInterval(syncSlideFromTime, 280);
+        }
+        
+        function stopAutoPlay(){
+            isAutoPlaying = false;
+            playBtn.innerText = "▶ Lecture auto";
+            playBtn.classList.remove('stop-btn');
+            playBtn.classList.add('play-btn');
+            statusDiv.innerText = "Mode navigation";
+            statusDiv.style.background = "rgba(0,0,0,0.75)";
+            audioPlayer.pause();
+            if(syncInterval){ clearInterval(syncInterval); syncInterval = null; }
+            prevBtn.disabled = (currentSlide===0);
+            nextBtn.disabled = (currentSlide===slides.length-1);
+        }
+        
+        function toggleAutoPlay(){
+            if(isAutoPlaying) stopAutoPlay();
+            else startAutoPlay();
+        }
+
+        document.addEventListener('keydown', (e)=>{
+            if(isAutoPlaying) return;
+            if(e.key === 'ArrowLeft'){ e.preventDefault(); prevSlide(); }
+            else if(e.key === 'ArrowRight'){ e.preventDefault(); nextSlide(); }
+            else if(e.key === ' '){ e.preventDefault(); toggleAutoPlay(); }
+        });
+        
+        prevBtn.onclick = prevSlide;
+        nextBtn.onclick = nextSlide;
+        playBtn.onclick = toggleAutoPlay;
+        audioPlayer.addEventListener('ended', stopAutoPlay);
+        audioPlayer.addEventListener('timeupdate', ()=>{
+            if(!isAutoPlaying) updateTimeDisplay();
+        });
+
+        renderSlide(0);
+        updateTimeDisplay();
+    </script>
+</body>
+</html>
