@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cours de Premiers Secours - L1BM</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #1a2a4f 0%, #2c3e6d 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1300px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #e9ecef;
+            width: 100%;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #c0392b, #e74c3c);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .header {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .header h1 {
+            color: #1a2a4f;
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+
+        .badge {
+            background: #c0392b;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        .content {
+            padding: 30px;
+            min-height: 500px;
+            max-height: 70vh;
+            overflow-y: auto;
+            background: #ffffff;
+            scroll-behavior: smooth;
+        }
+
+        .slide {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-title {
+            color: #1a2a4f;
+            font-size: 2em;
+            margin-bottom: 25px;
+            font-weight: 700;
+            border-left: 5px solid #c0392b;
+            padding-left: 20px;
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 10;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+        }
+
+        .slide-content {
+            color: #2c3e50;
+            line-height: 1.8;
+            font-size: 1.1em;
+        }
+
+        .slide-content h3 {
+            color: #c0392b;
+            margin: 25px 0 15px 0;
+            font-size: 1.4em;
+        }
+
+        .slide-content h4 {
+            color: #2c3e50;
+            margin: 20px 0 10px 0;
+            font-size: 1.2em;
+        }
+
+        .slide-content p {
+            margin: 15px 0;
+        }
+
+        .slide-content ul, .slide-content ol {
+            margin: 15px 0 15px 30px;
+        }
+
+        .slide-content li {
+            margin: 10px 0;
+        }
+
+        .definition {
+            background: #e8f0f8;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border-left: 5px solid #c0392b;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .warning {
+            background: #fef5e7;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border-left: 5px solid #f39c12;
+        }
+
+        .danger {
+            background: #fdeded;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border-left: 5px solid #e74c3c;
+        }
+
+        .protocol {
+            background: #e8f8f0;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border-left: 5px solid #27ae60;
+        }
+
+        .code {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            font-family: 'Fira Code', 'Courier New', monospace;
+            font-size: 0.95em;
+            overflow-x: auto;
+        }
+
+        .info {
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border-left: 5px solid #2196f3;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        th {
+            background: #1a2a4f;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        td {
+            border: 1px solid #e9ecef;
+            padding: 10px;
+        }
+
+        .controls {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-btn {
+            background: white;
+            color: #1a2a4f;
+            border: 1px solid #dee2e6;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: #e9ecef;
+            transform: translateY(-1px);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .play-btn {
+            background: linear-gradient(90deg, #c0392b, #e74c3c);
+            color: white;
+            box-shadow: 0 4px 15px rgba(192, 57, 43, 0.4);
+        }
+
+        .stop-btn {
+            background: #2c3e6d;
+            color: white;
+        }
+
+        .counter {
+            color: #6c757d;
+            font-size: 0.95em;
+            background: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+        }
+
+        .status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .keyword {
+            color: #c0392b;
+            font-weight: bold;
+        }
+
+        details {
+            margin: 15px 0;
+        }
+
+        summary {
+            cursor: pointer;
+            color: #c0392b;
+            font-weight: bold;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .content { padding: 20px; max-height: 60vh; }
+            .slide-title { font-size: 1.5em; }
+            .controls { flex-direction: column; }
+            button { flex: 1; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <div class="status" id="status">Mode navigation</div>
+    <div class="container">
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="header">
+            <h1>🚑 Premiers Secours - B1 </h1>
+            <span class="badge" id="slideCounter">1/35</span>
+        </div>
+        <div class="content" id="content"></div>
+        <div class="controls">
+            <div class="nav-buttons">
+                <button class="nav-btn" id="prevBtn">← Précédent</button>
+                <button class="nav-btn" id="nextBtn">Suivant →</button>
+            </div>
+            <button class="play-btn" id="playBtn">▶ Lecture automatique</button>
+            <span class="counter" id="timeDisplay">00:00 / 00:00</span>
+        </div>
+    </div>
+    <audio id="audioPlayer" src="premiers_secours.mp3" preload="auto"></    audio>
+
+    <script>
+        alert("Astuce: Mettez le cours en pause pour examiner les écrits et les images");
+        const slides = [
+            { title: "Introduction", content: `
+                <img src="Équipement.jpg" width="300" heigth="50"><h3>Définition</h3>
+                <div class="definition">
+                    <strong>Premiers Secours</strong> = délivrance d'une aide immédiate, suivant les normes, à toute personne malade ou victime d'un traumatisme, dans l'attente de l'arrivée d'un professionnel, et/ou pour rendre le blessé transportable vers un centre hospitalier.
+                </div>
+                <h3>But</h3>
+                <p>Acquisition des connaissances nécessaires pour la bonne exécution des gestes de secours destinés à préserver l'intégrité physique des victimes.</p>
+                <h3>Objectifs</h3>
+                <ul>
+                    <li>Protéger la victime et les témoins</li>
+                    <li>Alerter efficacement les services d'urgences adaptés</li>
+                    <li>Empêcher l'aggravation de la victime</li>
+                    <li>Préserver l'intégrité physique en attendant les services adaptés</li>
+                </ul>
+            ` },
+            { title: "QUI ? QUOI ? OÙ ? QUAND ? COMMENT ? POURQUOI ?", content: `
+                <h3>QUI ?</h3>
+                <p>Toute personne témoin d'un incident, à l'intention de toute victime sans distinction de sexe, race, religion. Mise en œuvre de gestes simples réalisables sans matériel autre qu'un téléphone et deux mains.</p>
+                <h3>OÙ ?</h3>
+                <p>En tout lieu de la vie quotidienne : maison, transport, école, travail, lieu de loisir, etc.</p>
+                <h3>QUAND ?</h3>
+                <p>Immédiatement, car le pronostic vital dépend de la qualité et de la rapidité de la prise en charge.</p>
+                <h3>POURQUOI ?</h3>
+                <ul>
+                    <li>Prévenir la mort immédiate</li>
+                    <li>Réduire les conséquences immédiates et tardives</li>
+                </ul>
+            ` },
+            { title: "Principes Généraux - Attitude du Secouriste", content: `
+                <h3>Devoirs du secouriste</h3>
+                <ul>
+                    <li>Rester calme</li>
+                    <li>Aider à protéger et sauver des vies</li>
+                    <li>Ne pas « faire de mal »</li>
+                    <li>Pas de discrimination (race, sexe, opinions)</li>
+                    <li>Respecter et préserver la dignité des victimes</li>
+                    <li>Participer au contrôle des maladies</li>
+                    <li>Contribuer à l'éducation à la santé</li>
+                </ul>
+                <h3>Droits du secouriste</h3>
+                <ul>
+                    <li>Fournir une assistance conforme à sa formation</li>
+                    <li>Ne pas être contraint à des services contraires à l'éthique médicale</li>
+                </ul>
+            ` },
+            { title: "Principes Généraux - Suite", content: `
+                <h3>Recommandations importantes</h3>
+                <ul>
+                    <li>Ayez conscience de vos limites</li>
+                    <li>Anticiper le danger et y faire face</li>
+                    <li>Pensez d'abord à vous protéger</li>
+                    <li>Observez la situation avant d'agir</li>
+                    <li>Éthique personnelle et professionnelle</li>
+                    <li>Apprendre à fixer des priorités</li>
+                    <li>Compétences en matière de communication</li>
+                    <li>Être membre d'une équipe</li>
+                </ul>
+            ` },
+            { title: "Étapes d'un Secours", content: `
+                <img src="Rautek2.png" width="300" heigth="200">
+                <h3>Les 4 étapes essentielles</h3>
+                <div class="protocol">
+                    <ol>
+                        <li><strong>PROTÉGER</strong> = Sécuriser le lieu de l'accident, les personnes impliquées et le sauveteur</li>
+                        <li><strong>EXAMINER</strong> = Apprécier l'état de la victime</li>
+                        <li><strong>ALERTER</strong> = Demander de l'aide et prévenir le service de secours</li>
+                        <li><strong>SECOURIR</strong> = Apporter une réponse adaptée à la situation observée</li>
+                    </ol>
+                </div>
+                <div class="info">
+                    <strong>💡 À retenir :</strong> L'ordre est crucial : Protéger d'abord, puis Examiner, Alerter, et enfin Secourir.
+                </div>
+            ` },
+            { title: "PROTECTION - Reconnaître les dangers", content: `
+                <h3>Niveaux de protection</h3>
+                <ul>
+                    <li>Supprimer ou écarter un danger pour assurer la protection</li>
+                    <li>Le danger initial peut persister</li>
+                    <li>Réaliser un dégagement d'urgence si danger non supprimable</li>
+                    <li>La situation peut s'aggraver</li>
+                    <li>Identifier les signaux d'alerte</li>
+                </ul>
+                <div class="danger">
+                    <strong>⚠️ Attention :</strong> L'accident peut lui-même être générateur de danger (incendie, explosion, effondrement).
+                </div>
+            ` },
+            { title: "PROTECTION - Conduite à tenir", content: `
+                <h3>Marche à suivre</h3>
+                <ol>
+                    <li>Effectuer une approche prudente de la zone</li>
+                    <li>Supprimer immédiatement les dangers environnants</li>
+                    <li>Délimiter clairement la zone de danger</li>
+                    <li>Utiliser tous les moyens matériels disponibles</li>
+                    <li>Se renseigner auprès des témoins</li>
+                </ol>
+                <h3>Si impossible de supprimer le danger :</h3>
+                <ul>
+                    <li>Alerter les secours spécialisés</li>
+                    <li>Surveiller la zone et empêcher toute intrusion</li>
+                </ul>
+            ` },
+            { title: "PROTECTION - Dégagement d'urgence", content: `
+                <h3>Techniques de dégagement</h3>
+                <h4>Traction par chevilles ou poignets</h4>
+                <p>Utiliser quand la victime est allongée sur une route, dans une pièce enfumée, ou menacée par un éboulement, et que le sol ne présente pas d'obstacles.</p>
+                <h4>Saisie par les poignets</h4>
+                <p>Quand le sol présente des obstacles (marches, escaliers).</p>
+                <div class="danger">
+                    <strong>⚠️ Important :</strong> Le dégagement d'urgence est une manœuvre exceptionnelle, réservée aux dangers vitaux, immédiats et non contrôlables. Priorité à la rapidité et à la protection du sauveteur.
+                </div>
+            ` },
+            { title: "PROTECTION - Dégagement d'un véhicule", content: `
+                <img src="Rautek1.jpg" width="300" heigth="200"><h3>Manœuvre de RAUTEK</h3>
+                <p>Cette technique est effectuée lorsque le conducteur ou le passager se trouve dans un véhicule commençant à prendre feu ou quand la victime ne peut pas sortir seule.</p>
+                <div class="protocol">
+                    <strong>Procédure :</strong>
+                    <ol>
+                        <li>Passer les bras sous les aisselles de la victime</li>
+                        <li>Saisir l'avant-bras controlatéral de la victime</li>
+                        <li>Tirer la victime vers l'extérieur en protégeant sa tête</li>
+                    </ol>
+                </div>
+            ` },
+            { title: "EXAMINER - Objectifs", content: `
+                <h3>Objectifs de l'examen</h3>
+                <ul>
+                    <li>Apprécier la gravité de l'état de la victime</li>
+                    <li>Déterminer les gestes de premiers secours à réaliser</li>
+                    <li>Collecter des informations sur l'état de santé</li>
+                    <li>Transmettre les informations aux secours spécialisés</li>
+                    <li>Reconnaître la défaillance des 3 fonctions vitales : <strong>respiratoire, circulatoire et neurologique</strong></li>
+                </ul>
+            ` },
+            { title: "EXAMINER - Observation et Questions", content: `
+                <h3>Observer la victime</h3>
+                <ul>
+                    <li>La victime est-elle inerte ?</li>
+                    <li>Est-elle agitée ?</li>
+                    <li>Ouvre-t-elle les yeux ?</li>
+                    <li>Saigne-t-elle ?</li>
+                    <li>A-t-elle des difficultés à respirer ?</li>
+                </ul>
+                <h3>Poser des questions</h3>
+                <p>« Comment ça va ? Vous m'entendez ? »</p>
+                <p>En cas de non-réponse : secouer doucement l'épaule ou prendre la main.</p>
+                <p>Pour un nourrisson : faire du bruit et stimuler les mains.</p>
+            ` },
+            { title: "EXAMINER - Renseignements à rechercher", content: `
+                <h3>Informations à collecter</h3>
+                <ul>
+                    <li>Âge de la victime</li>
+                    <li>Ce qui s'est passé</li>
+                    <li>Plainte de la victime</li>
+                    <li>Localisation de la douleur</li>
+                    <li>En cas de malaise : depuis quand ? Première fois ?</li>
+                    <li>Traitements médicamenteux suivis</li>
+                </ul>
+                <div class="info">
+                    <strong>💡 Conseil :</strong> Interroger également l'entourage si la victime ne peut pas répondre.
+                </div>
+            ` },
+            { title: "ALERTE - Définition et Objectifs", content: `
+                <h3>Définition</h3>
+                <div class="definition">
+                    L'alerte est l'action qui consiste à informer un service d'urgence de la présence d'une ou plusieurs victimes ainsi que de la nature de l'assistance qui leur est apportée.
+                </div>
+                <h3>Objectif</h3>
+                <p>Transmettre au service de secours d'urgence les informations nécessaires à son intervention.</p>
+                <div class="warning">
+                    <strong>⚠️ Attention :</strong> L'absence d'information d'un service d'urgence compromet la vie ou la santé de la victime.
+                </div>
+            ` },
+            { title: "ALERTE - La Chaîne de Secours", content: `
+                <h3>La chaîne de secours</h3>
+                <div class="protocol">
+                    <p>Les secours et les soins sont organisés sous forme d'une chaîne dont les maillons sont intimement liés.</p>
+                    <p><strong>Témoin qui protège et alerte → Services d'urgence → Soins hospitaliers</strong></p>
+                    <p>Le sauveteur initie cette chaîne de secours en alertant.</p>
+                </div>
+                <p>L'alerte doit être <strong>rapide et précise</strong> pour diminuer les délais de mise en œuvre.</p>
+            ` },
+            { title: "ALERTE - Quand et Comment alerter", content: `
+                <h3>Quand alerter ?</h3>
+                <ul>
+                    <li>Dès que la situation présente des risques</li>
+                    <li>Quand une vie semble en danger</li>
+                    <li>Après évaluation rapide et mise en sécurité</li>
+                    <li>Après avoir commencé les gestes de secours</li>
+                </ul>
+                <h3>Avec quoi ?</h3>
+                <p>Téléphone (mobile ou fixe) - Numéro d'appel facile et gratuit</p>
+                <h3>Qui alerter ?</h3>
+                <ul>
+                    <li><strong>SAMU (15)</strong></li>
+                    <li>Sapeurs-pompiers (18)</li>
+                    <li>Police/Gendarmerie (17)</li>
+                    <li>Numéro d'urgence européen (112)</li>
+                </ul>
+            ` },
+            { title: "ALERTE - Le Message d'Alerte", content: `
+                <h3>Le message doit contenir :</h3>
+                <ul>
+                    <li>📞 Numéro du téléphone d'où vous appelez</li>
+                    <li>📍 Localisation précise (ville, rue, point de repère)</li>
+                    <li>🚨 Raison de l'appel (accident, incendie, malaise...)</li>
+                    <li>👥 Nombre de blessés ou malades</li>
+                    <li>🩺 Gestes de secours déjà effectués</li>
+                    <li>⚠️ Circonstances particulières (produits dangereux, blessés incarcérés...)</li>
+                </ul>
+                <div class="info">
+                    <strong>💡 Important :</strong> Ne jamais raccrocher le premier. Attendre les instructions de l'opérateur.
+                </div>
+            ` },
+            { title: "SECOURIR - Introduction", content: `
+                <h3>Objectifs des gestes de secours</h3>
+                <ul>
+                    <li>Améliorer l'état de la victime</li>
+                    <li>Limiter l'aggravation</li>
+                    <li>Permettre la survie en attendant les secours</li>
+                </ul>
+                <div class="definition">
+                    Gestes réalisés par le sauveteur ou les témoins, ne nécessitant aucun matériel particulier, seulement du matériel courant trouvable à proximité (sauf DAE).
+                </div>
+            ` },
+            { title: "Victime qui s'étouffe - Reconnaissance", content: `
+                <h3>Obstruction des voies respiratoires</h3>
+                <h4>Obstruction PARTIELLE :</h4>
+                <ul>
+                    <li>La victime peut parler ou crier</li>
+                    <li>Tousse vigoureusement</li>
+                    <li>Respire (parfois avec bruit surajouté)</li>
+                </ul>
+                <h4>Obstruction TOTALE :</h4>
+                <ul>
+                    <li>Ne peut plus parler, crier, tousser</li>
+                    <li>Garde la bouche ouverte</li>
+                    <li>S'agite, devient bleue puis perd connaissance</li>
+                </ul>
+            ` },
+            { title: "Désobstruction - Conduite à tenir", content: `
+                <h3>Obstruction PARTIELLE</h3>
+                <ul>
+                    <li>Ne JAMAIS pratiquer de technique de désobstruction</li>
+                    <li>Installer la victime en position confortable</li>
+                    <li>Encourager à tousser</li>
+                    <li>Demander un avis médical</li>
+                </ul>
+                <h3>Obstruction TOTALE</h3>
+                <ol>
+                    <li>Donner 5 claques dans le dos (entre les omoplates)</li>
+                    <li>Si inefficace, réaliser 5 compressions abdominales (Méthode d'HEMLICH)</li>
+                    <li>Répéter le cycle jusqu'à désobstruction</li>
+                </ol>
+            ` },
+            { title: "Méthode d'HEMLICH", content: `
+                <img src="Heimlich.png" width="300" heigth="200">
+                <h3>Technique pour Adulte et Enfant</h3>
+                <div class="protocol">
+                    <ol>
+                        <li>Se placer derrière la victime</li>
+                        <li>Passer les bras sous ses aisselles</li>
+                        <li>Mettre le poing sur la partie supérieure de l'abdomen (creux de l'estomac, au-dessus du nombril)</li>
+                        <li>Placer l'autre main sur la première</li>
+                        <li>Tirer franchement vers l'arrière et vers le haut</li>
+                    </ol>
+                </div>
+                <h4>Pour femme enceinte ou personne obèse :</h4>
+                <p>Compressions thoraciques au lieu des compressions abdominales.</p>
+            ` },
+            { title: "Désobstruction du Nourrisson", content: `
+                <h3>Technique spécifique</h3>
+                <h4>5 claques dans le dos :</h4>
+                <ul>
+                    <li>Coucher le nourrisson tête penchée en avant sur l'avant-bras</li>
+                    <li>Tête plus basse que le thorax</li>
+                    <li>Donner 5 claques entre les omoplates</li>
+                </ul>
+                <h4>5 compressions thoraciques :</h4>
+                <ul>
+                    <li>Retourner le nourrisson sur le dos</li>
+                    <li>Effectuer 5 compressions sur le devant du thorax avec 2 doigts</li>
+                    <li>Au milieu de la poitrine, moitié inférieure du sternum</li>
+                </ul>
+            ` },
+            { title: "Victime qui saigne - Hémorragie", content: `
+                <h3>Reconnaissance</h3>
+                <p>Saignement abondant visible à l'œil nu, ne s'arrêtant pas spontanément.</p>
+                <h3>Risques</h3>
+                <ul>
+                    <li>Détresse vitale par diminution importante du volume sanguin</li>
+                    <li>Contamination du sauveteur (maladies transmissibles)</li>
+                </ul>
+                <div class="danger">
+                    <strong>⚠️ Protection du sauveteur :</strong> Porter des gants ou interposer un plastique. Se laver les mains après.
+                </div>
+            ` },
+            { title: "Arrêt d'une Hémorragie", content: `
+                <h3>Conduite à tenir</h3>
+                <ol>
+                    <li><strong>Comprimer directement</strong> l'endroit qui saigne</li>
+                    <li><strong>Allonger</strong> confortablement la victime</li>
+                    <li><strong>Alerter</strong> les secours</li>
+                    <li>Élever le membre au-dessus du niveau du cœur (si possible)</li>
+                    <li>Ne pas donner à boire</li>
+                    <li>Protéger la victime contre le froid</li>
+                </ol>
+                <div class="protocol">
+                    <strong>Technique :</strong> Appuyer directement avec la paume de la main jusqu'à l'arrivée des secours.
+                </div>
+            ` },
+            { title: "Points de compression et Garrot", content: `
+                <h3>Points de compression</h3>
+                <ul>
+                    <li><strong>Membre inférieur :</strong> au pli de l'aine <img src="Aine.png" width="300" heigth="200"></li>
+                    <li><strong>Membre supérieur :</strong> face interne du bras</li>
+                    <li><strong>Cou :</strong> à la base du cou (sans écraser la trachée)</li>
+                </ul>
+                <h3>Garrot</h3>
+                <div class="warning">
+                    <strong>⚠️ Dernier recours !</strong>
+                    <ul>
+                        <li>Utiliser uniquement si compression directe et point de compression inefficaces</li>
+                        <li>Pose au-dessus de la plaie</li>
+                        <li>Noter l'heure de pose</li>
+                        <li>Retrait : geste médical exclusif</li>
+                    </ul>
+                </div>
+            ` },
+            { title: "Victime Inconsciente qui Respire", content: `
+                <h3>Conduite à tenir</h3>
+                <ol>
+                    <li>Allonger la victime sur le dos</li>
+                    <li>Libérer les voies aériennes (basculer la tête en arrière, élever le menton)</li>
+                    <li>Vérifier la respiration (10 secondes)</li>
+                    <li>Si respiration présente : <strong>PLS (Position Latérale de Sécurité)</strong><img src="PLS.jpg" width="300" heigth="200"></li>
+                    <li>Alerter les secours</li>
+                    <li>Surveiller en permanence la respiration</li>
+                </ol>
+            ` },
+            { title: "Position Latérale de Sécurité (PLS)", content: `
+                <img src="PLS.jpg" width="300" heigth="200">
+                <h3>Objectifs de la PLS</h3>
+                <ul>
+                    <li>Libérer les voies aériennes supérieures</li>
+                    <li>Empêcher la chute de la langue en arrière</li>
+                    <li>Empêcher le passage de liquides dans les voies respiratoires</li>
+                    <li>Limiter l'aggravation d'une éventuelle lésion de la colonne vertébrale</li>
+                </ul>
+                <h3>Cas particuliers</h3>
+                <ul>
+                    <li><strong>Femme enceinte :</strong> allongée sur le côté gauche</li>
+                    <li><strong>Traumatisé :</strong> coucher sur le côté atteint si possible</li>
+                </ul>
+            ` },
+            { title: "Victime ne Respire pas - Arrêt Respiratoire", content: `
+                <h3>Reconnaissance</h3>
+                <p>Victime inconsciente qui ne répond pas et ne respire pas ou présente une respiration anormale (gasps : mouvements lents, irréguliers, bruyants).</p>
+                <div class="danger">
+                    <strong>⚠️ Urgence vitale !</strong>
+                    <p>Perte de 10% de chance de survie chaque minute.</p>
+                </div>
+                <h3>Conduite à tenir</h3>
+                <ol>
+                    <li>Faire alerter le 15 et réclamer un DAE<img src="Dae.jpg" width="300" heigth="200"></li>
+                    <li>Pratiquer la RCP (30 compressions / 2 insufflations)</li>
+                    <li>Utiliser le DAE dès que possible</li>
+                </ol>
+            ` },
+            { title: "RCP - Compression Thoracique", content: `
+                <img src="Cpr.jpg" width="300",heigth="200">
+                <h3>Technique</h3>
+                <ul>
+                    <li><strong>Adulte :</strong> 2 mains, milieu du thorax, profondeur 5-6 cm</li>
+                    <li><strong>Enfant :</strong> 1 ou 2 mains, profondeur 5 cm</li>
+                    <li><strong>Nourrisson :</strong> 2 doigts, profondeur 4 cm</li>
+                </ul>
+                <div class="protocol">
+                    <strong>Rythme :</strong> 100 à 120 compressions par minute<br>
+                    <strong>Rapport :</strong> 30 compressions / 2 insufflations
+                </div>
+                <p>Si impossibilité d'insuffler : compressions thoraciques en continu.</p>
+            ` },
+            { title: "DAE - Défibrillateur Automatisé Externe", content: `
+                <h3>Fonctionnement du DAE</h3>
+                <img src="Dae.jpg" width="300" heigth="200">
+                <ul>
+                    <li>Analyse l'activité électrique du cœur</li>
+                    <li>Reconnaît les anomalies graves</li>
+                    <li>Délivre ou invite à délivrer un choc électrique</li>
+                </ul>
+                <h3>Utilisation</h3>
+                <ol>
+                    <li>Mettre en fonction l'appareil</li>
+                    <li>Mettre à nu le thorax de la victime</li>
+                    <li>Poser les électrodes (adulte ou enfant)</li>
+                    <li>Suivre les instructions vocales</li>
+                    <li>Ne pas toucher la victime pendant l'analyse et le choc</li>
+                </ol>
+            ` },
+            { title: "Victime en Malaise", content: `
+                <h3>Définition</h3>
+                <p>Sensation pénible traduisant un trouble du fonctionnement de l'organisme.</p>
+                <h3>Signes de gravité à reconnaître</h3>
+                <ul>
+                    <li>Douleur serrant la poitrine ou douleur abdominale intense</li>
+                    <li>Sueurs abondantes, pâleur intense</li>
+                    <li>Difficulté à respirer, impossibilité de parler</li>
+                    <li>Paralysie d'un bras ou d'une jambe</li>
+                    <li>Difficulté à parler, bouche déformée (AVC)</li>
+                </ul>
+            ` },
+            { title: "Conduite à tenir pour un Malaise", content: `
+                <h3>Marche à suivre</h3>
+                <ol>
+                    <li>Observer les signes présentés</li>
+                    <li>Mettre au repos en position adaptée</li>
+                    <li>Desserrer les vêtements si gêne</li>
+                    <li>Rassurer la victime</li>
+                    <li>Se renseigner sur les traitements habituels</li>
+                    <li>Si la victime le demande, l'aider à prendre son traitement</li>
+                    <li>Si demande de sucre, en donner (prévention hypoglycémie)</li>
+                    <li>Prendre un avis médical (15)</li>
+                    <li>Surveiller en permanence</li>
+                </ol>
+            ` },
+            { title: "Victime de Brûlure", content: `
+                <h3>Conduite à tenir</h3>
+                <ol>
+                    <li><strong>Supprimer la cause</strong> (éteindre les flammes, faire rouler la victime)</li>
+                    <li><strong>Refroidir</strong> à l'eau (10-25°C) pendant 5 minutes</li>
+                    <li><strong>Retirer les vêtements</strong> (sauf ceux qui adhèrent à la peau)</li>
+                    <li><strong>Couvrir</strong> avec un linge propre</li>
+                    <li><strong>Alerter</strong> les secours</li>
+                </ol>
+                <div class="info">
+                    <strong>Évaluation de la surface :</strong> La paume de la main de la victime représente environ 1% de la surface corporelle.
+                </div>
+            ` },
+            { title: "Victime de Traumatisme (Os/Articulations)", content: `
+                <h3>Conduite à tenir</h3>
+                <ol>
+                    <li><strong>Interdire toute mobilisation</strong> du membre atteint</li>
+                    <li>Faire alerter les secours</li>
+                    <li>Respecter les recommandations</li>
+                    <li>Surveiller la victime</li>
+                    <li>Protéger contre le froid/chaleur</li>
+                </ol>
+                <h3>Membre inférieur</h3>
+                <p>Caler le membre dans la position où il se trouve, maintenir le pied à l'aide du calage.</p>
+            ` },
+            { title: "Traumatisme du Cou, Tête ou Dos", content: `
+                <div class="danger">
+                    <strong>⚠️ Danger principal :</strong> Lésion de la moelle épinière avec risque de paralysie.
+                </div>
+                <h3>Conduite à tenir</h3>
+                <ol>
+                    <li><strong>Ne jamais mobiliser la victime</strong></li>
+                    <li>Conseiller fermement de ne faire AUCUN mouvement (surtout de la tête)</li>
+                    <li>Faire alerter les secours d'urgence immédiatement</li>
+                    <li>Maintenir la tête avec les deux mains placées de chaque côté</li>
+                    <li>Surveiller la victime en continu</li>
+                    <li>Signaler toute aggravation</li>
+                </ol>
+            ` },
+            { title: "Récapitulatif - Points Clés", content: `
+                <h3>À retenir absolument</h3>
+                <div class="protocol">
+                    <ol>
+                        <li><strong>PROTÉGER</strong> avant tout (soi-même, la victime, les témoins)</li>
+                        <li><strong>EXAMINER</strong> la victime (conscience, respiration)</li>
+                        <li><strong>ALERTER</strong> le 15, 18, 17 ou 112 (message clair et précis)</li>
+                        <li><strong>SECOURIR</strong> selon la situation (hémostase, PLS, RCP, désobstruction)</li>
+                    </ol>
+                </div>
+                <div class="info">
+                    <strong>💡 Le pronostic vital dépend de la QUALITÉ et de la RAPIDITÉ de la prise en charge.</strong>
+                </div>
+            ` },
+            { title: "Conclusion", content: `
+                <h3>Message final</h3>
+                <p>Le pronostic vital n'est plus maîtrisé par le seul recours à la vitesse du transport. La précocité de l'alerte et la réalisation immédiate de gestes adaptés conditionnent la survie et le pronostic des patients et victimes d'accidents.</p>
+                <div class="definition">
+                    <strong>Comme le disait KOUVENHOWEN :</strong><br>
+                    « N'importe qui, n'importe où, peut faire de la réanimation cardiaque ; il suffit pour cela de deux mains. »
+                </div>
+                <p>Les techniques de réanimation les plus sophistiquées ne serviront à rien si les gestes des premiers secours n'ont pas été réalisés à temps.</p>
+                
+            ` }
+        ];
+
+        let currentSlide = 0, isAutoPlaying = false, syncInterval;
+        const audioPlayer = document.getElementById('audioPlayer');
+        const contentDiv = document.getElementById('content');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const playBtn = document.getElementById('playBtn');
+        const statusDiv = document.getElementById('status');
+        const slideCounter = document.getElementById('slideCounter');
+        const progressFill = document.getElementById('progressFill');
+        const timeDisplay = document.getElementById('timeDisplay');
+        
+        const timeline = [0, 50, 92, 123.5, 143, 169, 183, 201, 210, 219, 235, 252, 260, 269, 271, 287, 303, 310, 320, 332, 335, 342, 347, 358, 375, 396, 409, 427, 437, 449, 462, 472, 488, 498, 514,522];
+        const totalDuration = 1300;
+
+        function renderSlide(index) {
+            const slide = slides[index];
+            contentDiv.innerHTML = `
+                <div class="slide active">
+                    <h2 class="slide-title">${slide.title}</h2>
+                    <div class="slide-content">${slide.content}</div>
+                </div>
+            `;
+            slideCounter.textContent = `${index + 1}/${slides.length}`;
+            if (!isAutoPlaying) {
+                prevBtn.disabled = index === 0;
+                nextBtn.disabled = index === slides.length - 1;
+            }
+            contentDiv.scrollTop = 0;
+        }
+
+        function nextSlide(){ if(currentSlide < slides.length-1){ currentSlide++; renderSlide(currentSlide); } }
+        function prevSlide(){ if(currentSlide > 0){ currentSlide--; renderSlide(currentSlide); } }
+        
+        function updateTimeDisplay(){
+            let t = audioPlayer.currentTime;
+            let mins = Math.floor(t/60).toString().padStart(2,'0');
+            let secs = Math.floor(t%60).toString().padStart(2,'0');
+            let totalMins = Math.floor(totalDuration/60).toString().padStart(2,'0');
+            let totalSecs = Math.floor(totalDuration%60).toString().padStart(2,'0');
+            timeDisplay.innerText = `${mins}:${secs} / ${totalMins}:${totalSecs}`;
+            progressFill.style.width = `${(t/totalDuration)*100}%`;
+        }
+        
+        function syncSlideFromTime(){
+            if (!isAutoPlaying) return;
+            const currentTime = audioPlayer.currentTime;
+            for (let i = timeline.length - 1; i >= 0; i--) {
+                if (currentTime >= timeline[i]) {
+                    if (i !== currentSlide) {
+                        currentSlide = i;
+                        renderSlide(currentSlide);
+                    }
+                    break;
+                }
+            }
+            updateTimeDisplay();
+            if (currentTime >= totalDuration - 1) {
+                stopAutoPlay();
+            }
+        }
+        
+        function startAutoPlay(){
+            isAutoPlaying = true;
+            playBtn.innerText = "⏸ Pause";
+            playBtn.classList.remove('play-btn');
+            playBtn.classList.add('stop-btn');
+            statusDiv.innerText = "Mode automatique (synchro)";
+            statusDiv.style.background = "rgba(192, 57, 43, 0.92)";
+            prevBtn.disabled = true;
+            nextBtn.disabled = true;
+            audioPlayer.play().catch(e => console.log("auto-play bloqué"));
+            if(syncInterval) clearInterval(syncInterval);
+            syncInterval = setInterval(syncSlideFromTime, 280);
+        }
+        
+        function stopAutoPlay(){
+            isAutoPlaying = false;
+            playBtn.innerText = "▶ Lecture auto";
+            playBtn.classList.remove('stop-btn');
+            playBtn.classList.add('play-btn');
+            statusDiv.innerText = "Mode navigation";
+            statusDiv.style.background = "rgba(0,0,0,0.75)";
+            audioPlayer.pause();
+            if(syncInterval){ clearInterval(syncInterval); syncInterval = null; }
+            prevBtn.disabled = (currentSlide===0);
+            nextBtn.disabled = (currentSlide===slides.length-1);
+        }
+        
+        function toggleAutoPlay(){
+            if(isAutoPlaying) stopAutoPlay();
+            else startAutoPlay();
+        }
+
+        document.addEventListener('keydown', (e)=>{
+            if(isAutoPlaying) return;
+            if(e.key === 'ArrowLeft'){ e.preventDefault(); prevSlide(); }
+            else if(e.key === 'ArrowRight'){ e.preventDefault(); nextSlide(); }
+            else if(e.key === ' '){ e.preventDefault(); toggleAutoPlay(); }
+        });
+        
+        prevBtn.onclick = prevSlide;
+        nextBtn.onclick = nextSlide;
+        playBtn.onclick = toggleAutoPlay;
+        audioPlayer.addEventListener('ended', stopAutoPlay);
+        audioPlayer.addEventListener('timeupdate', ()=>{
+            if(!isAutoPlaying) updateTimeDisplay();
+        });
+
+        renderSlide(0);
+        updateTimeDisplay();
+    </script>
+</body>
+</html>
