@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Cours de Biologie Animale - L1 Médecine</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Roboto', 'Noto Sans', system-ui, sans-serif;
+            background: linear-gradient(135deg, #0a2f44 0%, #1b4f6e 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1300px;
+            background: #ffffff;
+            border-radius: 28px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 5px;
+            background: #e2e8f0;
+            width: 100%;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #1e6f5c, #2c9b8a);
+            width: 0%;
+            transition: width 0.25s ease;
+        }
+
+        .header {
+            padding: 18px 28px;
+            background: #f8fafc;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .header h1 {
+            color: #0a2f44;
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: -0.2px;
+        }
+
+        .badge {
+            background: #1e6f5c;
+            color: white;
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .content {
+            padding: 28px 32px;
+            min-height: 520px;
+            max-height: 68vh;
+            overflow-y: auto;
+            background: #ffffff;
+            scroll-behavior: smooth;
+        }
+
+        .slide {
+            display: none;
+            animation: fadeSlide 0.35s ease-out;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeSlide {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-title {
+            color: #0a2f44;
+            font-size: 1.9rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            border-left: 5px solid #1e6f5c;
+            padding-left: 20px;
+            background: white;
+            position: sticky;
+            top: 0;
+            z-index: 5;
+            padding-top: 8px;
+            padding-bottom: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
+
+        .slide-content {
+            color: #1e293b;
+            line-height: 1.7;
+            font-size: 1.05rem;
+        }
+
+        .slide-content h3 {
+            color: #1e6f5c;
+            margin: 28px 0 12px 0;
+            font-size: 1.45rem;
+            font-weight: 600;
+        }
+
+        .slide-content h4 {
+            color: #2c3e66;
+            margin: 20px 0 10px 0;
+            font-size: 1.2rem;
+        }
+
+        .slide-content p {
+            margin: 14px 0;
+        }
+
+        .slide-content ul, .slide-content ol {
+            margin: 12px 0 16px 32px;
+        }
+
+        .slide-content li {
+            margin: 8px 0;
+        }
+
+        .definition {
+            background: #eef2ff;
+            padding: 18px 22px;
+            border-radius: 20px;
+            margin: 20px 0;
+            border-left: 6px solid #1e6f5c;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .info {
+            background: #e0f2fe;
+            padding: 18px 22px;
+            border-radius: 20px;
+            margin: 20px 0;
+            border-left: 6px solid #0f67b3;
+        }
+
+        .warning {
+            background: #fff3e3;
+            padding: 18px 22px;
+            border-radius: 20px;
+            margin: 20px 0;
+            border-left: 6px solid #e67e22;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        th {
+            background: #1b4f6e;
+            color: white;
+            padding: 12px 10px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            border: 1px solid #e2e8f0;
+            padding: 10px;
+            vertical-align: top;
+        }
+
+        .controls {
+            padding: 18px 28px;
+            background: #f8fafc;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        button {
+            padding: 10px 22px;
+            border: none;
+            border-radius: 40px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .nav-btn {
+            background: white;
+            color: #1b4f6e;
+            border: 1px solid #cbd5e1;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: #eef2ff;
+            border-color: #1e6f5c;
+            transform: translateY(-1px);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+
+        .play-btn {
+            background: linear-gradient(95deg, #1e6f5c, #2c9b8a);
+            color: white;
+            box-shadow: 0 6px 14px rgba(30, 111, 92, 0.35);
+        }
+
+        .stop-btn {
+            background: #4a5568;
+            color: white;
+        }
+
+        .counter {
+            background: white;
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            color: #1e293b;
+            font-family: monospace;
+            font-weight: 500;
+        }
+
+        .status {
+            position: fixed;
+            top: 18px;
+            right: 20px;
+            background: rgba(0,0,0,0.75);
+            backdrop-filter: blur(6px);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            z-index: 1000;
+            font-weight: 500;
+        }
+
+        @media (max-width: 700px) {
+            .content { padding: 20px; max-height: 58vh; }
+            .slide-title { font-size: 1.5rem; }
+            .controls { flex-direction: column; align-items: stretch; }
+            .nav-buttons { justify-content: center; }
+            button { flex: 1; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+<div class="status" id="status">📖 Mode manuel</div>
+<div class="container">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="header">
+        <h1>🧬 Biologie Animale - L1 Médecine </h1>
+        <span class="badge" id="slideCounter">1/28</span>
+    </div>
+    <div class="content" id="content"></div>
+    <div class="controls">
+        <div class="nav-buttons">
+            <button class="nav-btn" id="prevBtn">← Précédent</button>
+            <button class="nav-btn" id="nextBtn">Suivant →</button>
+        </div>
+        <button class="play-btn" id="playBtn">🎧 Lecture automatique</button>
+        <span class="counter" id="timeDisplay">00:00 / 00:00</span>
+    </div>
+</div>
+<audio id="audioPlayer" src="bioan.mp3" preload="auto"></audio>
+
+<script>
+    // --- Contenu des 28 diapos (basé sur le syllabus PDF, chapitres 0 à 6) ---
+    const slides = [
+        { title: "0. Introduction générale", content: `
+            <div class="definition">📖 Définition : La biologie (bios = vie, logos = discours) étudie l'ensemble des êtres vivants et leurs manifestations : nutrition, reproduction, relation.</div>
+            <p>La vie est la capacité des molécules et atomes à s'assembler en structures autoreproductibles. Un organisme vivant est un système complexe stable, adaptatif.</p>
+            <h3>Niveaux d'organisation</h3>
+            <ul><li>Atomes → molécules → organites → <strong>cellule</strong> (unité structurale)</li><li>Tissus (histologie) → organes → appareils → organisme → population → écosystème → biosphère</li></ul>
+            <div class="info">✨ La cytologie étudie la cellule, l'histologie les tissus, l'anatomie les organes.</div>
+        ` },
+        { title: "Fonctions du vivant & paradoxe unicité/diversité", content: `
+            <h3>Trois grandes fonctions</h3>
+            <ul><li><strong>Nutrition</strong> : approvisionnement en matière/énergie (digestion, respiration, circulation, excrétion)</li><li><strong>Reproduction</strong> : pérennité de l'espèce (information génétique)</li><li><strong>Relation</strong> : perception et action sur l'environnement (sens, motricité, système nerveux)</li></ul>
+            <p>Les êtres vivants sont uniques par leurs caractères communs (ADN, code génétique) mais divers par leur évolution et adaptations.</p>
+            <div class="warning">🌍 LUCA : dernier ancêtre commun universel (~3,5 milliards d'années)</div>
+        ` },
+        { title: "Origine de la vie & Expérience de Miller", content: `
+            <p>En 1953, Miller simule l'atmosphère primitive (CH₄, NH₃, H₂, H₂O) + décharges électriques → obtient acides aminés, formaldéhyde, bases azotées.</p>
+            <div class="definition">Preuve que des briques organiques peuvent se former abiotiquement.</div>
+            <p>Évolution : ARN → ADN (support plus stable) → membranes phospholipidiques → premières cellules (procaryotes).</p>
+            <p><strong>Photosynthèse</strong> : 6CO₂ + 6H₂O + lumière → C₆H₁₂O₆ + 6O₂ (cyanobactéries, puis chloroplastes).</p>
+        ` },
+        { title: "Théorie endosymbiotique & Complexification", content: `
+            <div class="info">🔬 Lynn Margulis : mitochondries et chloroplastes dérivent de bactéries englobées (endosymbiose).</div>
+            <ul><li>Mitochondries : bactéries respirantes</li><li>Chloroplastes : cyanobactéries</li><li>Arguments : ADN propre, taille similaire aux bactéries, double membrane</li></ul>
+            <p>Apparition de la reproduction sexuée → brassage génétique → évolution accélérée.</p>
+            <p><strong>Arbres phylogénétiques</strong> : Bactéries, Archées, Eucaryotes (3 domaines).</p>
+        ` },
+        { title: "Évolution & Sélection naturelle", content: `
+            <p>Darwin (1859) : sélection naturelle = survie des mieux adaptés. Néo-darwinisme (synthèse moderne) intègre la génétique.</p>
+            <ul><li><strong>Dérive génétique</strong> : variation aléatoire des allèles (petites populations).</li><li><strong>Pression du milieu</strong> : facteur d'évolution.</li></ul>
+            <div class="definition">Adaptation vs acclimatation : l'adaptation est génétique et transmissible.</div>
+        ` },
+        { title: "Chapitre 1 : Composition chimique du vivant", content: `
+            <p>Les êtres vivants sont constitués majoritairement de C, H, O, N. Composés inorganiques (eau, sels minéraux) et organiques (glucides, lipides, protides, acides nucléiques).</p>
+            <h3>Liaisons chimiques</h3>
+            <ul><li>Covalente (forte, partage d'électrons)</li><li>Ionique (attraction électrostatique)</li><li>Liaison hydrogène (faible, essentielle pour ADN/protéines)</li></ul>
+            <p>L'eau : 65% du corps humain, solvant universel, rôle dans hydrolyse et maintien de la température.</p>
+        ` },
+        { title: "Glucides : structure et classification", content: `
+            <p>Formule générale (CH₂O)n. Rôle énergétique et structural.</p>
+            <ul><li><strong>Monosaccharides</strong> : glucose, fructose, ribose, désoxyribose</li><li><strong>Disaccharides</strong> : saccharose, lactose, maltose</li><li><strong>Polysaccharides</strong> : amidon (végétal), glycogène (animal), cellulose (paroi végétale)</li></ul>
+            <div class="info">🔋 1 g de glucides = 4 kcal. Glycogène stocké dans foie et muscles.</div>
+        ` },
+        { title: "Lipides : énergie et membranes", content: `
+            <p>Insolubles dans l'eau, solubles dans solvants organiques. 1 g = 9,3 kcal.</p>
+            <ul><li><strong>Acides gras</strong> : saturés (solides) / insaturés (huiles) ; oméga-3, oméga-6</li><li><strong>Triglycérides</strong> : réserve énergétique (tissu adipeux)</li><li><strong>Phospholipides</strong> : bicouche membranaire, tête hydrophile, queue hydrophobe</li><li><strong>Stérols</strong> : cholestérol (fluidité membranaire, précurseur hormones)</li></ul>
+        ` },
+        { title: "Protides : acides aminés et protéines", content: `
+            <p>Acides aminés (20 standards) → liaison peptidique → polypeptide → protéine.</p>
+            <ul><li><strong>Essentiels</strong> : 8 pour l'adulte (His, Leu, Ile, Met, Lys, Phe, Thr, Trp, Val)</li><li>Structure primaire, secondaire (α-hélice, feuillet β), tertiaire, quaternaire</li></ul>
+            <div class="definition">Fonctions : enzymes, transport (hémoglobine), hormones (insuline), structure (collagène, kératine), immunité (anticorps).</div>
+        ` },
+        { title: "Acides nucléiques : ADN & ARN", content: `
+            <p>Nucléotides : base azotée (A,T,G,C / A,U,G,C) + sucre (désoxyribose / ribose) + phosphate.</p>
+            <ul><li><strong>ADN</strong> : double hélice, support de l'hérédité, réplication semi-conservative.</li><li><strong>ARNm, ARNt, ARNr</strong> : transcription, traduction, synthèse protéique.</li></ul>
+            <div class="info">🧬 Règle de Chargaff : A=T, G=C. Génome humain : ~3,2 milliards de paires de bases.</div>
+        ` },
+        { title: "Chapitre 2 : Cytologie animale", content: `
+            <p>La cellule est l'unité structurale et fonctionnelle. Théorie cellulaire (Schleiden & Schwann) : tout être vivant est fait de cellules, toute cellule dérive d'une cellule préexistante (Virchow).</p>
+            <h3>Procaryotes vs Eucaryotes</h3>
+            <ul><li>Procaryotes : sans noyau, ADN circulaire, pas d'organites membranaires (bactéries, archées).</li><li>Eucaryotes : noyau, organites, cytosquelette, division par mitose/méiose.</li></ul>
+        ` },
+        { title: "Structure de la cellule animale", content: `
+            <p><strong>Membrane plasmique</strong> : bicouche phospholipidique + protéines, perméabilité sélective, fluidité.</p>
+            <p><strong>Noyau</strong> : enveloppe nucléaire, pores, chromatine (ADN + histones), nucléole (synthèse ARNr).</p>
+            <p><strong>Cytoplasme</strong> : cytosol + organites (mitochondries, REG, REL, Golgi, lysosomes, peroxysomes, cytosquelette).</p>
+            <div class="info">Mitochondrie : centrale énergétique (ATP via cycle de Krebs et chaîne respiratoire).</div>
+        ` },
+        { title: "Organites clés : RER, Golgi, Lysosomes", content: `
+            <ul><li><strong>RER</strong> : ribosomes, synthèse protéines de sécrétion</li><li><strong>REL</strong> : synthèse lipides, détoxification, stockage Ca²⁺</li><li><strong>Appareil de Golgi</strong> : modification, tri, emballage des protéines</li><li><strong>Lysosomes</strong> : digestion intracellulaire (enzymes hydrolytiques)</li><li><strong>Peroxysomes</strong> : dégradation acides gras, neutralisation H₂O₂</li></ul>
+        ` },
+        { title: "Cytosquelette & Division cellulaire", content: `
+            <p>Cytosquelette : microtubules (tubuline), microfilaments (actine), filaments intermédiaires (kératine, desmine). Rôle : forme, mobilité, transport intracellulaire.</p>
+            <h3>Mitose</h3>
+            <p>Prophase → métaphase → anaphase → télophase → 2 cellules filles identiques.</p>
+            <h3>Méiose</h3>
+            <p>Réduction chromosomique (2n → n), brassage génétique, formation des gamètes.</p>
+        ` },
+        { title: "Chapitre 3 : Tissus et organogenèse", content: `
+            <p>4 grands types de tissus chez l'animal :</p>
+            <ul><li><strong>Épithélial</strong> : revêtement, glandes, avasculaire, lame basale.</li><li><strong>Conjonctif</strong> : matrice extracellulaire, soutien, défense (fibroblastes, macrophages, adipocytes).</li><li><strong>Musculaire</strong> : squelettique, cardiaque, lisse (contraction).</li><li><strong>Nerveux</strong> : neurones + cellules gliales, transmission influx.</li></ul>
+            <div class="definition">Les organes associent plusieurs tissus pour une fonction spécifique.</div>
+        ` },
+        { title: "Tissu épithélial et conjonctif", content: `
+            <p><strong>Épithéliums</strong> : simple (pavimenteux, cubique, cylindrique) ou stratifié. Spécialisations : microvillosités, cils, stéréocils.</p>
+            <p><strong>Tissu conjonctif</strong> : lâche, dense, adipeux, cartilage, os. Matrice : collagène, élastine, substance fondamentale (GAG).</p>
+            <div class="info">Les fibroblastes synthétisent la matrice ; les mastocytes libèrent histamine.</div>
+        ` },
+        { title: "Tissu musculaire et nerveux", content: `
+            <p>Muscle squelettique : strié, volontaire, multinucléé, sarcomères (actine/myosine). Muscle cardiaque : strié, involontaire, disques intercalaires. Muscle lisse : non strié, viscères.</p>
+            <p>Tissu nerveux : neurone (dendrites, axone, synapse) ; névroglie (astrocytes, oligodendrocytes, microglie). Myéline accélère la conduction.</p>
+        ` },
+        { title: "Chapitre 4 : Notions de génétique", content: `
+            <p>Gène = séquence d'ADN codant pour une protéine. Allèles (versions différentes). Génotype / phénotype.</p>
+            <ul><li>Lois de Mendel : dominance, ségrégation, assortiment indépendant.</li><li>Hérédité autosomique dominante / récessive, liée au sexe (chromosome X).</li></ul>
+            <div class="warning">Exemples : drépanocytose (mutation ponctuelle, β-globine), hémophilie (liée à l'X).</div>
+        ` },
+        { title: "Génétique des populations & mutations", content: `
+            <p>Mutations : modifications de la séquence d'ADN (silencieuse, faux-sens, non-sens, décalage).</p>
+            <p>Transmission : dominante (un seul allèle mutant suffit) ou récessive (deux copies).</p>
+            <p>Groupes sanguins ABO : allèles A, B, O (codominance A/B, O récessif). Rhésus : gène Rh (Rh+ dominant, Rh- récessif).</p>
+            <div class="info">🧬 Caryotype humain : 46,XX (femelle) ou 46,XY (mâle).</div>
+        ` },
+        { title: "Chapitre 5 : Diversité du monde animal", content: `
+            <p>Classification du vivant : 3 domaines (Bactéries, Archées, Eucaryotes) ; Règnes : Animalia, Plantae, Fungi, Protista (certains systèmes).</p>
+            <p>Métazoaires : animaux pluricellulaires. Embranchements majeurs : Porifères, Cnidaires, Plathelminthes, Nématodes, Annélides, Mollusques, Arthropodes, Échinodermes, Chordés.</p>
+            <div class="definition">Nomenclature binominale : Genre + espèce (ex : Homo sapiens).</div>
+        ` },
+        { title: "Protozoaires d'importance médicale", content: `
+            <p>Protistes (unicellulaires) : certains sont parasites.</p>
+            <ul><li><strong>Plasmodium</strong> : paludisme (transmis par Anophèle)</li><li><strong>Trypanosoma</strong> : maladie du sommeil (Glossine)</li><li><strong>Entamoeba histolytica</strong> : amibiase</li><li><strong>Giardia, Trichomonas</strong> : infections intestinales / urogénitales</li></ul>
+            <div class="warning">Cycle de Plasmodium : schizogonie (hépatocytes → érythrocytes), gamétogonie, sporogonie chez le moustique.</div>
+        ` },
+        { title: "Métazoaires : helminthes et arthropodes", content: `
+            <p><strong>Plathelminthes</strong> : Schistosoma (bilharziose), Taenia (ténia). <strong>Nématodes</strong> : Ascaris, Oxyure, Filaire (éléphantiasis).</p>
+            <p><strong>Arthropodes</strong> : insectes (moustiques, mouches) vecteurs de maladies (paludisme, dengue, onchocercose). Acariens (tiques, sarcoptes).</p>
+            <div class="info">Importance médicale : transmission d'agents pathogènes, allergies, parasitisme direct.</div>
+        ` },
+        { title: "Chapitre 6 : Écologie fondamentale", content: `
+            <p>Écologie : étude des relations entre les êtres vivants et leur environnement (biotope + biocénose = écosystème).</p>
+            <p>Facteurs abiotiques (température, lumière, pH, eau) et biotiques (compétition, prédation, symbiose, parasitisme).</p>
+            <div class="definition">Loi de tolérance (Shelford) : zone optimale, zone de tolérance, zone létale.</div>
+        ` },
+        { title: "Flux d'énergie et cycles biogéochimiques", content: `
+            <p>Producteurs primaires (photosynthèse) → consommateurs → décomposeurs. Pyramide des biomasses et d'énergie.</p>
+            <p><strong>Cycle du carbone</strong> : photosynthèse, respiration, décomposition, combustion.</p>
+            <p><strong>Cycle de l'azote</strong> : fixation (bactéries), nitrification, dénitrification, ammonification.</p>
+            <div class="info">🌱 Les légumineuses fixent l'azote via Rhizobium (symbiose).</div>
+        ` },
+        { title: "Santé humaine et environnement", content: `
+            <p>Qualité de l'eau, de l'air, des sols influence directement la santé (maladies hydriques, respiratoires, intoxication).</p>
+            <p>Changements climatiques : extension de maladies vectorielles (paludisme, dengue), stress thermique, catastrophes.</p>
+            <p>Polluants : pesticides, métaux lourds, particules fines → effets cancérogènes, perturbateurs endocriniens.</p>
+            <div class="warning">Une seule santé (One Health) : lien entre santé humaine, animale et écosystèmes.</div>
+        ` },
+        { title: "Conclusion : Biologie animale et médecine", content: `
+            <p>La biologie animale apporte les bases nécessaires pour comprendre la physiologie, la génétique, l'histologie et les interactions hôte-pathogène.</p>
+            <ul><li>Maîtrise de l'organisation cellulaire et tissulaire</li><li>Compréhension des mécanismes héréditaires</li><li>Connaissance de la diversité animale pour lutter contre les maladies infectieuses</li><li>Approche écologique pour la santé globale</li></ul>
+            <div class="definition">📚 Objectif atteint : l'étudiant doit être capable d'expliquer les fondements biologiques du vivant animal.</div>
+        ` }
+    ];
+
+    let currentSlide = 0, isAutoPlaying = false, syncInterval = null;
+    const audioPlayer = document.getElementById('audioPlayer');
+    const contentDiv = document.getElementById('content');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const playBtn = document.getElementById('playBtn');
+    const statusDiv = document.getElementById('status');
+    const slideCounter = document.getElementById('slideCounter');
+    const progressFill = document.getElementById('progressFill');
+    const timeDisplay = document.getElementById('timeDisplay');
+
+    // Timeline estimée (secondes) pour 28 slides (durée totale ~20 min)
+    const timeline = [
+        0,45,93,149,190,240,289,339,386,443,
+499,538,587,633,681,731,782,831,875,926,
+977,1022,1067,1107,1170,1217
+    ];
+    const totalDuration = 1270; // secondes (16 min)
+
+    function renderSlide(index) {
+        const slide = slides[index];
+        contentDiv.innerHTML = `
+            <div class="slide active">
+                <h2 class="slide-title">${slide.title}</h2>
+                <div class="slide-content">${slide.content}</div>
+            </div>
+        `;
+        slideCounter.textContent = `${index + 1}/${slides.length}`;
+        if (!isAutoPlaying) {
+            prevBtn.disabled = (index === 0);
+            nextBtn.disabled = (index === slides.length - 1);
+        }
+        contentDiv.scrollTop = 0;
+        updateProgressFromAudio();
+    }
+
+    function updateProgressFromAudio() {
+        let t = audioPlayer.currentTime;
+        let percent = (t / totalDuration) * 100;
+        progressFill.style.width = `${Math.min(100, percent)}%`;
+        let mins = Math.floor(t / 60).toString().padStart(2, '0');
+        let secs = Math.floor(t % 60).toString().padStart(2, '0');
+        let totalMins = Math.floor(totalDuration / 60).toString().padStart(2, '0');
+        let totalSecs = Math.floor(totalDuration % 60).toString().padStart(2, '0');
+        timeDisplay.innerText = `${mins}:${secs} / ${totalMins}:${totalSecs}`;
+    }
+
+    function syncSlideFromTime() {
+        if (!isAutoPlaying) return;
+        const ct = audioPlayer.currentTime;
+        for (let i = timeline.length - 1; i >= 0; i--) {
+            if (ct >= timeline[i]) {
+                if (i !== currentSlide) {
+                    currentSlide = i;
+                    renderSlide(currentSlide);
+                }
+                break;
+            }
+        }
+        updateProgressFromAudio();
+        if (ct >= totalDuration - 0.5) stopAutoPlay();
+    }
+
+    function startAutoPlay() {
+        isAutoPlaying = true;
+        playBtn.innerText = "⏸ Pause";
+        playBtn.classList.remove('play-btn');
+        playBtn.classList.add('stop-btn');
+        statusDiv.innerText = "🎧 Mode automatique (synchro)";
+        statusDiv.style.background = "rgba(30,111,92,0.92)";
+        prevBtn.disabled = true;
+        nextBtn.disabled = true;
+        audioPlayer.play().catch(e => console.log("autoplay bloqué"));
+        if (syncInterval) clearInterval(syncInterval);
+        syncInterval = setInterval(syncSlideFromTime, 280);
+    }
+
+    function stopAutoPlay() {
+        isAutoPlaying = false;
+        playBtn.innerText = "🎧 Lecture auto";
+        playBtn.classList.remove('stop-btn');
+        playBtn.classList.add('play-btn');
+        statusDiv.innerText = "📖 Mode manuel";
+        statusDiv.style.background = "rgba(0,0,0,0.75)";
+        audioPlayer.pause();
+        if (syncInterval) { clearInterval(syncInterval); syncInterval = null; }
+        prevBtn.disabled = (currentSlide === 0);
+        nextBtn.disabled = (currentSlide === slides.length - 1);
+    }
+
+    function toggleAutoPlay() {
+        if (isAutoPlaying) stopAutoPlay();
+        else startAutoPlay();
+    }
+
+    function nextSlide() { if (!isAutoPlaying && currentSlide < slides.length-1) { currentSlide++; renderSlide(currentSlide); } }
+    function prevSlide() { if (!isAutoPlaying && currentSlide > 0) { currentSlide--; renderSlide(currentSlide); } }
+
+    document.addEventListener('keydown', (e) => {
+        if (isAutoPlaying) return;
+        if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+        else if (e.key === 'ArrowRight') { e.preventDefault(); nextSlide(); }
+        else if (e.key === ' ' || e.key === 'Space') { e.preventDefault(); toggleAutoPlay(); }
+    });
+
+    prevBtn.onclick = prevSlide;
+    nextBtn.onclick = nextSlide;
+    playBtn.onclick = toggleAutoPlay;
+    audioPlayer.addEventListener('ended', stopAutoPlay);
+    audioPlayer.addEventListener('timeupdate', () => {
+        if (!isAutoPlaying) updateProgressFromAudio();
+    });
+
+    renderSlide(0);
+    updateProgressFromAudio();
+</script>
+</body>
+</html>
