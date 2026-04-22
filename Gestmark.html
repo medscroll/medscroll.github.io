@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cours de Gestion Marketing - L2 LMD</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #1a2a4f 0%, #2a4a6a 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1300px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #e9ecef;
+            width: 100%;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #1e4f6f, #3a8cce);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .header {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .header h1 {
+            color: #1a2a4f;
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+
+        .badge {
+            background: #1e4f6f;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        .content {
+            padding: 30px;
+            min-height: 500px;
+            max-height: 70vh;
+            overflow-y: auto;
+            background: #ffffff;
+            scroll-behavior: smooth;
+        }
+
+        .slide {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-title {
+            color: #1a2a4f;
+            font-size: 2em;
+            margin-bottom: 25px;
+            font-weight: 700;
+            border-left: 5px solid #1e4f6f;
+            padding-left: 20px;
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 10;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+        }
+
+        .slide-content {
+            color: #2c3e50;
+            line-height: 1.8;
+            font-size: 1.1em;
+        }
+
+        .slide-content h3 {
+            color: #1e4f6f;
+            margin: 25px 0 15px 0;
+            font-size: 1.4em;
+        }
+
+        .slide-content h4 {
+            color: #2c3e50;
+            margin: 20px 0 10px 0;
+            font-size: 1.2em;
+        }
+
+        .slide-content p {
+            margin: 15px 0;
+        }
+
+        .slide-content ul, .slide-content ol {
+            margin: 15px 0 15px 30px;
+        }
+
+        .slide-content li {
+            margin: 10px 0;
+        }
+
+        .definition {
+            background: #e8f0f8;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border-left: 5px solid #1e4f6f;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .warning {
+            background: #fef5e7;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border-left: 5px solid #f39c12;
+        }
+
+        .info {
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border-left: 5px solid #2196f3;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        th {
+            background: #1a2a4f;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        td {
+            border: 1px solid #e9ecef;
+            padding: 10px;
+        }
+
+        .controls {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-btn {
+            background: white;
+            color: #1a2a4f;
+            border: 1px solid #dee2e6;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: #e9ecef;
+            transform: translateY(-1px);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .play-btn {
+            background: linear-gradient(90deg, #1e4f6f, #3a8cce);
+            color: white;
+            box-shadow: 0 4px 15px rgba(30, 79, 111, 0.4);
+        }
+
+        .stop-btn {
+            background: #4a5c6a;
+            color: white;
+        }
+
+        .counter {
+            color: #6c757d;
+            font-size: 0.95em;
+            background: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+        }
+
+        .status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .keyword {
+            color: #1e4f6f;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .content { padding: 20px; max-height: 60vh; }
+            .slide-title { font-size: 1.5em; }
+            .controls { flex-direction: column; }
+            button { flex: 1; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <div class="status" id="status">Mode navigation</div>
+    <div class="container">
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="header">
+            <h1>📊 Gestion Marketing - L2 LMD</h1>
+            <span class="badge" id="slideCounter">1/20</span>
+        </div>
+        <div class="content" id="content"></div>
+        <div class="controls">
+            <div class="nav-buttons">
+                <button class="nav-btn" id="prevBtn">← Précédent</button>
+                <button class="nav-btn" id="nextBtn">Suivant →</button>
+            </div>
+            <button class="play-btn" id="playBtn">▶ Lecture automatique</button>
+            <span class="counter" id="timeDisplay">00:00 / 00:00</span>
+        </div>
+    </div>
+    <audio id="audioPlayer" src="marketing_audio.mp3" preload="auto"></audio>
+
+    <script>
+        alert("Cours de Gestion Marketing - Explications d'un étudiant intelligent. Utilisez les flèches ou la lecture auto.");
+
+        // Contenu original, style "étudiant qui explique"
+        const slides = [
+            { title: "🌍 Introduction : C'est quoi le Marketing ?", content: `
+                <div class="definition">
+                    <strong>Le marketing, en deux mots :</strong> créer de la valeur pour le client et capter de la valeur en retour.
+                </div>
+                <p>Oubliez l'image du vendeur de tapis. Le marketing moderne, c'est <strong>comprendre les besoins profonds</strong> des gens et y répondre <strong>mieux que les concurrents</strong>. Philip Kotler, le pape du marketing, dit que c'est un <em>processus social et managérial</em> qui permet aux individus et aux groupes d'obtenir ce dont ils ont besoin et ce qu'ils désirent.</p>
+                <p>En clair : une entreprise ne vend pas un produit, elle vend une <strong>solution</strong> ou une <strong>expérience</strong>.</p>
+                <div class="info">💡 Exemple : Starbucks ne vend pas du café, il vend un "troisième lieu" entre la maison et le travail.</div>
+            ` },
+            { title: "📜 Évolution : Du troc au digital", content: `
+                <p>Le marketing n'est pas né avec Internet. Il a évolué avec la société :</p>
+                <ul>
+                    <li><strong>Ère du troc</strong> : échange direct de marchandises.</li>
+                    <li><strong>Révolution industrielle</strong> : production de masse → orientation produit ("un bon produit se vend tout seul").</li>
+                    <li><strong>Années 1950</strong> : orientation vente ("il faut pousser le produit").</li>
+                    <li><strong>Années 1970-80</strong> : orientation marketing (le client au centre).</li>
+                    <li><strong>Aujourd'hui</strong> : marketing sociétal et digital (valeur durable, personnalisation).</li>
+                </ul>
+                <div class="warning">⚠️ Beaucoup confondent marketing et vente. La vente, c'est "écouler ce qu'on a produit". Le marketing, c'est "produire ce que le marché veut".</div>
+            ` },
+            { title: "🎯 Concepts fondamentaux", content: `
+                <h3>Besoins, désirs et demande</h3>
+                <ul>
+                    <li><strong>Besoin</strong> : sensation de manque (physiologique, sécurité, appartenance, estime, accomplissement - pyramide de Maslow).</li>
+                    <li><strong>Désir</strong> : forme que prend le besoin, influencée par la culture et la personnalité. J'ai <em>besoin</em> de me déplacer, je <em>désire</em> une Tesla.</li>
+                    <li><strong>Demande</strong> : désir + pouvoir d'achat.</li>
+                </ul>
+                <h3>Valeur et satisfaction</h3>
+                <p>Le client compare la <strong>valeur perçue</strong> (bénéfices / coûts) à ses attentes. Si le rapport est positif, il est satisfait et devient fidèle.</p>
+                <div class="definition">Marketing = gestion durable de la relation client (CRM).</div>
+            ` },
+            { title: "🧩 Le Mix Marketing (4P)", content: `
+                <p>McCarthy (1960) a proposé un cadre simple : les <strong>4P</strong>. Ce sont les leviers que l'entreprise peut actionner pour influencer la demande.</p>
+                <ul>
+                    <li><span class="keyword">Produit</span> : ce qu'on offre (bien, service, idée).</li>
+                    <li><span class="keyword">Prix</span> : somme demandée + effort pour l'obtenir.</li>
+                    <li><span class="keyword">Place (Distribution)</span> : comment le produit arrive au client.</li>
+                    <li><span class="keyword">Promotion</span> : communication pour informer, persuader, rappeler.</li>
+                </ul>
+                <p>Certains ajoutent des P : <strong>People, Process, Physical evidence</strong> (pour les services) ou <strong>Packaging</strong>.</p>
+                <div class="info">🧠 À retenir : le mix doit être cohérent. Un produit de luxe ne se vend pas en grande surface avec un prix cassé.</div>
+            ` },
+            { title: "📦 Produit : bien plus qu'un objet", content: `
+                <p>Un produit est un <strong>ensemble d'avantages</strong> perçus par le client. Il comprend :</p>
+                <ul>
+                    <li><strong>Noyau</strong> : bénéfice essentiel (ex : une perceuse vend des trous).</li>
+                    <li><strong>Produit tangible</strong> : caractéristiques, design, qualité, marque.</li>
+                    <li><strong>Produit augmenté</strong> : services associés (garantie, SAV, livraison).</li>
+                </ul>
+                <h3>Cycle de vie</h3>
+                <p>Introduction → Croissance → Maturité → Déclin. Les stratégies marketing changent à chaque phase.</p>
+                <div class="definition">La <strong>gamme</strong> est l'ensemble des produits proposés par l'entreprise (largeur, profondeur, longueur).</div>
+            ` },
+            { title: "💰 Prix : la valeur monétisée", content: `
+                <p>Le prix est le seul P qui génère des revenus. Il doit couvrir les coûts et dégager une marge, tout en restant acceptable pour le client.</p>
+                <h3>Méthodes de fixation</h3>
+                <ul>
+                    <li><strong>Coût + marge</strong> : simple mais ignore le marché.</li>
+                    <li><strong>Valeur perçue</strong> : le client paie pour le bénéfice (ex : Apple).</li>
+                    <li><strong>Concurrence</strong> : s'aligner ou se différencier.</li>
+                </ul>
+                <h3>Stratégies</h3>
+                <ul>
+                    <li><strong>Écrémage</strong> : prix élevé au lancement (innovations).</li>
+                    <li><strong>Pénétration</strong> : prix bas pour gagner rapidement des parts de marché.</li>
+                    <li><strong>Psychologique</strong> : 9,99€ au lieu de 10€.</li>
+                </ul>
+            ` },
+            { title: "🚚 Distribution : être au bon endroit", content: `
+                <p>La distribution met le produit à disposition du client au moment et à l'endroit voulus.</p>
+                <h3>Types de circuits</h3>
+                <ul>
+                    <li><strong>Direct</strong> : fabricant → consommateur (site e-commerce).</li>
+                    <li><strong>Court</strong> : fabricant → détaillant → consommateur.</li>
+                    <li><strong>Long</strong> : fabricant → grossiste → détaillant → consommateur.</li>
+                </ul>
+                <p>Le choix dépend du produit (périssable ? complexe ?), du marché (géographie) et des coûts.</p>
+                <div class="info">📦 Exemple : Coca-Cola utilise un réseau dense de grossistes et détaillants pour être disponible partout.</div>
+            ` },
+            { title: "📢 Promotion : faire savoir et faire aimer", content: `
+                <p>La promotion regroupe tous les moyens de communication avec le marché.</p>
+                <ul>
+                    <li><strong>Publicité</strong> : média de masse (TV, radio, web).</li>
+                    <li><strong>Promotion des ventes</strong> : stimulation court terme (coupons, concours, échantillons).</li>
+                    <li><strong>Vente personnelle</strong> : contact direct (force de vente).</li>
+                    <li><strong>Relations publiques</strong> : image de marque, événements.</li>
+                    <li><strong>Marketing direct</strong> : emailing, SMS, catalogues.</li>
+                </ul>
+                <p>Le modèle AIDA : Attirer l'<strong>A</strong>ttention, susciter l'<strong>I</strong>ntérêt, provoquer le <strong>D</strong>ésir, inciter à l'<strong>A</strong>ction.</p>
+            ` },
+            { title: "👥 Segmentation et Ciblage", content: `
+                <p>On ne peut pas plaire à tout le monde. D'où la démarche <strong>S-T-P</strong> :</p>
+                <ul>
+                    <li><strong>Segmentation</strong> : découper le marché en groupes homogènes (critères géographiques, démographiques, psychographiques, comportementaux).</li>
+                    <li><strong>Ciblage</strong> : choisir le(s) segment(s) sur lequel on concentre ses efforts.</li>
+                    <li><strong>Positionnement</strong> : définir l'image que la marque veut occuper dans l'esprit du consommateur (ex : Volvo = sécurité).</li>
+                </ul>
+                <div class="definition">Stratégies de couverture : marketing de masse, marketing différencié, marketing concentré (niche).</div>
+            ` },
+            { title: "🧠 Comportement du consommateur", content: `
+                <p>Pourquoi le client achète-t-il ? Le processus de décision :</p>
+                <ol>
+                    <li>Reconnaissance du besoin</li>
+                    <li>Recherche d'informations</li>
+                    <li>Évaluation des alternatives</li>
+                    <li>Décision d'achat</li>
+                    <li>Comportement post-achat (satisfaction / dissonance cognitive)</li>
+                </ol>
+                <p>Influencé par des facteurs culturels, sociaux, personnels et psychologiques.</p>
+                <div class="warning">🧩 La dissonance cognitive : "Ai-je fait le bon choix ?" → rassurer le client après l'achat est crucial.</div>
+            ` },
+            { title: "🔬 Études de marché", content: `
+                <p>Pour prendre des décisions éclairées, il faut des données. L'étude de marché collecte et analyse des informations.</p>
+                <h3>Deux types de données :</h3>
+                <ul>
+                    <li><strong>Primaires</strong> : collectées spécifiquement pour l'étude (sondages, entretiens, observations).</li>
+                    <li><strong>Secondaires</strong> : déjà existantes (rapports, études sectorielles, données internes).</li>
+                </ul>
+                <p>Méthodes qualitatives (comprendre le "pourquoi") vs quantitatives (mesurer).</p>
+            ` },
+            { title: "🤝 Marketing des services (les 7P)", content: `
+                <p>Les services sont intangibles, périssables, variables et la production/consommation est simultanée.</p>
+                <p>D'où l'extension aux <strong>7P</strong> :</p>
+                <ul>
+                    <li><strong>People</strong> : le personnel en contact (formation, attitude).</li>
+                    <li><strong>Process</strong> : le parcours client (fluidité, rapidité).</li>
+                    <li><strong>Physical Evidence</strong> : l'environnement matériel (décoration, propreté).</li>
+                </ul>
+                <div class="info">🏨 Exemple : dans un hôtel, la chambre (preuve physique) et l'accueil (personnel) font la différence.</div>
+            ` },
+            { title: "💻 Marketing Digital & Réseaux Sociaux", content: `
+                <p>Le digital a bouleversé les règles :</p>
+                <ul>
+                    <li><strong>SEO/SEA</strong> : être visible sur les moteurs de recherche.</li>
+                    <li><strong>Marketing de contenu</strong> : attirer par des articles, vidéos utiles.</li>
+                    <li><strong>Social Media Marketing</strong> : Facebook, Instagram, LinkedIn, TikTok pour engager les communautés.</li>
+                    <li><strong>Influenceurs</strong> : utiliser la confiance des micro-communautés.</li>
+                    <li><strong>E-commerce</strong> : vente en ligne, marketplace.</li>
+                </ul>
+                <p>L'IA générative permet aujourd'hui d'hyperpersonnaliser les messages.</p>
+            ` },
+            { title: "📈 Stratégies de marque (Branding)", content: `
+                <p>La marque est un <strong>actif immatériel</strong> essentiel. Elle véhicule des valeurs, une promesse.</p>
+                <h3>Capital marque</h3>
+                <ul>
+                    <li>Notoriété</li>
+                    <li>Image perçue</li>
+                    <li>Fidélité</li>
+                </ul>
+                <p>Stratégies : marque ombrelle (tous les produits sous un même nom) vs marques produits (chaque produit a sa propre identité).</p>
+                <div class="definition">Un bon nom de marque doit être facile à prononcer, mémorisable et évoquer la promesse.</div>
+            ` },
+            { title: "🌱 Marketing Responsable et Tendances", content: `
+                <p>Les consommateurs exigent désormais de la transparence et de l'éthique.</p>
+                <ul>
+                    <li><strong>RSE</strong> : intégrer les préoccupations sociales et environnementales.</li>
+                    <li><strong>Économie circulaire</strong> : recyclage, réparation, seconde vie des produits.</li>
+                    <li><strong>Inclusivité</strong> : représentation diverse dans les communications.</li>
+                    <li><strong>Agilité</strong> : capacité à tester, apprendre et pivoter rapidement.</li>
+                </ul>
+                <p>Le greenwashing (faire croire qu'on est écolo sans preuve) est de plus en plus sanctionné par les consommateurs.</p>
+            ` },
+            { title: "📊 Plan Marketing et KPIs", content: `
+                <p>Un plan marketing structure les actions :</p>
+                <ol>
+                    <li>Analyse SWOT (Forces, Faiblesses, Opportunités, Menaces).</li>
+                    <li>Objectifs SMART (Spécifiques, Mesurables, Atteignables, Réalistes, Temporels).</li>
+                    <li>Stratégie (segmentation, ciblage, positionnement).</li>
+                    <li>Mix marketing (4P/7P).</li>
+                    <li>Budget et calendrier.</li>
+                    <li>Contrôle et indicateurs de performance (KPIs).</li>
+                </ol>
+                <p>KPIs courants : part de marché, taux de conversion, coût d'acquisition client (CAC), valeur vie client (LTV).</p>
+            ` },
+            { title: "🏁 Conclusion : Le marketing demain", content: `
+                <p>Le marketing est une discipline en perpétuelle évolution. La clé reste la même : <strong>comprendre l'humain</strong>. Aujourd'hui, cela passe par :</p>
+                <ul>
+                    <li>L'exploitation éthique des données.</li>
+                    <li>L'authenticité et la proximité.</li>
+                    <li>L'agilité face aux changements technologiques.</li>
+                </ul>
+                <div class="definition">"La meilleure publicité, c'est un client satisfait." – Philip Kotler</div>
+                <p>Merci pour votre attention ! Ce cours vous a donné les bases pour aborder sereinement la gestion marketing.</p>
+            ` }
+        ];
+
+        // ----- MÊME LOGIQUE JS QUE HISTO.HTML (adaptée) -----
+        let currentSlide = 0, isAutoPlaying = false, syncInterval;
+        const audioPlayer = document.getElementById('audioPlayer');
+        const contentDiv = document.getElementById('content');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const playBtn = document.getElementById('playBtn');
+        const statusDiv = document.getElementById('status');
+        const slideCounter = document.getElementById('slideCounter');
+        const progressFill = document.getElementById('progressFill');
+        const timeDisplay = document.getElementById('timeDisplay');
+
+        // Timeline approximative pour 20 slides (durée totale ~13 min = 780s)
+        const timeline = [
+            0,36,67,97,116,140,162,180,197,215,
+240,256,279,298,315,332,352
+        ];
+        const totalDuration = 375; // secondes
+
+        function renderSlide(index) {
+            const slide = slides[index];
+            contentDiv.innerHTML = `
+                <div class="slide active">
+                    <h2 class="slide-title">${slide.title}</h2>
+                    <div class="slide-content">${slide.content}</div>
+                </div>
+            `;
+            slideCounter.textContent = `${index + 1}/${slides.length}`;
+            if (!isAutoPlaying) {
+                prevBtn.disabled = index === 0;
+                nextBtn.disabled = index === slides.length - 1;
+            }
+            contentDiv.scrollTop = 0;
+        }
+
+        function nextSlide(){ if(currentSlide < slides.length-1){ currentSlide++; renderSlide(currentSlide); } }
+        function prevSlide(){ if(currentSlide > 0){ currentSlide--; renderSlide(currentSlide); } }
+        
+        function updateTimeDisplay(){
+            let t = audioPlayer.currentTime;
+            let mins = Math.floor(t/60).toString().padStart(2,'0');
+            let secs = Math.floor(t%60).toString().padStart(2,'0');
+            let totalMins = Math.floor(totalDuration/60).toString().padStart(2,'0');
+            let totalSecs = Math.floor(totalDuration%60).toString().padStart(2,'0');
+            timeDisplay.innerText = `${mins}:${secs} / ${totalMins}:${totalSecs}`;
+            progressFill.style.width = `${(t/totalDuration)*100}%`;
+        }
+        
+        function syncSlideFromTime(){
+            if (!isAutoPlaying) return;
+            const currentTime = audioPlayer.currentTime;
+            for (let i = timeline.length - 1; i >= 0; i--) {
+                if (currentTime >= timeline[i]) {
+                    if (i !== currentSlide) {
+                        currentSlide = i;
+                        renderSlide(currentSlide);
+                    }
+                    break;
+                }
+            }
+            updateTimeDisplay();
+            if (currentTime >= totalDuration - 1) stopAutoPlay();
+        }
+        
+        function startAutoPlay(){
+            isAutoPlaying = true;
+            playBtn.innerText = "⏸ Pause";
+            playBtn.classList.remove('play-btn');
+            playBtn.classList.add('stop-btn');
+            statusDiv.innerText = "Mode automatique (synchro audio)";
+            statusDiv.style.background = "rgba(30, 79, 111, 0.92)";
+            prevBtn.disabled = true;
+            nextBtn.disabled = true;
+            audioPlayer.play().catch(e => console.log("auto-play bloqué"));
+            if(syncInterval) clearInterval(syncInterval);
+            syncInterval = setInterval(syncSlideFromTime, 280);
+        }
+        
+        function stopAutoPlay(){
+            isAutoPlaying = false;
+            playBtn.innerText = "▶ Lecture auto";
+            playBtn.classList.remove('stop-btn');
+            playBtn.classList.add('play-btn');
+            statusDiv.innerText = "Mode navigation";
+            statusDiv.style.background = "rgba(0,0,0,0.75)";
+            audioPlayer.pause();
+            if(syncInterval){ clearInterval(syncInterval); syncInterval = null; }
+            prevBtn.disabled = (currentSlide===0);
+            nextBtn.disabled = (currentSlide===slides.length-1);
+        }
+        
+        function toggleAutoPlay(){
+            if(isAutoPlaying) stopAutoPlay();
+            else startAutoPlay();
+        }
+
+        document.addEventListener('keydown', (e)=>{
+            if(isAutoPlaying) return;
+            if(e.key === 'ArrowLeft'){ e.preventDefault(); prevSlide(); }
+            else if(e.key === 'ArrowRight'){ e.preventDefault(); nextSlide(); }
+            else if(e.key === ' '){ e.preventDefault(); toggleAutoPlay(); }
+        });
+        
+        prevBtn.onclick = prevSlide;
+        nextBtn.onclick = nextSlide;
+        playBtn.onclick = toggleAutoPlay;
+        audioPlayer.addEventListener('ended', stopAutoPlay);
+        audioPlayer.addEventListener('timeupdate', ()=>{
+            if(!isAutoPlaying) updateTimeDisplay();
+        });
+
+        renderSlide(0);
+        updateTimeDisplay();
+    </script>
+</body>
+</html>
