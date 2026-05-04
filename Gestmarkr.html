@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fiches de Révision - Gestion Marketing L2</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #1a2a4f 0%, #2a4a6a 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1300px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #e9ecef;
+            width: 100%;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #1e4f6f, #3a8cce);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .header {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .header h1 {
+            color: #1a2a4f;
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+
+        .badge {
+            background: #1e4f6f;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        .content {
+            padding: 30px;
+            min-height: 500px;
+            max-height: 70vh;
+            overflow-y: auto;
+            background: #ffffff;
+            scroll-behavior: smooth;
+        }
+
+        .slide {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-title {
+            color: #1a2a4f;
+            font-size: 2em;
+            margin-bottom: 25px;
+            font-weight: 700;
+            border-left: 5px solid #1e4f6f;
+            padding-left: 20px;
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 10;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+        }
+
+        .slide-content {
+            color: #2c3e50;
+            line-height: 1.8;
+            font-size: 1.1em;
+        }
+
+        .slide-content h3 {
+            color: #1e4f6f;
+            margin: 25px 0 15px 0;
+            font-size: 1.4em;
+        }
+
+        .slide-content h4 {
+            color: #2c3e50;
+            margin: 20px 0 10px 0;
+            font-size: 1.2em;
+        }
+
+        .slide-content p {
+            margin: 15px 0;
+        }
+
+        .slide-content ul, .slide-content ol {
+            margin: 15px 0 15px 30px;
+        }
+
+        .slide-content li {
+            margin: 10px 0;
+        }
+
+        .definition {
+            background: #e8f0f8;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border-left: 5px solid #1e4f6f;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .warning {
+            background: #fef5e7;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border-left: 5px solid #f39c12;
+        }
+
+        .info {
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border-left: 5px solid #2196f3;
+        }
+
+        .tip {
+            background: #e8f5e9;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border-left: 5px solid #4caf50;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        th {
+            background: #1a2a4f;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        td {
+            border: 1px solid #e9ecef;
+            padding: 10px;
+        }
+
+        .controls {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-btn {
+            background: white;
+            color: #1a2a4f;
+            border: 1px solid #dee2e6;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: #e9ecef;
+            transform: translateY(-1px);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .random-btn {
+            background: linear-gradient(90deg, #6c5ce7, #a29bfe);
+            color: white;
+            box-shadow: 0 4px 15px rgba(108, 92, 231, 0.4);
+        }
+        .random-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .counter {
+            color: #6c757d;
+            font-size: 0.95em;
+            background: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+        }
+
+        .keyword {
+            color: #1e4f6f;
+            font-weight: bold;
+        }
+
+        .important {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-weight: 500;
+        }
+
+        .emoji-bullet {
+            display: inline-block;
+            width: 25px;
+            text-align: center;
+            margin-right: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .content { padding: 20px; max-height: 60vh; }
+            .slide-title { font-size: 1.5em; }
+            .controls { flex-direction: column; }
+            button { flex: 1; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="header">
+            <h1>📚 Fiches de Révision – Gestion Marketing L2</h1>
+            <span class="badge" id="slideCounter">1/17</span>
+        </div>
+        <div class="content" id="content"></div>
+        <div class="controls">
+            <div class="nav-buttons">
+                <button class="nav-btn" id="prevBtn">← Précédent</button>
+                <button class="nav-btn" id="nextBtn">Suivant →</button>
+            </div>
+            <button class="random-btn" id="randomBtn">🎲 Fiche aléatoire</button>
+            <span class="counter" id="progressText">Fiche 1 sur 17</span>
+        </div>
+    </div>
+
+    <script>
+        const slides = [
+            {
+                title: "📌 Fiche 1 : Introduction – Qu'est-ce que le Marketing ?",
+                content: `
+                    <div class="definition">
+                        <strong>🧠 Définition simple :</strong> Créer de la valeur pour le client et capter de la valeur en retour.
+                    </div>
+                    <ul>
+                        <li><span class="emoji-bullet">❌</span> <strong>Pas juste "vendre"</strong> : C'est comprendre les besoins profonds et y répondre mieux que les concurrents.</li>
+                        <li><span class="emoji-bullet">👨‍🏫</span> <strong>Kotler :</strong> Un processus social et managérial pour obtenir ce qu'on désire.</li>
+                        <li><span class="emoji-bullet">💡</span> <strong>Idée clé :</strong> On ne vend pas un produit, on vend une <strong class="keyword">solution</strong> ou une <strong class="keyword">expérience</strong>.</li>
+                    </ul>
+                    <div class="info">☕ <strong>Exemple :</strong> Starbucks vend un "troisième lieu", pas du café.</div>
+                `
+            },
+            {
+                title: "📌 Fiche 2 : Évolution du Marketing",
+                content: `
+                    <ol>
+                        <li><strong>🔄 Troc</strong> : Échange direct.</li>
+                        <li><strong>🏭 Révolution industrielle</strong> : Orientation produit ("un bon produit se vend seul").</li>
+                        <li><strong>📢 Années 1950</strong> : Orientation vente ("pousser" le produit).</li>
+                        <li><strong>🎯 Années 1970-80</strong> : Orientation marketing (le client au centre).</li>
+                        <li><strong>🌐 Aujourd'hui</strong> : Marketing sociétal et digital (valeur durable, personnalisation).</li>
+                    </ol>
+                    <div class="warning">
+                        <strong>⚠️ Piège à éviter :</strong> Confondre marketing et vente.<br>
+                        <strong>Vente :</strong> Écouler ce qu'on a produit.<br>
+                        <strong>Marketing :</strong> Produire ce que le marché veut.
+                    </div>
+                `
+            },
+            {
+                title: "📌 Fiche 3 : Concepts Fondamentaux",
+                content: `
+                    <ul>
+                        <li><span class="emoji-bullet">🧬</span> <strong>Besoin :</strong> Sensation de manque (physiologique, sécurité, appartenance...).</li>
+                        <li><span class="emoji-bullet">✨</span> <strong>Désir :</strong> Forme que prend le besoin (influencé par la culture). <em>Besoin de se déplacer → Désir une Tesla.</em></li>
+                        <li><span class="emoji-bullet">💳</span> <strong>Demande :</strong> Désir + Pouvoir d'achat.</li>
+                    </ul>
+                    <div class="important">
+                        <strong>🔑 Valeur perçue :</strong> Bénéfices perçus / Coûts perçus.<br>
+                        <strong>Satisfaction :</strong> Valeur perçue ≥ Attentes → Fidélité.
+                    </div>
+                    <div class="definition"><strong>🎯 Objectif final :</strong> Gestion durable de la relation client (CRM).</div>
+                `
+            },
+            {
+                title: "📌 Fiche 4 : Le Mix Marketing (Les 4P)",
+                content: `
+                    <p><strong>Les 4 leviers pour influencer la demande :</strong></p>
+                    <ul>
+                        <li><span class="emoji-bullet">📦</span> <strong class="keyword">Produit</strong> : L'offre (bien, service, idée).</li>
+                        <li><span class="emoji-bullet">💰</span> <strong class="keyword">Prix</strong> : Somme + efforts pour l'obtenir.</li>
+                        <li><span class="emoji-bullet">🚚</span> <strong class="keyword">Place (Distribution)</strong> : Mise à disposition.</li>
+                        <li><span class="emoji-bullet">📢</span> <strong class="keyword">Promotion</strong> : Communication.</li>
+                    </ul>
+                    <div class="warning">
+                        <strong>🧠 Règle d'or :</strong> Le mix doit être <strong>cohérent</strong>. Ex : Luxe ≠ Prix cassé en grande surface.
+                    </div>
+                    <div class="info"><strong>Extensions :</strong> 7P pour les services (+ People, Process, Preuve physique).</div>
+                `
+            },
+            {
+                title: "📌 Fiche 5 : Le Produit",
+                content: `
+                    <h4>🏗️ Les 3 niveaux :</h4>
+                    <ol>
+                        <li><strong>Noyau :</strong> Bénéfice essentiel (une perceuse vend des trous).</li>
+                        <li><strong>Tangible :</strong> Qualité, design, marque.</li>
+                        <li><strong>Augmenté :</strong> SAV, garantie, livraison.</li>
+                    </ol>
+                    <div class="important">
+                        <strong>📈 Cycle de vie :</strong> Introduction → Croissance → Maturité → Déclin.<br>
+                        <small>⚠️ Les stratégies changent à chaque phase.</small>
+                    </div>
+                    <div class="definition"><strong>Gamme :</strong> L'ensemble des produits proposés (se mesure en largeur, profondeur, longueur).</div>
+                `
+            },
+            {
+                title: "📌 Fiche 6 : Le Prix",
+                content: `
+                    <p><strong>💎 Spécificité :</strong> Le seul "P" qui génère des <strong>revenus</strong>.</p>
+                    <h4>🧮 Méthodes de fixation :</h4>
+                    <ul>
+                        <li><strong>Coût + marge</strong> : Simple, ignore le marché.</li>
+                        <li><strong>Valeur perçue</strong> : Ex : Apple.</li>
+                        <li><strong>Concurrence</strong> : S'aligner ou se différencier.</li>
+                    </ul>
+                    <h4>♟️ Stratégies :</h4>
+                    <ul>
+                        <li><strong>Écrémage</strong> : Prix élevé, baisse progressive.</li>
+                        <li><strong>Pénétration</strong> : Prix bas pour parts de marché.</li>
+                        <li><strong>Psychologique</strong> : 9,99€.</li>
+                    </ul>
+                `
+            },
+            {
+                title: "📌 Fiche 7 : La Distribution (Place)",
+                content: `
+                    <p><strong>🎯 Objectif :</strong> Produit disponible au bon endroit, au bon moment.</p>
+                    <h4>🛤️ Circuits :</h4>
+                    <ul>
+                        <li><strong>Direct :</strong> Fabricant → Client (site e-commerce).</li>
+                        <li><strong>Court :</strong> Fabricant → Détaillant → Client.</li>
+                        <li><strong>Long :</strong> Fabricant → Grossiste → Détaillant → Client.</li>
+                    </ul>
+                    <div class="tip">
+                        <strong>🤔 Choix selon :</strong> Nature du produit (périssable ?), marché (géographie), coûts.
+                    </div>
+                    <div class="info">🥤 <strong>Exemple :</strong> Coca-Cola : réseau dense pour ubiquité.</div>
+                `
+            },
+            {
+                title: "📌 Fiche 8 : La Promotion (Communication)",
+                content: `
+                    <p><strong>📣 Objectif :</strong> Faire savoir et faire aimer.</p>
+                    <h4>Les 5 moyens :</h4>
+                    <ul>
+                        <li><strong>1.</strong> Publicité (Médias de masse)</li>
+                        <li><strong>2.</strong> Promo des ventes (Court terme, coupons)</li>
+                        <li><strong>3.</strong> Vente personnelle (Force de vente directe)</li>
+                        <li><strong>4.</strong> Relations publiques (Image de marque)</li>
+                        <li><strong>5.</strong> Marketing direct (Emailing, SMS)</li>
+                    </ul>
+                    <div class="definition">
+                        <strong>🧠 Modèle AIDA :</strong> <strong>A</strong>ttention → <strong>I</strong>ntérêt → <strong>D</strong>ésir → <strong>A</strong>ction.
+                    </div>
+                `
+            },
+            {
+                title: "📌 Fiche 9 : Segmentation, Ciblage, Positionnement (S-T-P)",
+                content: `
+                    <p><strong>🎯 Démarche :</strong> On ne peut pas plaire à tous.</p>
+                    <ol>
+                        <li><strong>Segmentation :</strong> Découper le marché (géo, démographique, psycho, comportemental).</li>
+                        <li><strong>Ciblage :</strong> Choisir le(s) segment(s) visé(s).</li>
+                        <li><strong>Positionnement :</strong> Image voulue dans l'esprit du client (Ex : Volvo = sécurité).</li>
+                    </ol>
+                    <div class="important">
+                        <strong>Stratégies :</strong> Masse, différenciée, concentrée (niche).
+                    </div>
+                `
+            },
+            {
+                title: "📌 Fiche 10 : Comportement du Consommateur",
+                content: `
+                    <h4>🧩 Processus de décision :</h4>
+                    <ol>
+                        <li>Reconnaissance du besoin</li>
+                        <li>Recherche d'infos</li>
+                        <li>Évaluation des alternatives</li>
+                        <li>Décision d'achat</li>
+                        <li>Comportement post-achat</li>
+                    </ol>
+                    <p><strong>Influences :</strong> Culturelles, sociales, personnelles, psychologiques.</p>
+                    <div class="warning">
+                        <strong>⚠️ Dissonance cognitive :</strong> Doute post-achat ("Ai-je fait le bon choix ?"). Il faut <strong>rassurer</strong> le client après l'achat.
+                    </div>
+                `
+            },
+            {
+                title: "📌 Fiche 11 : Études de Marché",
+                content: `
+                    <p><strong>🎯 Objectif :</strong> Collecter et analyser des infos pour décider.</p>
+                    <h4>📊 Types de données :</h4>
+                    <ul>
+                        <li><strong>Primaires :</strong> Collectées exprès (sondages, interviews).</li>
+                        <li><strong>Secondaires :</strong> Déjà existantes (études sectorielles).</li>
+                    </ul>
+                    <div class="tip">
+                        <strong>🔬 Méthodes :</strong><br>
+                        <strong>Qualitatives</strong> → Comprendre le "pourquoi".<br>
+                        <strong>Quantitatives</strong> → Mesurer "combien".
+                    </div>
+                `
+            },
+            {
+                title: "📌 Fiche 12 : Marketing des Services (Les 7P)",
+                content: `
+                    <div class="warning">
+                        <strong>⚠️ Spécificités des services :</strong> Intangibles, périssables, variables, production = consommation.
+                    </div>
+                    <h4>➕ Les 3P supplémentaires :</h4>
+                    <ul>
+                        <li><strong>👥 People (Personnel) :</strong> En contact, formé, souriant.</li>
+                        <li><strong>⚙️ Process (Processus) :</strong> Parcours client fluide et rapide.</li>
+                        <li><strong>🏢 Preuve physique :</strong> Environnement, décoration, propreté.</li>
+                    </ul>
+                    <div class="info">🏨 <strong>Exemple :</strong> Hôtellerie.</div>
+                `
+            },
+            {
+                title: "📌 Fiche 13 : Marketing Digital & Réseaux Sociaux",
+                content: `
+                    <h4>🌐 Piliers actuels :</h4>
+                    <ul>
+                        <li><strong>SEO/SEA :</strong> Référencement naturel / payant.</li>
+                        <li><strong>Contenu :</strong> Attirer par articles/vidéos utiles.</li>
+                        <li><strong>Réseaux sociaux :</strong> Engagement communautaire.</li>
+                        <li><strong>Influenceurs :</strong> Confiance de micro-communautés.</li>
+                        <li><strong>E-commerce :</strong> Vente en ligne.</li>
+                    </ul>
+                    <div class="definition">
+                        <strong>🤖 Outil clé :</strong> IA générative pour hyperpersonnalisation.
+                    </div>
+                `
+            },
+            {
+                title: "📌 Fiche 14 : Stratégies de Marque (Branding)",
+                content: `
+                    <p><strong>💎 Marque :</strong> Actif immatériel essentiel (valeurs, promesse).</p>
+                    <div class="important">
+                        <strong>🏆 Capital marque :</strong> Notoriété + Image perçue + Fidélité.
+                    </div>
+                    <ul>
+                        <li><strong>Marque ombrelle :</strong> 1 nom pour tout (ex : Yamaha).</li>
+                        <li><strong>Marque produit :</strong> 1 nom par produit (ex : P&G).</li>
+                    </ul>
+                    <div class="tip">
+                        <strong>✅ Critères :</strong> Facile, mémorisable, évocateur.
+                    </div>
+                `
+            },
+            {
+                title: "📌 Fiche 15 : Marketing Responsable (Tendances)",
+                content: `
+                    <p><strong>🌱 Nouvelles exigences :</strong> Transparence et éthique.</p>
+                    <ul>
+                        <li><strong>RSE :</strong> Intégrer préoccupations sociales/environnementales.</li>
+                        <li><strong>Économie circulaire :</strong> Recyclage, réparation.</li>
+                        <li><strong>Inclusivité :</strong> Représentation diverse.</li>
+                        <li><strong>Agilité :</strong> Tester, apprendre, pivoter vite.</li>
+                    </ul>
+                    <div class="warning">
+                        <strong>⚠️ Piège à éviter :</strong> <strong>Greenwashing</strong> (écologie de façade). Les consommateurs ne sont pas dupes.
+                    </div>
+                `
+            },
+            {
+                title: "📌 Fiche 16 : Plan Marketing et KPIs",
+                content: `
+                    <h4>📝 Structure en 6 étapes :</h4>
+                    <ol>
+                        <li>Analyse SWOT</li>
+                        <li>Objectifs SMART</li>
+                        <li>Stratégie (S-T-P)</li>
+                        <li>Mix marketing (4P/7P)</li>
+                        <li>Budget et Calendrier</li>
+                        <li>Contrôle et <strong>KPIs</strong></li>
+                    </ol>
+                    <div class="definition">
+                        <strong>📊 KPIs à connaître :</strong><br>
+                        Part de marché | Taux de conversion | <strong>CAC</strong> (Coût d'Acquisition) | <strong>LTV</strong> (Valeur Vie Client)
+                    </div>
+                `
+            },
+            {
+                title: "📌 Fiche 17 : Conclusion – Le Marketing Demain",
+                content: `
+                    <p><strong>🧬 Constante fondamentale :</strong> Comprendre l'humain.</p>
+                    <h4>🔮 Les 3 clés de demain :</h4>
+                    <ol>
+                        <li>Exploitation <strong>éthique</strong> des données.</li>
+                        <li><strong>Authenticité</strong> et proximité.</li>
+                        <li><strong>Agilité</strong> face aux changements technologiques.</li>
+                    </ol>
+                    <div class="definition" style="text-align: center; font-style: italic;">
+                        "La meilleure publicité, c'est un client satisfait." – Philip Kotler
+                    </div>
+                `
+            }
+        ];
+
+        let currentSlide = 0;
+        const contentDiv = document.getElementById('content');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const randomBtn = document.getElementById('randomBtn');
+        const slideCounter = document.getElementById('slideCounter');
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+
+        function updateProgress() {
+            const progress = ((currentSlide + 1) / slides.length) * 100;
+            progressFill.style.width = `${progress}%`;
+            slideCounter.textContent = `${currentSlide + 1}/${slides.length}`;
+            progressText.textContent = `Fiche ${currentSlide + 1} sur ${slides.length}`;
+        }
+
+        function renderSlide(index) {
+            const slide = slides[index];
+            contentDiv.innerHTML = `
+                <div class="slide active">
+                    <h2 class="slide-title">${slide.title}</h2>
+                    <div class="slide-content">${slide.content}</div>
+                </div>
+            `;
+            updateProgress();
+            prevBtn.disabled = index === 0;
+            nextBtn.disabled = index === slides.length - 1;
+            contentDiv.scrollTop = 0;
+        }
+
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                renderSlide(currentSlide);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                renderSlide(currentSlide);
+            }
+        }
+
+        function randomSlide() {
+            let newSlide;
+            do {
+                newSlide = Math.floor(Math.random() * slides.length);
+            } while (newSlide === currentSlide && slides.length > 1);
+            currentSlide = newSlide;
+            renderSlide(currentSlide);
+        }
+
+        // Event listeners
+        prevBtn.addEventListener('click', prevSlide);
+        nextBtn.addEventListener('click', nextSlide);
+        randomBtn.addEventListener('click', randomSlide);
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                prevSlide();
+            } else if (e.key === 'ArrowRight') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === 'r' || e.key === 'R') {
+                e.preventDefault();
+                randomSlide();
+            }
+        });
+
+        // Initialisation
+        renderSlide(0);
+    </script>
+</body>
+  </html>
