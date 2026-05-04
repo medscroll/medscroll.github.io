@@ -69,6 +69,20 @@
             font-size: 0.9em;
         }
 
+        .status-badge {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+        }
+
         .content {
             padding: 30px;
             min-height: 500px;
@@ -171,6 +185,15 @@
             border-left: 5px solid #4caf50;
         }
 
+        .important {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-weight: 500;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -201,6 +224,11 @@
         }
 
         .nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-buttons {
             display: flex;
             gap: 10px;
         }
@@ -241,6 +269,20 @@
             transform: translateY(-1px);
         }
 
+        .play-btn {
+            background: linear-gradient(90deg, #1e4f6f, #3a8cce);
+            color: white;
+            box-shadow: 0 4px 15px rgba(30, 79, 111, 0.4);
+        }
+        .play-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .play-btn.playing {
+            background: linear-gradient(90deg, #4a5c6a, #6c7a89);
+        }
+
         .counter {
             color: #6c757d;
             font-size: 0.95em;
@@ -254,15 +296,6 @@
             font-weight: bold;
         }
 
-        .important {
-            background: #fff3cd;
-            border-left: 5px solid #ffc107;
-            padding: 15px 20px;
-            border-radius: 8px;
-            margin: 15px 0;
-            font-weight: 500;
-        }
-
         .emoji-bullet {
             display: inline-block;
             width: 25px;
@@ -273,14 +306,26 @@
         @media (max-width: 768px) {
             .content { padding: 20px; max-height: 60vh; }
             .slide-title { font-size: 1.5em; }
-            .controls { flex-direction: column; }
+            .controls { flex-direction: column; align-items: stretch; }
+            .nav-buttons, .action-buttons {
+                justify-content: center;
+            }
             button { flex: 1; text-align: center; }
+            .status-badge {
+                top: 10px;
+                right: 10px;
+                font-size: 0.8em;
+                padding: 6px 12px;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="status-badge" id="statusBadge">📖 Mode révision</div>
     <div class="container">
-        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
         <div class="header">
             <h1>📚 Fiches de Révision – Gestion Marketing L2</h1>
             <span class="badge" id="slideCounter">1/17</span>
@@ -288,13 +333,17 @@
         <div class="content" id="content"></div>
         <div class="controls">
             <div class="nav-buttons">
-                <button class="nav-btn" id="prevBtn">← Précédent</button>
-                <button class="nav-btn" id="nextBtn">Suivant →</button>
+                <button class="nav-btn" id="prevBtn" title="Flèche gauche">← Précédent</button>
+                <button class="nav-btn" id="nextBtn" title="Flèche droite">Suivant →</button>
             </div>
-            <button class="random-btn" id="randomBtn">🎲 Fiche aléatoire</button>
-            <span class="counter" id="progressText">Fiche 1 sur 17</span>
+            <div class="action-buttons">
+                <button class="random-btn" id="randomBtn" title="Touche R">🎲 Fiche aléatoire</button>
+                <button class="play-btn" id="playBtn" title="Espace">▶ Lecture audio</button>
+            </div>
+            <span class="counter" id="timeDisplay">00:00 / 00:00</span>
         </div>
     </div>
+    <audio id="audioPlayer" src="revision_marketing_audio.mp3" preload="auto"></audio>
 
     <script>
         const slides = [
@@ -571,20 +620,66 @@
             }
         ];
 
+        // ----- État de l'application -----
         let currentSlide = 0;
+        let isAudioPlaying = false;
+        let syncInterval = null;
+
+        // Durée totale estimée de l'audio : 10 minutes = 600 secondes
+        const totalDuration = 600;
+
+        // Timeline : moment approximatif (en secondes) où chaque fiche commence dans l'audio
+        const timeline = [
+            0,   // Fiche 1 : Introduction
+            30,  // Fiche 2 : Évolution
+            70,  // Fiche 3 : Concepts fondamentaux
+            110, // Fiche 4 : Mix Marketing
+            145, // Fiche 5 : Produit
+            175, // Fiche 6 : Prix
+            205, // Fiche 7 : Distribution
+            235, // Fiche 8 : Promotion
+            265, // Fiche 9 : Segmentation
+            295, // Fiche 10 : Comportement
+            330, // Fiche 11 : Études de marché
+            360, // Fiche 12 : Marketing des services
+            390, // Fiche 13 : Marketing digital
+            420, // Fiche 14 : Stratégies de marque
+            450, // Fiche 15 : Marketing responsable
+            480, // Fiche 16 : Plan marketing
+            520, // Fiche 17 : Conclusion
+            570  // Fin
+        ];
+
+        // ----- Éléments du DOM -----
         const contentDiv = document.getElementById('content');
         const prevBtn = document.getElementById('prevBtn');
         const nextBtn = document.getElementById('nextBtn');
         const randomBtn = document.getElementById('randomBtn');
+        const playBtn = document.getElementById('playBtn');
         const slideCounter = document.getElementById('slideCounter');
         const progressFill = document.getElementById('progressFill');
-        const progressText = document.getElementById('progressText');
+        const timeDisplay = document.getElementById('timeDisplay');
+        const statusBadge = document.getElementById('statusBadge');
+        const audioPlayer = document.getElementById('audioPlayer');
 
         function updateProgress() {
             const progress = ((currentSlide + 1) / slides.length) * 100;
             progressFill.style.width = `${progress}%`;
             slideCounter.textContent = `${currentSlide + 1}/${slides.length}`;
-            progressText.textContent = `Fiche ${currentSlide + 1} sur ${slides.length}`;
+        }
+
+        function updateTimeDisplay() {
+            let t = audioPlayer.currentTime || 0;
+            let mins = Math.floor(t / 60).toString().padStart(2, '0');
+            let secs = Math.floor(t % 60).toString().padStart(2, '0');
+            let totalMins = Math.floor(totalDuration / 60).toString().padStart(2, '0');
+            let totalSecs = Math.floor(totalDuration % 60).toString().padStart(2, '0');
+            timeDisplay.textContent = `${mins}:${secs} / ${totalMins}:${totalSecs}`;
+            
+            if (isAudioPlaying) {
+                const audioProgress = (t / totalDuration) * 100;
+                progressFill.style.width = `${audioProgress}%`;
+            }
         }
 
         function renderSlide(index) {
@@ -595,9 +690,15 @@
                     <div class="slide-content">${slide.content}</div>
                 </div>
             `;
-            updateProgress();
-            prevBtn.disabled = index === 0;
-            nextBtn.disabled = index === slides.length - 1;
+            
+            if (!isAudioPlaying) {
+                updateProgress();
+            }
+            
+            prevBtn.disabled = isAudioPlaying || index === 0;
+            nextBtn.disabled = isAudioPlaying || index === slides.length - 1;
+            randomBtn.disabled = isAudioPlaying;
+            
             contentDiv.scrollTop = 0;
         }
 
@@ -616,6 +717,7 @@
         }
 
         function randomSlide() {
+            if (isAudioPlaying) return;
             let newSlide;
             do {
                 newSlide = Math.floor(Math.random() * slides.length);
@@ -624,26 +726,125 @@
             renderSlide(currentSlide);
         }
 
-        // Event listeners
+        function syncSlideFromAudio() {
+            if (!isAudioPlaying) return;
+            
+            const currentTime = audioPlayer.currentTime;
+            
+            // Trouver la fiche correspondant au temps actuel
+            for (let i = timeline.length - 1; i >= 0; i--) {
+                if (currentTime >= timeline[i]) {
+                    if (i !== currentSlide && i < slides.length) {
+                        currentSlide = i;
+                        renderSlide(currentSlide);
+                    }
+                    break;
+                }
+            }
+            
+            updateTimeDisplay();
+            
+            // Si on atteint la fin
+            if (currentTime >= totalDuration - 1) {
+                stopAudio();
+            }
+        }
+
+        function startAudio() {
+            isAudioPlaying = true;
+            playBtn.textContent = '⏸ Pause audio';
+            playBtn.classList.add('playing');
+            statusBadge.textContent = '🔊 Mode audio (synchronisé)';
+            statusBadge.style.background = 'rgba(30, 79, 111, 0.92)';
+            
+            prevBtn.disabled = true;
+            nextBtn.disabled = true;
+            randomBtn.disabled = true;
+            
+            audioPlayer.currentTime = timeline[currentSlide] || 0;
+            audioPlayer.play().catch(e => {
+                console.log("Lecture audio bloquée par le navigateur :", e);
+                alert("La lecture automatique a été bloquée. Cliquez à nouveau sur le bouton.");
+                stopAudio();
+                return;
+            });
+            
+            if (syncInterval) clearInterval(syncInterval);
+            syncInterval = setInterval(syncSlideFromAudio, 300);
+        }
+
+        function stopAudio() {
+            isAudioPlaying = false;
+            playBtn.textContent = '▶ Lecture audio';
+            playBtn.classList.remove('playing');
+            statusBadge.textContent = '📖 Mode révision';
+            statusBadge.style.background = 'rgba(0,0,0,0.8)';
+            
+            audioPlayer.pause();
+            
+            if (syncInterval) {
+                clearInterval(syncInterval);
+                syncInterval = null;
+            }
+            
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === slides.length - 1;
+            randomBtn.disabled = false;
+            
+            updateProgress();
+            updateTimeDisplay();
+        }
+
+        function toggleAudio() {
+            if (isAudioPlaying) {
+                stopAudio();
+            } else {
+                startAudio();
+            }
+        }
+
+        // ----- Event Listeners -----
         prevBtn.addEventListener('click', prevSlide);
         nextBtn.addEventListener('click', nextSlide);
         randomBtn.addEventListener('click', randomSlide);
+        playBtn.addEventListener('click', toggleAudio);
 
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowLeft') {
-                e.preventDefault();
-                prevSlide();
-            } else if (e.key === 'ArrowRight') {
-                e.preventDefault();
-                nextSlide();
-            } else if (e.key === 'r' || e.key === 'R') {
-                e.preventDefault();
-                randomSlide();
+        audioPlayer.addEventListener('ended', stopAudio);
+        audioPlayer.addEventListener('timeupdate', updateTimeDisplay);
+        audioPlayer.addEventListener('pause', () => {
+            if (isAudioPlaying && audioPlayer.currentTime < totalDuration - 1) {
+                // L'utilisateur a mis en pause manuellement
+                stopAudio();
             }
         });
 
-        // Initialisation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === ' ' || e.code === 'Space') {
+                e.preventDefault();
+                toggleAudio();
+            } else if (!isAudioPlaying) {
+                if (e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    prevSlide();
+                } else if (e.key === 'ArrowRight') {
+                    e.preventDefault();
+                    nextSlide();
+                } else if (e.key === 'r' || e.key === 'R') {
+                    e.preventDefault();
+                    randomSlide();
+                }
+            }
+        });
+
+        // ----- Initialisation -----
         renderSlide(0);
+        updateTimeDisplay();
+
+        console.log('📚 Fiches de révision prêtes !');
+        console.log('   🖱️  Navigation : Flèches ← → ou boutons');
+        console.log('   🎲  Fiche aléatoire : Touche R');
+        console.log('   🔊  Lecture audio : Barre espace ou bouton');
+        console.log('   📁  Fichier audio attendu : revision_marketing_audio.mp3');
     </script>
 </body>
-  </html>
+</html>  
