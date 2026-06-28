@@ -1,0 +1,1488 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>📘 Cours de Microéconomie - L1</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', sans-serif; background: #0a1628; color: #1a202c; }
+    .app-container { max-width: 100vw; height: 100vh; overflow-y: scroll; scroll-snap-type: y proximity; }
+    .slide {
+      height: 100vh; scroll-snap-align: start;
+      display: flex; align-items: center; justify-content: center;
+      padding: 1.5rem 2rem; background: #f7fafc;
+      border-bottom: 6px solid #2b6cb0;
+    }
+    .slide-inner {
+      max-width: 950px; width: 100%; background: white;
+      border-radius: 32px; box-shadow: 0 20px 40px -12px rgba(0,0,0,0.4);
+      padding: 2rem 2.2rem; position: relative;
+    }
+    .slide.chap-intro { border-color: #2b6cb0; }
+    .slide.chap1 { border-color: #2b6cb0; }
+    .slide.chap2 { border-color: #2f855a; }
+    .slide.chap3 { border-color: #c05621; }
+    .slide.chap4 { border-color: #805ad5; }
+    .slide.chap5 { border-color: #b7791f; }
+    .card-header { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; margin-bottom: 0.5rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.4rem; }
+    .card-number { font-size: 0.8rem; font-weight: 600; color: #4a5568; background: #edf2f7; padding: 0.2rem 0.8rem; border-radius: 30px; }
+    .card-title { font-size: 1.6rem; font-weight: 700; color: #0a1628; letter-spacing: -0.3px; }
+    .card-subtitle { font-size: 0.95rem; color: #2d3748; margin-top: 0.1rem; font-weight: 500; border-left: 4px solid #2b6cb0; padding-left: 0.8rem; }
+    .content { margin: 1rem 0 1.2rem 0; line-height: 1.6; color: #1a202c; }
+    .content h4 { margin: 1.2rem 0 0.4rem 0; color: #2b6cb0; font-size: 1.1rem; }
+    .content ul, .content ol { padding-left: 1.6rem; margin: 0.4rem 0; }
+    .highlight-box { background: #ebf8ff; border-left: 5px solid #2b6cb0; padding: 0.6rem 1.2rem; border-radius: 8px; margin: 0.8rem 0; }
+    .formula { background: #edf2f7; padding: 0.6rem 1.2rem; border-radius: 8px; font-family: 'Cambria', serif; font-size: 1.1rem; text-align: center; margin: 0.6rem 0; }
+    .img-placeholder { background: #f0f4f8; border: 3px dashed #a0aec0; border-radius: 16px; padding: 1.5rem 1rem; text-align: center; margin: 0.8rem 0; color: #4a5568; min-height: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .img-placeholder .icon { font-size: 3rem; margin-bottom: 0.3rem; }
+    .img-placeholder .desc { font-weight: 500; color: #2d3748; }
+    .img-placeholder .sub { font-size: 0.8rem; color: #718096; }
+    .img-placeholder.green { border-color: #48bb78; background: #f0fff4; }
+    .img-placeholder.orange { border-color: #ed8936; background: #fffbeb; }
+    .img-placeholder.purple { border-color: #9f7aea; background: #faf5ff; }
+    .img-placeholder.amber { border-color: #d69e2e; background: #fffff0; }
+    .progress-bar { height: 5px; background: #e2e8f0; border-radius: 4px; margin: 0.8rem 0 0.1rem 0; }
+    .progress-fill { height: 100%; background: #2b6cb0; border-radius: 4px; width: 0%; transition: width 0.3s; }
+    .card-footer { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; margin-top: 0.8rem; border-top: 1px solid #e2e8f0; padding-top: 0.6rem; }
+    .nav-buttons { display: flex; gap: 0.5rem; }
+    .nav-buttons button { background: #edf2f7; border: none; padding: 0.3rem 0.9rem; border-radius: 30px; font-weight: 600; color: #1a202c; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 6px; }
+    .nav-buttons button:hover { background: #2b6cb0; color: white; }
+    .nav-buttons button:disabled { opacity: 0.4; cursor: default; }
+    .audio-controls { display: flex; gap: 0.5rem; align-items: center; }
+    .audio-controls button { background: #edf2f7; border: none; padding: 0.3rem 0.9rem; border-radius: 30px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+    .audio-controls button:hover { background: #2b6cb0; color: white; }
+    .slide-counter { font-weight: 600; color: #4a5568; font-size: 0.85rem; }
+    audio { width: 100%; margin-top: 0.3rem; border-radius: 30px; }
+    .auto-toggle { background: #2b6cb0; color: white; border: none; padding: 0.3rem 1.2rem; border-radius: 30px; font-weight: 600; cursor: pointer; }
+    .auto-toggle.off { background: #a0aec0; }
+    .status-indicator { font-size: 0.8rem; color: #4a5568; padding: 0.2rem 0.6rem; border-radius: 30px; background: #edf2f7; margin-left: 0.5rem; }
+    @media (max-width: 700px) {
+      .slide { padding: 0.6rem; }
+      .slide-inner { padding: 1rem; }
+      .card-title { font-size: 1.2rem; }
+      .card-footer { flex-direction: column; gap: 0.6rem; align-items: stretch; }
+      .nav-buttons { justify-content: center; }
+      .audio-controls { justify-content: center; flex-wrap: wrap; }
+      .img-placeholder { padding: 1rem; min-height: 70px; }
+      .status-indicator { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container" id="appContainer"></div>
+  <script>
+    // ================================================================
+    // SLIDES 1 À 51 - COURS COMPLET DE MICROÉCONOMIE
+    // ================================================================
+    const slidesData = [
+      // ============================================================
+      // SLIDE 1 - INTRODUCTION
+      // ============================================================
+      {
+        id: 1, chapitre: 'intro',
+        title: 'Introduction à la microéconomie',
+        subtitle: 'Comportements individuels et interaction sur les marchés',
+        content: `
+          <p>L'analyse microéconomique explique les comportements individuels des agents économiques (consommateur, producteur) ainsi que leur interaction sur le marché.</p>
+          <div class="highlight-box">
+            <strong>📌 Objectifs du cours :</strong>
+            <ul>
+              <li>Maîtriser les choix du consommateur et la demande d'un bien</li>
+              <li>Appréhender la théorie du choix du producteur et les coûts</li>
+              <li>Comprendre les structures de marché (CPP, monopole, oligopole)</li>
+              <li>Notions d'externalités et biens publics</li>
+            </ul>
+          </div>
+          <div class="img-placeholder">
+            <div class="icon">📊</div>
+            <div class="desc">Schéma des interactions agents économiques</div>
+            <div class="sub">Circuit économique simplifié (ménages / entreprises)</div>
+          </div>
+          <p><strong>Plan :</strong> 5 chapitres – Consommateur, Producteur, Concurrence, Oligopole, Marché du travail.</p>
+        `
+      },
+      // ============================================================
+      // SLIDE 2 - UTILITÉ TOTALE ET MARGINALE
+      // ============================================================
+      {
+        id: 2, chapitre: 'chap1',
+        title: 'Utilité totale et utilité marginale',
+        subtitle: 'Approche cardinale',
+        content: `
+          <p><strong>Utilité totale (Ut)</strong> : satisfaction globale que retire le consommateur de la consommation d'un bien. Ut = U(X). Elle croît avec la quantité.</p>
+          <p><strong>Utilité marginale (Um)</strong> : variation de l'utilité totale suite à la consommation d'une unité supplémentaire.</p>
+          <div class="formula">Um = ΔUt / ΔX   (bien imparfaitement divisible)</div>
+          <div class="formula">Um = dUt / dX   (bien parfaitement divisible)</div>
+          <div class="img-placeholder green">
+            <div class="icon">📈</div>
+            <div class="desc">Courbes d'utilité totale et marginale</div>
+            <div class="sub">Graphique 1.1 : Ut totale croissante, Ut marginale décroissante</div>
+          </div>
+          <p>L'Um est positive mais décroissante (loi de Gossen).</p>
+        `
+      },
+      // ============================================================
+      // SLIDE 3 - LOI DE GOSSEN
+      // ============================================================
+      {
+        id: 3, chapitre: 'chap1',
+        title: 'Loi de l\'utilité marginale décroissante',
+        subtitle: 'Principe de Gossen (1854)',
+        content: `
+          <p>« L'intensité d'un plaisir qui se prolonge diminue et finit par disparaître quand l'individu parvient à la satiété. »</p>
+          <ul>
+            <li>Au fur et à mesure que la quantité consommée augmente, l'Um diminue.</li>
+            <li>Point de satiété : Um = 0, Ut maximale.</li>
+            <li>Au-delà : Um négative → désutilité.</li>
+          </ul>
+          <div class="img-placeholder">
+            <div class="icon">🍷</div>
+            <div class="desc">Illustration : Verres d'eau et satiété</div>
+            <div class="sub">Exemple : 1er verre agréable, 3e moins, 5e désagréable</div>
+          </div>
+          <div class="highlight-box"><strong>Exemple :</strong> Le 1er verre d'eau est très satisfaisant, le 3e l'est moins, le 5e peut devenir désagréable.</div>
+        `
+      },
+      // ============================================================
+      // SLIDE 4 - CHOIX OPTIMAL
+      // ============================================================
+      {
+        id: 4, chapitre: 'chap1',
+        title: 'Choix optimal du consommateur',
+        subtitle: '3 situations',
+        content: `
+          <p><strong>1. Abondance :</strong> Um = 0 (satiété).</p>
+          <p><strong>2. Rareté, économie de troc :</strong> UmX = UmY (égalisation des utilités marginales).</p>
+          <p><strong>3. Rareté, économie monétaire :</strong></p>
+          <div class="formula">UmX / Px = UmY / Py</div>
+          <div class="formula">ou : UmX/UmY = Px/Py</div>
+          <div class="img-placeholder green">
+            <div class="icon">⚖️</div>
+            <div class="desc">Équilibre du consommateur en économie monétaire</div>
+            <div class="sub">Condition d'optimalité : égalisation des utilités marginales pondérées</div>
+          </div>
+          <div class="highlight-box">Le consommateur maximise sa satisfaction sous contrainte budgétaire : R = X·Px + Y·Py</div>
+        `
+      },
+      // ============================================================
+      // SLIDE 5 - AXIOMES DE L'UTILITÉ ORDINALE
+      // ============================================================
+      {
+        id: 5, chapitre: 'chap1',
+        title: 'Utilité ordinale – Axiomes',
+        subtitle: 'Approche par les préférences',
+        content: `
+          <p><strong>4 axiomes :</strong></p>
+          <ol>
+            <li><strong>Préférence :</strong> face à A et B, le consommateur préfère A, B ou est indifférent.</li>
+            <li><strong>Transitivité :</strong> si A > B et B > C, alors A > C.</li>
+            <li><strong>Dominance :</strong> « plus » est préféré à « moins ».</li>
+            <li><strong>Substituabilité :</strong> possibilité de compenser une perte d'un bien par plus de l'autre.</li>
+          </ol>
+          <div class="img-placeholder">
+            <div class="icon">🧩</div>
+            <div class="desc">Axiomes de comportement du consommateur</div>
+            <div class="sub">Fondements des courbes d'indifférence</div>
+          </div>
+          <p>Ces axiomes permettent de construire des <strong>courbes d'indifférence</strong>.</p>
+        `
+      },
+      // ============================================================
+      // SLIDE 6 - COURBES D'INDIFFÉRENCE
+      // ============================================================
+      {
+        id: 6, chapitre: 'chap1',
+        title: 'Courbes d\'indifférence',
+        subtitle: 'Définition et propriétés',
+        content: `
+          <p><strong>Définition :</strong> ensemble des combinaisons de deux biens qui procurent le même niveau d'utilité.</p>
+          <ul>
+            <li>Pente négative (axiome de dominance).</li>
+            <li>Convexes par rapport à l'origine (TMS décroissant).</li>
+            <li>Ne se coupent jamais (transitivité).</li>
+            <li>Plus on s'éloigne de l'origine, plus l'utilité est élevée.</li>
+          </ul>
+          <div class="img-placeholder green">
+            <div class="icon">📉</div>
+            <div class="desc">Courbe d'indifférence et carte d'indifférence</div>
+            <div class="sub">Graphique 1.2 : Courbe I1, I2, I3 avec différentes combinaisons</div>
+          </div>
+          <p>Exemple : paniers (nourriture, vêtements) sur une même courbe.</p>
+        `
+      },
+      // ============================================================
+      // SLIDE 7 - SUBSTITUTS PARFAITS
+      // ============================================================
+      {
+        id: 7, chapitre: 'chap1',
+        title: 'Substituts parfaits',
+        subtitle: 'Courbes d\'indifférence linéaires',
+        content: `
+          <p>Exemple : fardes bleues et fardes jaunes. Le consommateur ne se préoccupe pas de la couleur.</p>
+          <p>Un panier (10 bleues, 10 jaunes) est équivalent à tout panier contenant 20 fardes.</p>
+          <div class="formula">X₁ + X₂ = constante</div>
+          <div class="img-placeholder">
+            <div class="icon">📏</div>
+            <div class="desc">Substituts parfaits : courbes linéaires</div>
+            <div class="sub">Graphique 1.4 : Droites parallèles de pente -1</div>
+          </div>
+          <p>Les courbes sont des <strong>droites parallèles</strong> de pente -1.</p>
+        `
+      },
+      // ============================================================
+      // SLIDE 8 - COMPLÉMENTS PARFAITS
+      // ============================================================
+      {
+        id: 8, chapitre: 'chap1',
+        title: 'Compléments parfaits',
+        subtitle: 'Courbes en L',
+        content: `
+          <p>Exemple : souliers droits et souliers gauches. Ils sont consommés ensemble dans des proportions fixes.</p>
+          <p>Augmenter les souliers gauches sans augmenter les droits ne change pas l'utilité.</p>
+          <div class="img-placeholder green">
+            <div class="icon">👞</div>
+            <div class="desc">Compléments parfaits : courbes en L</div>
+            <div class="sub">Graphique 1.5 : Isoquants en angle droit</div>
+          </div>
+          <p>Les courbes d'indifférence ont une forme en <strong>L</strong>.</p>
+        `
+      },
+      // ============================================================
+      // SLIDE 9 - AUTRES CAS PARTICULIERS
+      // ============================================================
+      {
+        id: 9, chapitre: 'chap1',
+        title: 'Autres cas : indésirables, saturation, neutres, discrets',
+        subtitle: 'Formes variées de courbes',
+        content: `
+          <ul>
+            <li><strong>Biens indésirables :</strong> courbes croissantes (ex: anchois + poivrons).</li>
+            <li><strong>Saturation :</strong> point idéal, courbes concentriques.</li>
+            <li><strong>Biens neutres :</strong> un bien n'affecte pas la satisfaction.</li>
+            <li><strong>Biens discrets :</strong> disponibles uniquement en nombres entiers.</li>
+          </ul>
+          <div class="img-placeholder">
+            <div class="icon">🔄</div>
+            <div class="desc">Courbes d'indifférence : biens indésirables, saturation, neutres</div>
+            <div class="sub">Graphiques 1.6, 1.7, 1.8, 1.9</div>
+          </div>
+        `
+      },
+      // ============================================================
+      // SLIDE 10 - TMS
+      // ============================================================
+      {
+        id: 10, chapitre: 'chap1',
+        title: 'Taux marginal de substitution (TMS)',
+        subtitle: 'TMSxy = -dy/dx',
+        content: `
+          <p>Le <strong>TMSxy</strong> mesure la quantité de Y que le consommateur est prêt à céder pour une unité supplémentaire de X, tout en gardant la même utilité.</p>
+          <div class="formula">TMSxy = - (Δy / Δx) = UmX / UmY</div>
+          <div class="img-placeholder green">
+            <div class="icon">📐</div>
+            <div class="desc">TMS et pente de la tangente</div>
+            <div class="sub">Graphique 1.10 : TMS = opposé de la pente de la tangente</div>
+          </div>
+          <p>Le TMS est décroissant : plus on a de X, moins on est prêt à céder du Y.</p>
+        `
+      },
+      // ============================================================
+      // SLIDE 11 - CONTRAINTE BUDGÉTAIRE
+      // ============================================================
+      {
+        id: 11, chapitre: 'chap1',
+        title: 'Contrainte budgétaire',
+        subtitle: 'R = Px·X + Py·Y',
+        content: `
+          <p>Le consommateur dispose d'un revenu R et des prix Px, Py.</p>
+          <div class="formula">R = X·Px + Y·Py</div>
+          <div class="formula">Y = - (Px/Py) X + R/Py</div>
+          <div class="img-placeholder">
+            <div class="icon">📊</div>
+            <div class="desc">Droite budgétaire</div>
+            <div class="sub">Graphique 1.11 : Pente -Px/Py, points extrêmes R/Px et R/Py</div>
+          </div>
+          <p>La droite budgétaire a pour pente <strong>-Px/Py</strong>.</p>
+          <p>Une variation de prix fait pivoter la droite ; une variation de revenu la déplace parallèlement.</p>
+        `
+      },
+      // ============================================================
+      // SLIDE 12 - ÉQUILIBRE DU CONSOMMATEUR
+      // ============================================================
+      {
+        id: 12, chapitre: 'chap1',
+        title: 'Équilibre du consommateur',
+        subtitle: 'Tangence courbe d\'indifférence / droite budgétaire',
+        content: `
+          <p>À l'optimum, la pente de la courbe d'indifférence égale la pente de la droite budgétaire :</p>
+          <div class="formula">TMSxy = Px / Py</div>
+          <div class="formula">UmX / Px = UmY / Py</div>
+          <div class="img-placeholder green">
+            <div class="icon">🎯</div>
+            <div class="desc">Équilibre du consommateur</div>
+            <div class="sub">Graphique 1.15 : Point de tangence E entre courbe d'indifférence et droite budgétaire</div>
+          </div>
+          <div class="highlight-box">Méthode de Lagrange : Max U(x,y) s/c R = xPx + yPy</div>
+        `
+      },
+      // ============================================================
+      // SLIDE 13 - DEMANDE INDIVIDUELLE (PRIX)
+      // ============================================================
+      {
+        id: 13, chapitre: 'chap1',
+        title: 'Demande individuelle en fonction du prix',
+        subtitle: 'Courbe consommation-prix',
+        content: `
+          <p>La <strong>courbe de consommation-prix</strong> est le lieu des points d'équilibre successifs quand le prix de X varie (Ceteris paribus).</p>
+          <div class="img-placeholder">
+            <div class="icon">📉</div>
+            <div class="desc">Courbe consommation-prix</div>
+            <div class="sub">Graphique 1.16 : Points d'équilibre E1, E2, E3, E4</div>
+          </div>
+          <p>À partir de cette courbe, on déduit la <strong>courbe de demande individuelle</strong>.</p>
+          <p>La demande est généralement <strong>décroissante</strong>.</p>
+        `
+      },
+      // ============================================================
+      // SLIDE 14 - EXCEPTIONS À LA LOI DE LA DEMANDE
+      // ============================================================
+      {
+        id: 14, chapitre: 'chap1',
+        title: 'Exceptions à la loi de la demande',
+        subtitle: 'Giffen, Veblen, etc.',
+        content: `
+          <ul>
+            <li><strong>Paradoxe de Giffen :</strong> quand le prix augmente, la quantité demandée augmente (biens inférieurs de première nécessité).</li>
+            <li><strong>Effet Veblen (snobisme) :</strong> la demande augmente avec le prix (biens de luxe ostentatoires).</li>
+            <li><strong>Hausse généralisée des prix :</strong> les consommateurs achètent plus par crainte de hausses futures.</li>
+            <li><strong>Biens de très grande valeur :</strong> une baisse de prix peut faire douter de la qualité.</li>
+          </ul>
+          <div class="img-placeholder orange">
+            <div class="icon">📈</div>
+            <div class="desc">Biens de Giffen et biens inférieurs</div>
+            <div class="sub">Graphique 1.17 : Comparaison des courbes de demande</div>
+          </div>
+        `
+      },
+      // ============================================================
+      // SLIDE 15 - DEMANDE ET REVENU
+      // ============================================================
+      {
+        id: 15, chapitre: 'chap1',
+        title: 'Demande en fonction du revenu',
+        subtitle: 'Courbe de consommation-revenu et courbe d\'Engel',
+        content: `
+          <p>La <strong>courbe de consommation-revenu</strong> relie les points d'équilibre pour des niveaux de revenu croissants.</p>
+          <div class="img-placeholder green">
+            <div class="icon">📊</div>
+            <div class="desc">Courbe de consommation-revenu</div>
+            <div class="sub">Graphique 1.19 : Points E1, E2, E3, E4</div>
+          </div>
+          <p>La <strong>courbe d'Engel</strong> montre comment la quantité demandée varie avec le revenu.</p>
+          <div class="img-placeholder">
+            <div class="icon">📈</div>
+            <div class="desc">Courbe d'Engel</div>
+            <div class="sub">Relation entre revenu et quantité demandée</div>
+          </div>
+          <ul>
+            <li>Biens normaux : Q augmente avec R</li>
+            <li>Biens supérieurs (luxe) : Q augmente plus que proportionnellement</li>
+            <li>Biens inférieurs : Q diminue quand R augmente</li>
+          </ul>
+        `
+      },
+      // ============================================================
+      // SLIDE 16 - MARSHALL VS HICKS
+      // ============================================================
+      {
+        id: 16, chapitre: 'chap1',
+        title: 'Demande marshallienne vs hicksienne',
+        subtitle: 'Primal vs dual',
+        content: `
+          <p><strong>Marshallienne (classique) :</strong> maximise l'utilité sous contrainte de revenu. x(p, R).</p>
+          <p><strong>Hicksienne (compensée) :</strong> minimise la dépense pour atteindre un niveau d'utilité donné. h(p, u).</p>
+          <div class="img-placeholder">
+            <div class="icon">🔄</div>
+            <div class="desc">Demande marshallienne et demande compensée</div>
+            <div class="sub">Graphique 1.20 : Comparaison des deux courbes de demande</div>
+          </div>
+          <div class="highlight-box">La demande hicksienne isole l'effet de substitution ; la demande marshallienne combine substitution et revenu.</div>
+        `
+      },
+      // ============================================================
+      // SLIDE 17 - DÉCOMPOSITION EFFET PRIX
+      // ============================================================
+      {
+        id: 17, chapitre: 'chap1',
+        title: 'Effet prix = effet substitution + effet revenu',
+        subtitle: 'Approches Hicks et Slutsky',
+        content: `
+          <p>Une baisse de prix entraîne :</p>
+          <ul>
+            <li><strong>Effet de substitution :</strong> le bien devient relativement moins cher, on le substitue aux autres.</li>
+            <li><strong>Effet de revenu :</strong> le pouvoir d'achat augmente, on peut acheter plus.</li>
+          </ul>
+          <div class="img-placeholder green">
+            <div class="icon">📐</div>
+            <div class="desc">Décomposition Hicks : variation compensatrice</div>
+            <div class="sub">Graphique 1.21 : E1 → E3 (substitution), E3 → E2 (revenu)</div>
+          </div>
+          <div class="img-placeholder">
+            <div class="icon">📐</div>
+            <div class="desc">Décomposition Slutsky</div>
+            <div class="sub">Graphique 1.23 : Rotation et déplacement parallèle</div>
+          </div>
+          <p><strong>Hicks :</strong> on compense le revenu pour rester sur la même courbe d'indifférence.</p>
+          <p><strong>Slutsky :</strong> on ajuste le revenu pour conserver le même pouvoir d'achat initial.</p>
+        `
+      },
+      // ============================================================
+      // SLIDE 18 - ÉLASTICITÉ-PRIX
+      // ============================================================
+      {
+        id: 18, chapitre: 'chap1',
+        title: 'Élasticité-prix de la demande',
+        subtitle: 'ep = (ΔQ/Q) / (ΔP/P)',
+        content: `
+          <div class="formula">e = (ΔQ / Q) / (ΔP / P) = (ΔQ/ΔP) · (P/Q)</div>
+          <ul>
+            <li>|e| > 1 : demande élastique</li>
+            <li>|e| = 1 : élasticité unitaire</li>
+            <li>0 < |e| < 1 : demande inélastique</li>
+            <li>|e| → ∞ : parfaitement élastique</li>
+            <li>e = 0 : parfaitement inélastique (ex : médicaments)</li>
+          </ul>
+          <div class="img-placeholder">
+            <div class="icon">📈</div>
+            <div class="desc">Demandes iso-élastiques</div>
+            <div class="sub">Graphique 1.25 : Différentes élasticités constantes</div>
+          </div>
+        `
+      },
+      // ============================================================
+      // SLIDE 19 - ÉLASTICITÉ CROISÉE
+      // ============================================================
+      {
+        id: 19, chapitre: 'chap1',
+        title: 'Élasticité croisée',
+        subtitle: 'ec = (ΔQx/Qx) / (ΔPy/Py)',
+        content: `
+          <p>Mesure la sensibilité de la demande de X à la variation du prix de Y.</p>
+          <div class="formula">ec = (ΔQx / Qx) / (ΔPy / Py)</div>
+          <ul>
+            <li>ec > 0 : biens substituables</li>
+            <li>ec < 0 : biens complémentaires</li>
+          </ul>
+          <p>Exemple : si P_y augmente de 10% et Q_x augmente de 7%, ec = 0,7 → biens substituables.</p>
+        `
+      },
+      // ============================================================
+      // SLIDE 20 - ÉLASTICITÉ-REVENU
+      // ============================================================
+      {
+        id: 20, chapitre: 'chap1',
+        title: 'Élasticité-revenu',
+        subtitle: 'er = (ΔQ/Q) / (ΔR/R)',
+        content: `
+          <div class="formula">er = (ΔQ / Q) / (ΔR / R)</div>
+          <ul>
+            <li>er > 1 : bien supérieur (luxe)</li>
+            <li>0 ≤ er ≤ 1 : bien normal</li>
+            <li>er < 0 : bien inférieur</li>
+          </ul>
+          <p>Exemple : si le revenu augmente de 10% et la quantité de +5%, er = 0,5 → bien normal.</p>
+          <div class="highlight-box">Les biens de première nécessité ont une élasticité-revenu faible (er < 1).</div>
+        `
+      },
+      // ============================================================
+      // SLIDE 21 - PRODUCTION : FACTEURS K ET L
+      // ============================================================
+      {
+        id: 21, chapitre: 'chap2',
+        title: 'Production : facteurs K et L',
+        subtitle: 'Fonction de production Q = f(K, L)',
+        content: `
+          <p><strong>Facteurs :</strong> travail (L) et capital (K).</p>
+          <ul>
+            <li>Homogènes : toutes les unités sont identiques</li>
+            <li>Divisibles : utilisables en quantités infiniment petites</li>
+            <li>Adaptables : une quantité donnée d'un facteur peut être associée à une quantité variable de l'autre</li>
+            <li>Substituables : un facteur peut remplacer l'autre</li>
+          </ul>
+          <div class="img-placeholder green">
+            <div class="icon">🏭</div>
+            <div class="desc">Combinaison des facteurs de production</div>
+            <div class="sub">Courte période : K fixe, L variable ; Longue période : K et L variables</div>
+          </div>
+          <p>La <strong>fonction de production</strong> associe la quantité produite maximale à chaque combinaison (K, L).</p>
+        `
+      },
+      // ============================================================
+      // SLIDE 22 - PRODUCTION EN COURTE PÉRIODE
+      // ============================================================
+      {
+        id: 22, chapitre: 'chap2',
+        title: 'Production en courte période',
+        subtitle: 'Produit total, moyen, marginal',
+        content: `
+          <p><strong>PT = F(L)</strong> avec K fixe.</p>
+          <p><strong>Productivité moyenne :</strong> PM = PT / L</p>
+          <p><strong>Productivité marginale :</strong> PmL = dPT/dL</p>
+          <div class="img-placeholder">
+            <div class="icon">📈</div>
+            <div class="desc">Courbes PT, PM, PmL en courte période</div>
+            <div class="sub">Graphique 2.2 : Forme générale des courbes</div>
+          </div>
+          <p><strong>Loi des rendements décroissants :</strong> au-delà d'un certain seuil, la productivité marginale diminue.</p>
+          <div class="highlight-box">Phase rationnelle : PmL et PM décroissantes mais positives.</div>
+        `
+      },
+      // ============================================================
+      // SLIDE 23 - PHASES DE PRODUCTION RATIONNELLE
+      // ============================================================
+      {
+        id: 23, chapitre: 'chap2',
+        title: 'Phases de production rationnelle',
+        subtitle: 'Zone d\'efficacité technique',
+        content: `
+          <p><strong>Phase 1 :</strong> 0 < L < L2 : PmL et PM augmentent. L'entreprise n'a pas intérêt à s'y situer.</p>
+          <p><strong>Phase 2 :</strong> L2 < L < L3 : PmL > 0, PM > 0, PM > PmL. <strong>Zone rationnelle</strong>.</p>
+          <p><strong>Phase 3 :</strong> L > L3 : PmL < 0, PM > 0. Le travail est trop abondant.</p>
+          <div class="img-placeholder green">
+            <div class="icon">📊</div>
+            <div class="desc">Phases de production</div>
+            <div class="sub">Graphique 2.3 : Zones 1, 2 et 3</div>
+          </div>
+          <div class="highlight-box">L'entreprise rationnelle se situe dans la phase 2 : productivités décroissantes mais positives.</div>
+        `
+      },
+      // ============================================================
+      // SLIDE 24 - LONGUE PÉRIODE : ISOQUANTS
+      // ============================================================
+      {
+        id: 24, chapitre: 'chap2',
+        title: 'Longue période : isoquants',
+        subtitle: 'Représentation des combinaisons K/L',
+        content: `
+          <p>Un <strong>isoquant</strong> représente les combinaisons (K, L) qui donnent le même niveau de production.</p>
+          <ul>
+            <li>Décroissants</li>
+            <li>Convexes</li>
+            <li>Ne se coupent pas</li>
+            <li>Plus éloigné de l'origine = production plus élevée</li>
+          </ul>
+          <div class="img-placeholder">
+            <div class="icon">📊</div>
+            <div class="desc">Isoquants</div>
+            <div class="sub">Graphique 2.4 : Q1, Q2, Q3 avec combinaisons de K et L</div>
+          </div>
+        `
+      },
+      // ============================================================
+      // SLIDE 25 - TMST
+      // ============================================================
+      {
+        id: 25, chapitre: 'chap2',
+        title: 'Taux marginal de substitution technique (TMST)',
+        subtitle: 'TMSTlk = -dK/dL',
+        content: `
+          <p>Le <strong>TMSTlk</strong> mesure la quantité de capital que le producteur est prêt à céder pour une unité supplémentaire de travail, tout en gardant la même production.</p>
+          <div class="formula">TMSTlk = -dK/dL = PmL / PmK</div>
+          <div class="img-placeholder green">
+            <div class="icon">📐</div>
+            <div class="desc">TMST et pente de l'isoquant</div>
+            <div class="sub">Graphique 2.3 : Pente de la tangente à l'isoquant</div>
+          </div>
+          <p>Le TMST est décroissant : la courbe est convexe.</p>
+        `
+      },
+      // ============================================================
+      // SLIDE 26 - ÉQUILIBRE DU PRODUCTEUR
+      // ============================================================
+      {
+        id: 26, chapitre: 'chap2',
+        title: 'Équilibre du producteur',
+        subtitle: 'Tangence isoquant / isocoût',
+        content: `
+          <p>L'<strong>isocoût</strong> : C = K·Pk + L·Pl.</p>
+          <div class="formula">K = - (Pl/Pk) L + C/Pk</div>
+          <p>À l'équilibre du producteur :</p>
+          <div class="formula">TMSTlk = Pl / Pk</div>
+          <div class="formula">PmL / Pl = PmK / Pk</div>
+          <div class="img-placeholder">
+            <div class="icon">🎯</div>
+            <div class="desc">Équilibre du producteur</div>
+            <div class="sub">Graphique 2.6 : Point de tangence E entre isoquant et isocoût</div>
+          </div>
+          <div class="highlight-box">Le producteur maximise sa production pour un coût donné, ou minimise son coût pour une production donnée.</div>
+        `
+      },
+      // ============================================================
+      // SLIDE 27 - SENTIER D'EXPANSION
+      // ============================================================
+      {
+        id: 27, chapitre: 'chap2',
+        title: 'Sentier d\'expansion',
+        subtitle: 'Lieu des équilibres successifs',
+        content: `
+          <p>Le <strong>sentier d'expansion</strong> est le lieu des points d'équilibre quand le budget de la firme augmente.</p>
+          <div class="img-placeholder green">
+            <div class="icon">📈</div>
+            <div class="desc">Sentier d'expansion</div>
+            <div class="sub">Graphique 2.6 : Points E1, E2, E3, E4</div>
+          </div>
+          <p>Le long du sentier d'expansion, le TMST est constant :</p>
+          <div class="formula">TMSTlk = Pl/Pk = PmL/PmK = constante</div>
+        `
+      },
+      // ============================================================
+      // SLIDE 28 - RENDEMENTS D'ÉCHELLE
+      // ============================================================
+      {
+        id: 28, chapitre: 'chap2',
+        title: 'Rendements d\'échelle',
+        subtitle: 'λ^α · Q = F(λK, λL)',
+        content: `
+          <p>Les rendements d'échelle mesurent l'évolution de la production quand tous les facteurs augmentent dans la même proportion.</p>
+          <ul>
+            <li><strong>α = 1 :</strong> rendements constants</li>
+            <li><strong>α > 1 :</strong> rendements croissants</li>
+            <li><strong>α < 1 :</strong> rendements décroissants</li>
+          </ul>
+          <div class="img-placeholder">
+            <div class="icon">📊</div>
+            <div class="desc">Rendements d'échelle</div>
+            <div class="sub">Graphique 2.7 : Cas I, II, III</div>
+          </div>
+          <p><strong>Fonction Cobb-Douglas :</strong> Q = A·K^α · L^β → rendements = α + β</p>
+        `
+      },
+      // ============================================================
+      // SLIDE 29 - COÛTS EN COURT TERME
+      // ============================================================
+      {
+        id: 29, chapitre: 'chap2',
+        title: 'Coûts de production en court terme',
+        subtitle: 'CF, CV, CT, CFM, CVM, CM, Cm',
+        content: `
+          <p><strong>CT = CF + CV(Q)</strong></p>
+          <ul>
+            <li>CF : coût fixe (indépendant de Q)</li>
+            <li>CV : coût variable (dépend de Q)</li>
+          </ul>
+          <p><strong>Coûts moyens :</strong> CM = CT/Q = CFM + CVM</p>
+          <p><strong>Coût marginal :</strong> Cm = dCT/dQ</p>
+          <div class="img-placeholder green">
+            <div class="icon">📊</div>
+            <div class="desc">Courbes de coûts : CT, CF, CV</div>
+            <div class="sub">Graphique 2.8 : Coûts totaux, moyens et marginaux</div>
+          </div>
+        `
+      },
+      // ============================================================
+      // SLIDE 30 - FORME DES COURBES DE COÛT
+      // ============================================================
+      {
+        id: 30, chapitre: 'chap2',
+        title: 'Forme des courbes de coût',
+        subtitle: 'Relation CM, CVM, Cm',
+        content: `
+          <ul>
+            <li>Tant que Cm < CM, CM décroît.</li>
+            <li>Dès que Cm > CM, CM croît.</li>
+            <li>Cm coupe CM en son minimum.</li>
+            <li>Cm coupe CVM en son minimum.</li>
+          </ul>
+          <div class="img-placeholder">
+            <div class="icon">📉</div>
+            <div class="desc">Courbes de coût en U</div>
+            <div class="sub">Graphique 2.9 : CM, CVM, Cm</div>
+          </div>
+          <div class="highlight-box">Le coût marginal est le coût de la dernière unité produite.</div>
+        `
+      },
+      // ============================================================
+      // SLIDE 31 - COÛTS EN LONGUE PÉRIODE
+      // ============================================================
+      {
+        id: 31, chapitre: 'chap2',
+        title: 'Coûts en longue période',
+        subtitle: 'CMLP, CmLP, économies d\'échelle',
+        content: `
+          <p>Le <strong>CMLP</strong> est l'enveloppe des courbes de CM de court terme.</p>
+          <div class="img-placeholder green">
+            <div class="icon">📈</div>
+            <div class="desc">Coûts en courte et longue période</div>
+            <div class="sub">Graphique 2.10 : CMLP enveloppe des CM1, CM2, CM3...</div>
+          </div>
+          <ul>
+            <li><strong>Économies d'échelle :</strong> CMLP décroissant (rendements croissants)</li>
+            <li><strong>Déséconomies d'échelle :</strong> CMLP croissant (rendements décroissants)</li>
+            <li><strong>Rendements constants :</strong> CMLP horizontal</li>
+          </ul>
+        `
+      },
+      // ============================================================
+      // SLIDE 32 - CPP : HYPOTHÈSES
+      // ============================================================
+      {
+        id: 32, chapitre: 'chap3',
+        title: 'Concurrence pure et parfaite (CPP)',
+        subtitle: '5 hypothèses',
+        content: `
+          <ol>
+            <li><strong>Atomicité :</strong> grand nombre de petits offreurs et demandeurs</li>
+            <li><strong>Homogénéité :</strong> produit identique</li>
+            <li><strong>Information parfaite :</strong> tous connaissent les prix</li>
+            <li><strong>Liberté d'entrée/sortie :</strong> aucune barrière</li>
+            <li><strong>Libre circulation des facteurs</strong></li>
+          </ol>
+          <div class="img-placeholder">
+            <div class="icon">🏛️</div>
+            <div class="desc">Marché en concurrence pure et parfaite</div>
+            <div class="sub">Atomicité, homogénéité, transparence</div>
+          </div>
+          <p>Les entreprises sont <strong>preneuses de prix</strong> (price takers).</p>
+          <div class="highlight-box">La CPP n'existe pas dans la réalité, c'est un modèle théorique de référence.</div>
+        `
+      },
+      // ============================================================
+      // SLIDE 33 - CPP : ÉQUILIBRE DU MARCHÉ
+      // ============================================================
+      {
+        id: 33, chapitre: 'chap3',
+        title: 'CPP : équilibre du marché',
+        subtitle: 'Offre totale, demande totale, surplus',
+        content: `
+          <p>L'équilibre est à l'intersection de l'offre totale et de la demande totale.</p>
+          <div class="img-placeholder green">
+            <div class="icon">📊</div>
+            <div class="desc">Équilibre du marché</div>
+            <div class="sub">Graphique 3.3 : Intersection offre/demande</div>
+          </div>
+          <p><strong>Surplus du consommateur :</strong> différence entre le prix maximum qu'il est prêt à payer et le prix d'équilibre.</p>
+          <p><strong>Surplus du producteur :</strong> différence entre le prix d'équilibre et le prix minimum qu'il accepterait.</p>
+          <div class="img-placeholder">
+            <div class="icon">💰</div>
+            <div class="desc">Surplus du consommateur et du producteur</div>
+            <div class="sub">Graphique 3.4 : Aires de surplus</div>
+          </div>
+          <div class="highlight-box">Le prix d'équilibre est stable : tout écart crée un excès d'offre ou de demande qui ramène à l'équilibre.</div>
+        `
+      },
+      // ============================================================
+      // SLIDE 34 - CPP : ÉQUILIBRE DE L'ENTREPRISE (COURT TERME)
+      // ============================================================
+      {
+        id: 34, chapitre: 'chap3',
+        title: 'CPP : équilibre de l\'entreprise en court terme',
+        subtitle: 'Rm = Cm = P',
+        content: `
+          <p>L'entreprise maximise son profit quand :</p>
+          <div class="formula">Rm = Cm</div>
+          <p>En CPP, Rm = P (prix constant).</p>
+          <div class="formula">P = Cm</div>
+          <div class="img-placeholder">
+            <div class="icon">📈</div>
+            <div class="desc">Équilibre de l'entreprise en CPP</div>
+            <div class="sub">Graphique 3.6 : Rm = P = Cm au point B</div>
+          </div>
+          <p>La courbe d'offre individuelle est la partie croissante du Cm au-dessus du CVM (seuil de fermeture).</p>
+          <div class="highlight-box">Le seuil de rentabilité est atteint quand P = CM minimum.</div>
+        `
+      },
+      // ============================================================
+      // SLIDE 35 - CPP : ÉQUILIBRE EN LONGUE PÉRIODE
+      // ============================================================
+      {
+        id: 35, chapitre: 'chap3',
+        title: 'CPP : équilibre en longue période',
+        subtitle: 'Profit nul, taille optimale',
+        content: `
+          <p>Les profits attirent de nouvelles entreprises → l'offre augmente → le prix baisse.</p>
+          <div class="formula">P = Cm = min CM</div>
+          <div class="img-placeholder green">
+            <div class="icon">📊</div>
+            <div class="desc">Équilibre en longue période</div>
+            <div class="sub">Graphique 3.8 : Entrées et sorties du marché</div>
+          </div>
+          <p>Chaque firme produit à la taille minimale optimale (rendements constants).</p>
+          <div class="highlight-box">Les superprofits disparaissent ; profit nul à long terme.</div>
+        `
+      },
+      // ============================================================
+      // SLIDE 36 - MONOPOLE
+      // ============================================================
+      {
+        id: 36, chapitre: 'chap3',
+        title: 'Monopole',
+        subtitle: 'Price maker, Rm < P',
+        content: `
+          <p>Le <strong>monopoleur</strong> est seul offreur. La demande du marché est sa demande.</p>
+          <p><strong>Recette marginale :</strong> Rm = P(1 + 1/ep)</p>
+          <div class="formula">Rm = Cm, avec P > Cm</div>
+          <div class="img-placeholder">
+            <div class="icon">📊</div>
+            <div class="desc">Équilibre du monopoleur</div>
+            <div class="sub">Graphique 3.10 : Rm = Cm au point J</div>
+          </div>
+          <p><strong>Monopole discriminant :</strong> vend le même produit à des prix différents sur des marchés séparés.</p>
+          <p><strong>Monopole naturel :</strong> rendements croissants → une seule firme peut produire à moindre coût.</p>
+          <div class="highlight-box">Le monopole vend plus cher, produit moins et réalise plus de profits qu'un marché concurrentiel.</div>
+        `
+      },
+      // ============================================================
+      // SLIDE 37 - MONOPOLE DISCRIMINANT
+      // ============================================================
+      {
+        id: 37, chapitre: 'chap3',
+        title: 'Monopole discriminant',
+        subtitle: 'Prix différents selon les marchés',
+        content: `
+          <p>Le monopoleur augmente son profit en vendant son produit sur plusieurs marchés à des prix différents.</p>
+          <p><strong>Conditions :</strong></p>
+          <ul>
+            <li>Les marchés doivent être disjoints</li>
+            <li>Les élasticités de la demande doivent être différentes sur chaque marché</li>
+          </ul>
+          <div class="formula">Rm₁ = Rm₂ = Cm</div>
+          <div class="img-placeholder green">
+            <div class="icon">📊</div>
+            <div class="desc">Monopole discriminant</div>
+            <div class="sub">Graphique 3.12 : Rm global = somme horizontale des Rm</div>
+          </div>
+          <p>Le prix est plus bas sur le marché où la demande est la plus élastique.</p>
+        `
+      },
+      // ============================================================
+      // SLIDE 38 - MONOPOLE NATUREL
+      // ============================================================
+      {
+        id: 38, chapitre: 'chap3',
+        title: 'Monopole naturel',
+        subtitle: 'Rendements croissants',
+        content: `
+          <p>Le monopole naturel apparaît quand les coûts fixes sont très élevés par rapport aux coûts variables.</p>
+          <p>Exemple : hydroélectricité, transports ferroviaires, réseaux.</p>
+          <div class="img-placeholder">
+            <div class="icon">⚡</div>
+            <div class="desc">Monopole naturel</div>
+            <div class="sub">Graphique 3.11 : CMLP décroissant sur toute la plage de production</div>
+          </div>
+          <div class="highlight-box">La concurrence n'est pas viable : une seule entreprise peut produire à moindre coût.</div>
+          <p>L'échelle minimale efficace est proche de la taille totale du marché.</p>
+        `
+      },
+      // ============================================================
+      // SLIDE 39 - CONCURRENCE MONOPOLISTIQUE
+      // ============================================================
+      {
+        id: 39, chapitre: 'chap4',
+        title: 'Concurrence monopolistique',
+        subtitle: 'Produit différencié, libre entrée',
+        content: `
+          <p><strong>Caractéristiques :</strong></p>
+          <ul>
+            <li>Grand nombre d'offreurs et d'acheteurs</li>
+            <li>Produit différencié (objectivement ou subjectivement)</li>
+            <li>Liberté d'entrée et de sortie</li>
+          </ul>
+          <div class="img-placeholder purple">
+            <div class="icon">📊</div>
+            <div class="desc">Équilibre en concurrence monopolistique</div>
+            <div class="sub">Graphique 4.1 : RM, Rm, CM, Cm</div>
+          </div>
+          <p>Chaque firme a un pouvoir de monopole sur son produit différencié.</p>
+        `
+      },
+      // ============================================================
+      // SLIDE 40 - CONCURRENCE MONOPOLISTIQUE (LT)
+      // ============================================================
+      {
+        id: 40, chapitre: 'chap4',
+        title: 'Concurrence monopolistique : équilibre en longue période',
+        subtitle: 'Profit nul, mais prix > Cm',
+        content: `
+          <p>À long terme, les profits attirent de nouvelles firmes imitatrices.</p>
+          <p>La demande adressée à chaque firme diminue jusqu'à ce que :</p>
+          <div class="formula">RM = CMLP</div>
+          <div class="formula">Rm = CmLP</div>
+          <div class="img-placeholder purple">
+            <div class="icon">📈</div>
+            <div class="desc">Équilibre de long terme</div>
+            <div class="sub">Graphique 4.2 : RM tangente au CMLP</div>
+          </div>
+          <div class="highlight-box">Profit nul en LT, mais prix > Cm → inefficacité allocative.</div>
+          <p>L'entreprise ne produit pas à la taille minimale optimale (contrairement à la CPP).</p>
+        `
+      },
+      // ============================================================
+      // SLIDE 41 - OLIGOPOLE
+      // ============================================================
+      {
+        id: 41, chapitre: 'chap4',
+        title: 'Oligopole',
+        subtitle: 'Interdépendance et incertitude',
+        content: `
+          <p><strong>Caractéristiques :</strong></p>
+          <ul>
+            <li>Petit nombre de firmes interdépendantes</li>
+            <li>Incertitude sur les réactions des concurrents</li>
+            <li>Interdépendance conjecturale</li>
+          </ul>
+          <div class="img-placeholder">
+            <div class="icon">♟️</div>
+            <div class="desc">Interdépendance des firmes</div>
+            <div class="sub">Graphique 4.3 : Demande adressée à l'entreprise</div>
+          </div>
+          <p>Chaque firme doit anticiper les réactions de ses concurrents avant d'agir.</p>
+        `
+      },
+      // ============================================================
+      // SLIDE 42 - COURBE DE DEMANDE COUDÉE (SWEEZY)
+      // ============================================================
+      {
+        id: 42, chapitre: 'chap4',
+        title: 'Courbe de demande coudée (Sweezy)',
+        subtitle: 'Rigidité des prix en oligopole',
+        content: `
+          <p>L'entreprise suppose que :</p>
+          <ul>
+            <li>Si elle baisse son prix, les concurrents l'imitent → demande peu élastique</li>
+            <li>Si elle augmente son prix, les concurrents ne l'imitent pas → demande très élastique</li>
+          </ul>
+          <div class="img-placeholder green">
+            <div class="icon">📉</div>
+            <div class="desc">Courbe de demande coudée</div>
+            <div class="sub">Graphique 4.4 : Discontinuité de la recette marginale</div>
+          </div>
+          <div class="highlight-box">La Rm présente une discontinuité → les coûts peuvent varier sans que le prix change.</div>
+        `
+      },
+      // ============================================================
+      // SLIDE 43 - CARTEL
+      // ============================================================
+      {
+        id: 43, chapitre: 'chap4',
+        title: 'Oligopole avec cartel',
+        subtitle: 'Entente pour maximiser le profit',
+        content: `
+          <p>Les firmes s'entendent pour constituer un <strong>cartel</strong> et agir comme un monopoleur.</p>
+          <p>Le cartel maximise le profit global quand :</p>
+          <div class="formula">Rmc = Cmc</div>
+          <div class="img-placeholder">
+            <div class="icon">🤝</div>
+            <div class="desc">Équilibre du cartel</div>
+            <div class="sub">Graphique 4.5 : Rmc = Cmc, quotas de production</div>
+          </div>
+          <p>Chaque firme se voit attribuer un quota de production :</p>
+          <div class="formula">Cm₁ = Cm₂ = Cm₃ = Cmc = Rmc</div>
+        `
+      },
+      // ============================================================
+      // SLIDE 44 - DUOPOLE DE COURNOT
+      // ============================================================
+      {
+        id: 44, chapitre: 'chap4',
+        title: 'Duopole de Cournot',
+        subtitle: 'Concurrence en quantités',
+        content: `
+          <p><strong>Hypothèses :</strong></p>
+          <ul>
+            <li>Deux firmes produisent un produit homogène</li>
+            <li>Concurrence sur les quantités</li>
+            <li>Choix simultanés</li>
+            <li>Chaque firme maximise son profit en tenant compte de la production de l'autre</li>
+          </ul>
+          <div class="img-placeholder green">
+            <div class="icon">📊</div>
+            <div class="desc">Fonctions de réaction</div>
+            <div class="sub">Graphique 4.7 : R₁(q₂) et R₂(q₁)</div>
+          </div>
+          <div class="formula">q₁ = R₁(q₂) = (a - c₁)/2b - 1/2·q₂</div>
+          <div class="formula">q₂ = R₂(q₁) = (a - c₂)/2b - 1/2·q₁</div>
+        `
+      },
+      // ============================================================
+      // SLIDE 45 - DUOPOLE DE STACKELBERG
+      // ============================================================
+      {
+        id: 45, chapitre: 'chap4',
+        title: 'Duopole de Stackelberg',
+        subtitle: 'Leader et suiveur',
+        content: `
+          <p><strong>Caractéristiques :</strong></p>
+          <ul>
+            <li>Une firme leader fixe sa production en premier</li>
+            <li>La firme suiveuse ajuste sa production</li>
+            <li>Le leader connaît la fonction de réaction du suiveur</li>
+          </ul>
+          <div class="img-placeholder">
+            <div class="icon">👑</div>
+            <div class="desc">Duopole asymétrique</div>
+            <div class="sub">Leader et suiveur</div>
+          </div>
+          <div class="highlight-box">Le leader a un avantage : il produit plus et réalise un profit plus élevé que le suiveur.</div>
+        `
+      },
+      // ============================================================
+      // SLIDE 46 - DUOPOLE DE BERTRAND
+      // ============================================================
+      {
+        id: 46, chapitre: 'chap4',
+        title: 'Duopole de Bertrand',
+        subtitle: 'Concurrence en prix',
+        content: `
+          <p><strong>Hypothèses :</strong></p>
+          <ul>
+            <li>Deux firmes produisent un produit homogène</li>
+            <li>Concurrence sur les prix</li>
+            <li>Choix simultanés</li>
+          </ul>
+          <p><strong>Résultat :</strong></p>
+          <ul>
+            <li>Le prix s'égalise au coût marginal (comme en CPP)</li>
+            <li>Les profits sont nuls</li>
+            <li>Paradoxe de Bertrand : avec 2 firmes, on obtient le résultat concurrentiel</li>
+          </ul>
+          <div class="highlight-box">La concurrence en prix est plus intense que la concurrence en quantités.</div>
+        `
+      },
+      // ============================================================
+      // SLIDE 47 - MARCHÉ DU TRAVAIL
+      // ============================================================
+      {
+        id: 47, chapitre: 'chap5',
+        title: 'Marché du travail en CPP',
+        subtitle: 'Demande et offre de travail',
+        content: `
+          <p><strong>Demande de travail :</strong></p>
+          <ul>
+            <li>Demande dérivée de la demande du produit</li>
+            <li>Recette marginale du travail : RmL = PmL × Rm</li>
+            <li>En CPP : RmL = PmL × P = VPmL</li>
+            <li>Condition d'équilibre : W = VPmL</li>
+          </ul>
+          <div class="img-placeholder green">
+            <div class="icon">👷</div>
+            <div class="desc">Demande de travail</div>
+            <div class="sub">Graphique 5.2 : VPmL = PmL × P</div>
+          </div>
+        `
+      },
+      // ============================================================
+      // SLIDE 48 - OFFRE DE TRAVAIL
+      // ============================================================
+      {
+        id: 48, chapitre: 'chap5',
+        title: 'Offre de travail',
+        subtitle: 'Arbitrage loisir / revenu',
+        content: `
+          <p>L'individu répartit son temps entre travail et loisir.</p>
+          <p><strong>Contrainte budgétaire :</strong></p>
+          <div class="formula">R = W·d = W(H - I)</div>
+          <div class="img-placeholder">
+            <div class="icon">⏰</div>
+            <div class="desc">Arbitrage loisir/revenu</div>
+            <div class="sub">Graphique 5.3 : Courbes d'indifférence et contrainte budgétaire</div>
+          </div>
+          <p><strong>Effets d'une hausse du salaire :</strong></p>
+          <ul>
+            <li>Effet de substitution : plus de travail (loisir devient plus cher)</li>
+            <li>Effet de revenu : plus de loisir (revenu plus élevé)</li>
+          </ul>
+        `
+      },
+      // ============================================================
+      // SLIDE 49 - ÉQUILIBRE DU MARCHÉ DU TRAVAIL
+      // ============================================================
+      {
+        id: 49, chapitre: 'chap5',
+        title: 'Équilibre du marché du travail',
+        subtitle: 'Offre = Demande',
+        content: `
+          <p>L'équilibre est à l'intersection de l'offre et de la demande de travail.</p>
+          <div class="img-placeholder green">
+            <div class="icon">📊</div>
+            <div class="desc">Équilibre du marché du travail</div>
+            <div class="sub">Graphique 5.9 : Offre et demande de travail</div>
+          </div>
+          <p><strong>Taux de salaire d'équilibre :</strong> W*</p>
+          <p><strong>Emploi d'équilibre :</strong> L*</p>
+          <div class="highlight-box">Le salaire réel est égal à la productivité marginale du travail à l'équilibre.</div>
+        `
+      },
+      // ============================================================
+      // SLIDE 50 - EXTERNALITÉS ET BIENS PUBLICS
+      // ============================================================
+      {
+        id: 50, chapitre: 'chap5',
+        title: 'Externalités et biens publics',
+        subtitle: 'Défaillances du marché',
+        content: `
+          <p><strong>Externalités :</strong> effets externes d'une activité économique sur le bien-être d'un tiers.</p>
+          <ul>
+            <li><strong>Externalité négative :</strong> pollution (coût social > coût privé)</li>
+            <li><strong>Externalité positive :</strong> éducation (bénéfice social > bénéfice privé)</li>
+          </ul>
+          <div class="img-placeholder">
+            <div class="icon">🌍</div>
+            <div class="desc">Externalités</div>
+            <div class="sub">Exemple : pollution, éducation, recherche</div>
+          </div>
+          <p><strong>Biens publics :</strong></p>
+          <ul>
+            <li>Non-rivalité : la consommation d'un individu ne réduit pas celle des autres</li>
+            <li>Non-exclusion : impossible d'exclure un individu</li>
+          </ul>
+          <div class="highlight-box">L'État peut intervenir pour corriger ces défaillances du marché.</div>
+        `
+      },
+      // ============================================================
+      // SLIDE 51 - CONCLUSION
+      // ============================================================
+      {
+        id: 51, chapitre: 'intro',
+        title: 'Conclusion',
+        subtitle: 'Récapitulatif du cours de microéconomie',
+        content: `
+          <div class="img-placeholder green">
+            <div class="icon">🎓</div>
+            <div class="desc">Félicitations !</div>
+            <div class="sub">Vous avez terminé le cours de microéconomie</div>
+          </div>
+          <h4>📌 Points clés à retenir :</h4>
+          <ul>
+            <li><strong>Consommateur :</strong> maximisation de l'utilité sous contrainte budgétaire</li>
+            <li><strong>Producteur :</strong> maximisation du profit, coûts de production</li>
+            <li><strong>Concurrence parfaite :</strong> P = Cm, profit nul à long terme</li>
+            <li><strong>Monopole :</strong> Rm = Cm, P > Cm, superprofit</li>
+            <li><strong>Oligopole :</strong> interdépendance, stratégies</li>
+            <li><strong>Marché du travail :</strong> W = VPmL</li>
+          </ul>
+          <div class="highlight-box">Bonne continuation dans vos études en économie !</div>
+        `
+      }
+    ];
+
+    // ================================================================
+    // CONSTRUCTION + LOGIQUE DE NAVIGATION + AUDIO
+    // ================================================================
+    const container = document.getElementById('appContainer');
+    let currentSlideIndex = 0;
+    let autoPlay = false;
+    let audioEndTimeout = null;
+    let audioElements = [];
+
+    // --- Construction des slides ---
+    function buildSlides() {
+      slidesData.forEach((slide, index) => {
+        const slideDiv = document.createElement('div');
+        slideDiv.className = `slide chap-${slide.chapitre}`;
+        slideDiv.id = `slide-${index}`;
+        slideDiv.dataset.index = index;
+        const progress = ((index + 1) / slidesData.length * 100).toFixed(1);
+        slideDiv.innerHTML = `
+          <div class="slide-inner">
+            <div class="card-header">
+              <span class="card-number">Carte ${index+1} / ${slidesData.length}</span>
+              <span class="card-title">${slide.title}</span>
+            </div>
+            <div class="card-subtitle">${slide.subtitle || ''}</div>
+            <div class="content">${slide.content}</div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: ${progress}%;"></div>
+            </div>
+            <div class="card-footer">
+              <div class="nav-buttons">
+                <button class="prev-btn" ${index === 0 ? 'disabled' : ''}>↑ Précédent</button>
+                <button class="next-btn" ${index === slidesData.length-1 ? 'disabled' : ''}>Suivant ↓</button>
+              </div>
+              <div class="audio-controls">
+                <button class="play-audio">🔊 Lire</button>
+                <button class="mute-audio">🔇 Muet</button>
+                <span class="slide-counter">${index+1}/${slidesData.length}</span>
+              </div>
+              <div>
+                <button class="auto-toggle off" id="autoToggle">▶ Auto</button>
+                <span class="status-indicator" id="statusIndicator">⏸ Arrêt</span>
+              </div>
+            </div>
+            <audio class="slide-audio" preload="metadata" controls></audio>
+          </div>
+        `;
+        container.appendChild(slideDiv);
+        audioElements.push(slideDiv.querySelector('.slide-audio'));
+      });
+    }
+
+    // --- Chargement des fichiers audio ---
+    function loadAudioFiles() {
+      audioElements.forEach((audio, idx) => {
+        const num = String(idx + 1).padStart(2, '0');
+        audio.src = `mEL2_${num}.mp3`;
+        audio.load();
+        console.log(`🎵 Audio chargé : slide_${num}.mp3`);
+      });
+    }
+
+    // --- Vérification des audios ---
+    function checkMissingAudios() {
+      const missing = [];
+      audioElements.forEach((audio, idx) => {
+        if (!audio.src || audio.src === '') {
+          missing.push(idx + 1);
+        }
+      });
+      if (missing.length > 0) {
+        console.warn(`⚠️ ${missing.length} audios manquants : slide ${missing.join(', ')}`);
+        console.warn('💡 Vérifiez que les fichiers existent dans le dossier "audio/"');
+      } else {
+        console.log('✅ Tous les 51 audios sont chargés.');
+      }
+      return missing;
+    }
+
+    // --- Navigation ---
+    function goToSlide(index) {
+      if (index < 0 || index >= slidesData.length) return;
+      const slide = document.getElementById(`slide-${index}`);
+      if (!slide) return;
+      
+      stopCurrentAudio();
+      slide.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      currentSlideIndex = index;
+      updateStatusIndicator();
+      
+      if (autoPlay) {
+        playSlideAudioAndAdvance();
+      }
+    }
+
+    function getCurrentSlideElement() {
+      return document.getElementById(`slide-${currentSlideIndex}`);
+    }
+
+    function updateStatusIndicator() {
+      const indicator = document.getElementById('statusIndicator');
+      if (!indicator) return;
+      if (autoPlay) {
+        indicator.textContent = `▶ Lecture slide ${currentSlideIndex+1}/${slidesData.length}`;
+        indicator.style.background = '#c6f6d5';
+        indicator.style.color = '#22543d';
+      } else {
+        indicator.textContent = '⏸ Arrêt';
+        indicator.style.background = '#edf2f7';
+        indicator.style.color = '#4a5568';
+      }
+    }
+
+    // --- Audio ---
+    function playSlideAudioAndAdvance() {
+      const slide = getCurrentSlideElement();
+      if (!slide) return;
+      
+      const audio = slide.querySelector('.slide-audio');
+      if (!audio || !audio.src) {
+        if (audioEndTimeout) clearTimeout(audioEndTimeout);
+        audioEndTimeout = setTimeout(() => {
+          if (autoPlay && currentSlideIndex < slidesData.length - 1) {
+            goToSlide(currentSlideIndex + 1);
+          } else if (autoPlay && currentSlideIndex === slidesData.length - 1) {
+            stopAutoScroll();
+          }
+        }, 10000);
+        return;
+      }
+
+      if (audio.readyState < 2) {
+        audio.addEventListener('loadedmetadata', function onLoaded() {
+          audio.removeEventListener('loadedmetadata', onLoaded);
+          startAudioPlayback(audio);
+        });
+        setTimeout(() => {
+          if (audio.readyState < 2) {
+            startAudioPlayback(audio);
+          }
+        }, 5000);
+      } else {
+        startAudioPlayback(audio);
+      }
+    }
+
+    function startAudioPlayback(audio) {
+      stopCurrentAudio();
+      audio.currentTime = 0;
+      const playPromise = audio.play();
+      
+      if (playPromise !== undefined) {
+        playPromise.catch(error => {
+          console.log('Lecture audio bloquée:', error);
+          if (audioEndTimeout) clearTimeout(audioEndTimeout);
+          audioEndTimeout = setTimeout(() => {
+            if (autoPlay && currentSlideIndex < slidesData.length - 1) {
+              goToSlide(currentSlideIndex + 1);
+            }
+          }, 5000);
+        });
+      }
+
+      audio.onended = function() {
+        if (autoPlay && currentSlideIndex < slidesData.length - 1) {
+          goToSlide(currentSlideIndex + 1);
+        } else if (autoPlay && currentSlideIndex === slidesData.length - 1) {
+          stopAutoScroll();
+        }
+      };
+
+      audio.onerror = function() {
+        if (audioEndTimeout) clearTimeout(audioEndTimeout);
+        audioEndTimeout = setTimeout(() => {
+          if (autoPlay && currentSlideIndex < slidesData.length - 1) {
+            goToSlide(currentSlideIndex + 1);
+          }
+        }, 5000);
+      };
+    }
+
+    function stopCurrentAudio() {
+      const slide = getCurrentSlideElement();
+      if (!slide) return;
+      const audio = slide.querySelector('.slide-audio');
+      if (audio) {
+        audio.pause();
+        audio.currentTime = 0;
+        audio.onended = null;
+        audio.onerror = null;
+      }
+      if (audioEndTimeout) {
+        clearTimeout(audioEndTimeout);
+        audioEndTimeout = null;
+      }
+    }
+
+    function stopAutoScroll() {
+      autoPlay = false;
+      stopCurrentAudio();
+      const btn = document.getElementById('autoToggle');
+      if (btn) {
+        btn.textContent = '▶ Auto';
+        btn.classList.add('off');
+      }
+      updateStatusIndicator();
+    }
+
+    // ================================================================
+    // ÉVÉNEMENTS
+    // ================================================================
+    document.addEventListener('click', function(e) {
+      const target = e.target.closest('button');
+      if (!target) return;
+
+      if (target.classList.contains('prev-btn')) {
+        goToSlide(currentSlideIndex - 1);
+        e.preventDefault();
+      }
+      if (target.classList.contains('next-btn')) {
+        goToSlide(currentSlideIndex + 1);
+        e.preventDefault();
+      }
+
+      if (target.classList.contains('play-audio')) {
+        const slide = target.closest('.slide');
+        if (!slide) return;
+        const audio = slide.querySelector('.slide-audio');
+        if (audio) {
+          if (audio.paused) {
+            if (autoPlay) {
+              autoPlay = false;
+              document.getElementById('autoToggle').textContent = '▶ Auto';
+              document.getElementById('autoToggle').classList.add('off');
+              updateStatusIndicator();
+            }
+            audio.play().catch(e => console.log('Lecture bloquée'));
+          } else {
+            audio.pause();
+          }
+        }
+        e.preventDefault();
+      }
+
+      if (target.classList.contains('mute-audio')) {
+        const slide = target.closest('.slide');
+        if (!slide) return;
+        const audio = slide.querySelector('.slide-audio');
+        if (audio) {
+          audio.muted = !audio.muted;
+          target.textContent = audio.muted ? '🔊 Activer' : '🔇 Muet';
+        }
+        e.preventDefault();
+      }
+
+      if (target.id === 'autoToggle' || target.closest('#autoToggle')) {
+        const btn = document.getElementById('autoToggle');
+        autoPlay = !autoPlay;
+        
+        if (autoPlay) {
+          btn.textContent = '⏸ Pause';
+          btn.classList.remove('off');
+          playSlideAudioAndAdvance();
+        } else {
+          btn.textContent = '▶ Auto';
+          btn.classList.add('off');
+          stopCurrentAudio();
+        }
+        updateStatusIndicator();
+        e.preventDefault();
+      }
+    });
+
+    // --- Raccourcis clavier ---
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowUp') {
+        goToSlide(currentSlideIndex - 1);
+        e.preventDefault();
+      } else if (e.key === 'ArrowDown') {
+        goToSlide(currentSlideIndex + 1);
+        e.preventDefault();
+      } else if (e.key === ' ') {
+        e.preventDefault();
+        document.getElementById('autoToggle').click();
+      }
+    });
+
+    // --- Observer pour suivre la slide active ---
+    const observer = new IntersectionObserver((entries) => {
+      for (let entry of entries) {
+        if (entry.isIntersecting) {
+          const slide = entry.target;
+          const idx = parseInt(slide.dataset.index);
+          if (!isNaN(idx) && idx !== currentSlideIndex) {
+            if (autoPlay) {
+              stopAutoScroll();
+            }
+            currentSlideIndex = idx;
+            updateStatusIndicator();
+          }
+        }
+      }
+    }, { threshold: 0.5 });
+
+    // ================================================================
+    // INITIALISATION
+    // ================================================================
+    buildSlides();
+    loadAudioFiles();
+    document.querySelectorAll('.slide').forEach(s => observer.observe(s));
+    setTimeout(() => goToSlide(0), 300);
+    updateStatusIndicator();
+    setTimeout(checkMissingAudios, 1000);
+
+    console.log(`📘 ${slidesData.length} slides chargées avec synchronisation audio.`);
+    console.log('🔊 Pour écouter une slide, cliquez sur "🔊 Lire".');
+    console.log('▶️ Pour le mode automatique, cliquez sur "▶ Auto".');
+    console.log('⌨️ Raccourcis : ↑ ↓ pour naviguer, Espace pour Auto.');
+  </script>
+</body>
+</html>
