@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "cours": [
+    {
+      "id": "premiers-secours",
+      "titre": "Premiers Secours",
+      "description": "Les gestes qui sauvent. Niveau B1.",
+      "icone": "🩺",
+      "version": 1,
+      "fichiers": [
+        "Premier_Secours.html",
+        "Équipement.jpg",
+        "Rautek1.jpg",
+        "Rautek2.png",
+        "Heimlich.png",
+        "Aine.png",
+        "PLS.jpg",
+        "Dae.jpg",
+        "Cpr.jpg",
+        "premiers_secours.mp3"
+      ]
+    }
+  ]
+}
