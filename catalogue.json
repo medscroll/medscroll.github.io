@@ -1,24 +1,83 @@
 {
-  "version": 1,
-  "cours": [
+  "version": 2,
+  "categories": [
     {
-      "id": "premiers-secours",
-      "titre": "Premiers Secours",
-      "description": "Les gestes qui sauvent. Niveau B1.",
+      "id": "medecine",
+      "nom": "Médecine",
       "icone": "🩺",
-      "version": 1,
-      "fichiers": [
-        "Premier_Secours.html",
-        "Équipement.jpg",
-        "Rautek1.jpg",
-        "Rautek2.png",
-        "Heimlich.png",
-        "Aine.png",
-        "PLS.jpg",
-        "Dae.jpg",
-        "Cpr.jpg",
-        "premiers_secours.mp3"
+      "couleur": "#ff6b6b",
+      "cours": [
+        {
+          "id": "premiers-secours",
+          "titre": "Premiers Secours",
+          "description": "Les gestes qui sauvent. Niveau B1.",
+          "icone": "🩺",
+          "niveau": "Tous niveaux",
+          "duree": "15 min",
+          "version": 1,
+          "fichiers": [
+            "Premier_Secours.html",
+            "Équipement.jpg",
+            "Rautek1.jpg",
+            "Rautek2.png",
+            "Heimlich.png",
+            "Aine.png",
+            "PLS.jpg",
+            "Dae.jpg",
+            "Cpr.jpg",
+            "premiers_secours.mp3"
+          ]
+        },
+        {
+          "id": "anatomie-coeur",
+          "titre": "Anatomie du cœur",
+          "description": "Structure et fonctionnement.",
+          "icone": "❤️",
+          "niveau": "L1",
+          "duree": "20 min",
+          "version": 1,
+          "fichiers": ["anatomie-coeur.html", "coeur.jpg"]
+        }
       ]
+    },
+    {
+      "id": "economie",
+      "nom": "Économie",
+      "icone": "📊",
+      "couleur": "#4ecdc4",
+      "cours": [
+        {
+          "id": "offre-demande",
+          "titre": "Offre et demande",
+          "description": "Comprendre les marchés.",
+          "icone": "📈",
+          "niveau": "L1",
+          "duree": "25 min",
+          "version": 1,
+          "fichiers": ["offre-demande.html", "graphique.png"]
+        }
+      ]
+    },
+    {
+      "id": "droit",
+      "nom": "Droit",
+      "icone": "⚖️",
+      "couleur": "#feca57",
+      "cours": []
+    },
+    {
+      "id": "informatique",
+      "nom": "Informatique",
+      "icone": "💻",
+      "couleur": "#a29bfe",
+      "cours": []
+    },
+    {
+      "id": "langues",
+      "nom": "Langues",
+      "icone": "🌍",
+      "couleur": "#fd79a8",
+      "cours": []
     }
   ]
 }
