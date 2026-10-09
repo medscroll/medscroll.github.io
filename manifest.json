@@ -1,7 +1,7 @@
 {
   "id": "./",
   "name": "STUDIA",
-  "short_name": "Studia",
+  "short_name": "Studia Lite",
   "description": "Apprendre autrement — RDC",
   "start_url": "./index.html",
   "scope": "./",
