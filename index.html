@@ -1,761 +1,435 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-27JQ5Y9SJT"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#00ff88">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="STUDIA">
+<link rel="manifest" href="./manifest.json">
+<link rel="apple-touch-icon" href="./icon-192.png">
+<title>STUDIA</title>
 
-  gtag('config', 'G-27JQ5Y9SJT');
-</script>
-    <!--
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8822497441901683"
-     crossorigin="anonymous"></script>
-    -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="mobile-web-app-capable" content="yes">
-    <title>STUDIA – Catégories</title>
-    <style>
-        /* === STYLE GLOBAL (hérité et adapté) === */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',Roboto,sans-serif; background:#0d1117; color:#e6f1ff; padding:16px; padding-bottom:80px; }
 
-        body {
-            background-color: #0a192f;
-            color: #e6f1ff;
-            overflow-x: hidden;
-            height: 100vh;
-            overflow: hidden;
-        }
+.intro-overlay { position:fixed; inset:0; background:#0d1117; z-index:9999; overflow-y:auto; padding:30px 20px; display:flex; justify-content:center; }
+.intro-content { max-width:500px; width:100%; }
+.intro-logo { font-size:64px; text-align:center; margin-bottom:10px; }
+.intro-content h1 { color:#00ff88; text-align:center; font-size:28px; margin-bottom:4px; }
+.intro-sub { color:#888; text-align:center; font-size:14px; margin-bottom:28px; }
+.intro-block { background:#161b22; border-radius:14px; padding:18px; margin-bottom:14px; border:1px solid #21262d; }
+.intro-block h3 { color:#00ccff; font-size:16px; margin-bottom:10px; }
+.intro-block p, .intro-block li { font-size:13px; color:#c0c8d0; line-height:1.6; }
+.intro-block ol, .intro-block ul { margin-left:20px; margin-top:6px; }
+.intro-block li { margin-bottom:4px; }
+.intro-block strong { color:#00ff88; }
+.intro-btn { width:100%; padding:16px; border-radius:12px; border:none; background:#00ff88; color:#121212; font-weight:bold; font-size:16px; margin-top:10px; cursor:pointer; }
 
-        .app-container {
-            max-width: 500px;
-            height: 100vh;
-            margin: 0 auto;
-            position: relative;
-            width: 100%;
-            background-color: #0a192f;
-            box-shadow: 0 0 20px rgba(0, 150, 255, 0.2);
-            overflow: hidden;
-        }
+.search-bar { position:sticky; top:0; z-index:100; background:#0d1117; padding:8px 0 16px 0; }
+.search-bar input { width:100%; padding:14px 18px; border-radius:14px; border:1px solid #21262d; background:#161b22; color:#fff; font-size:15px; outline:none; }
+.search-bar input:focus { border-color:#00ff88; }
 
-        /* --- Header avec menu hamburger (identique) --- */
-        .header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            max-width: 500px;
-            padding: 15px 20px;
-            background: rgba(10, 25, 47, 0.95);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            z-index: 1000;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #1e3a5c;
-        }
+h1 { color:#00ff88; font-size:22px; margin-bottom:4px; }
+.sub { color:#888; font-size:13px; margin-bottom:16px; }
 
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #64ffda;
-        }
+.niveaux { display:flex; gap:8px; overflow-x:auto; padding-bottom:8px; scrollbar-width:none; margin-bottom:4px; }
+.niveaux::-webkit-scrollbar { display:none; }
+.niveau-tab { flex-shrink:0; padding:10px 16px; border-radius:20px; background:#161b22; color:#ccc; border:1px solid #21262d; font-size:13px; cursor:pointer; white-space:nowrap; }
+.niveau-tab.active { background:#00ff88; color:#121212; font-weight:bold; border-color:#00ff88; }
 
-        .hamburger {
-            background: none;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
-            width: 30px;
-            height: 25px;
-            padding: 0;
-            z-index: 1100;
-        }
+.souscats { display:none; gap:6px; overflow-x:auto; padding-bottom:10px; scrollbar-width:none; margin-bottom:6px; }
+.souscats.active { display:flex; }
+.souscats::-webkit-scrollbar { display:none; }
+.souscat-tab { flex-shrink:0; padding:8px 14px; border-radius:16px; background:#1a2332; color:#8899aa; border:1px solid #2a3444; font-size:12px; cursor:pointer; white-space:nowrap; }
+.souscat-tab.active { background:#0099ff; color:#fff; font-weight:bold; border-color:#0099ff; }
 
-        .hamburger span {
-            width: 100%;
-            height: 3px;
-            background-color: #64ffda;
-            border-radius: 5px;
-            transition: all 0.3s ease;
-        }
+.cours { background:#161b22; border-radius:14px; padding:14px; margin-bottom:10px; border:1px solid #21262d; display:flex; align-items:center; gap:12px; }
+.cours .ico { font-size:32px; flex-shrink:0; }
+.cours .info { flex:1; min-width:0; }
+.cours .titre { font-weight:bold; font-size:15px; margin-bottom:2px; }
+.cours .desc { font-size:12px; color:#8b949e; margin-bottom:4px; }
+.cours .meta { display:flex; gap:10px; font-size:11px; color:#666; }
+.cours .meta .niveau { color:#ffaa00; }
+.cours .etat { font-size:10px; margin-top:4px; }
+.cours .etat.ok { color:#00ff88; }
+.cours .etat.maj { color:#ffaa00; }
+.cours .etat.warn { color:#ff6666; }
+.cours .actions { display:flex; flex-direction:column; gap:4px; flex-shrink:0; }
+.cours button { padding:6px 10px; border-radius:6px; border:none; font-size:11px; font-weight:bold; cursor:pointer; white-space:nowrap; }
+.btn-dl { background:#00ff88; color:#121212; }
+.btn-maj { background:#ffaa00; color:#121212; }
+.btn-lire { background:#0099ff; color:#fff; }
+.btn-ligne { background:#4a4a8a; color:#fff; }
+.btn-supp { background:#3a1a1a; color:#ff6666; padding:6px 8px !important; }
 
-        .hamburger.open span:nth-child(1) {
-            transform: rotate(45deg) translate(5px, 5px);
-        }
-        .hamburger.open span:nth-child(2) {
-            opacity: 0;
-        }
-        .hamburger.open span:nth-child(3) {
-            transform: rotate(-45deg) translate(7px, -6px);
-        }
+.progress { position:fixed; bottom:0; left:0; right:0; background:#161b22; padding:10px; text-align:center; font-size:11px; color:#8b949e; border-top:1px solid #21262d; }
+.progress.ok { color:#00ff88; }
+.progress.err { color:#ff6666; }
 
-        /* Menu overlay (inchangé, mais on vire les cartes premium pour alléger) */
-        .menu-overlay {
-            position: fixed;
-            top: 60px;
-            left: 0;
-            width: 100%;
-            max-width: 500px;
-            height: calc(100vh - 60px);
-            background: rgba(10, 25, 47, 0.98);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            z-index: 999;
-            transform: translateX(-100%);
-            transition: transform 0.3s ease-in-out;
-            overflow-y: auto;
-            padding: 20px;
-            border-right: 1px solid #1e3a5c;
-        }
-
-        .menu-overlay.open {
-            transform: translateX(0);
-        }
-
-        .menu-section {
-            margin-bottom: 30px;
-        }
-
-        .menu-section h2 {
-            color: #64ffda;
-            font-size: 1.3rem;
-            margin-bottom: 15px;
-            border-bottom: 1px solid #1e3a5c;
-            padding-bottom: 5px;
-        }
-
-        .menu-items {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .menu-card {
-            background-color: #112240;
-            border-radius: 8px;
-            padding: 15px;
-            border-left: 4px solid #64ffda;
-            transition: transform 0.2s, background-color 0.2s;
-            cursor: pointer;
-            text-decoration: none;
-            color: #e6f1ff;
-        }
-
-        .menu-card:hover {
-            background-color: #1a2f4a;
-            transform: translateX(5px);
-        }
-
-        /* carte spéciale pour le support */
-        .menu-card.support {
-            border-left-color: #25D366;
-        }
-
-        .menu-card h3 {
-            font-size: 1rem;
-            margin-bottom: 5px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .menu-card .description {
-            font-size: 0.8rem;
-            color: #8892b0;
-        }
-
-        .whatsapp-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            background-color: #25D366;
-            color: white;
-            padding: 8px 15px;
-            border-radius: 20px;
-            text-decoration: none;
-            font-size: 0.9rem;
-            margin-top: 10px;
-            transition: background-color 0.3s;
-            width: fit-content;
-        }
-
-        .whatsapp-link:hover {
-            background-color: #128C7E;
-        }
-
-        /* === CONTENU PRINCIPAL : NOUVELLE GRILLE DE CATÉGORIES === */
-        .main-content {
-            margin-top: 60px;
-            height: calc(100vh - 60px);
-            overflow-y: auto;
-            padding: 20px;
-            scroll-behavior: smooth;
-        }
-
-        .hero {
-            margin-bottom: 30px;
-        }
-
-        .hero h1 {
-            font-size: 2rem;
-            font-weight: 600;
-            color: #64ffda;
-            line-height: 1.2;
-        }
-
-        .hero p {
-            color: #8892b0;
-            margin-top: 8px;
-            font-size: 1rem;
-        }
-
-        .categories-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 18px;
-            margin: 25px 0 30px;
-        }
-
-        .category-card {
-            background: linear-gradient(145deg, #112240, #0c1a30);
-            border-radius: 24px;
-            padding: 25px 15px;
-            text-align: center;
-            text-decoration: none;
-            color: inherit;
-            border: 1px solid #1e3a5c;
-            transition: all 0.25s ease;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .category-card:hover {
-            transform: translateY(-6px);
-            border-color: #64ffda;
-            box-shadow: 0 15px 25px rgba(100,255,218,0.15);
-        }
-
-        .category-emoji {
-            font-size: 3.2rem;
-            filter: drop-shadow(0 4px 6px #64ffda55);
-        }
-
-        .category-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #64ffda;
-        }
-
-        .category-sub {
-            font-size: 0.9rem;
-            color: #8892b0;
-        }
-
-        /* section des liens utiles */
-        .quick-links {
-            margin-top: 25px;
-            border-top: 1px dashed #1e3a5c;
-            padding-top: 25px;
-        }
-
-        .quick-links h3 {
-            color: #ccd6f6;
-            margin-bottom: 12px;
-            font-size: 1.2rem;
-        }
-
-        .pill-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .pill {
-            background-color: #112240;
-            padding: 10px 18px;
-            border-radius: 40px;
-            font-size: 0.9rem;
-            color: #64ffda;
-            border: 1px solid #1e3a5c;
-            text-decoration: none;
-            transition: 0.2s;
-        }
-
-        .pill:hover {
-            background-color: #1e3a5c;
-            color: white;
-        }
-
-        /* petit message de redirection */
-        .redirect-message {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #25D366;
-            color: white;
-            padding: 12px 20px;
-            border-radius: 30px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            z-index: 2000;
-            display: none;
-            align-items: center;
-            gap: 10px;
-            font-size: 0.9rem;
-            max-width: 90%;
-            white-space: nowrap;
-        }
-
-        .redirect-message.show {
-            display: flex;
-        }
-
-        .close-message {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.2rem;
-            cursor: pointer;
-            margin-left: 10px;
-        }
-
-        /* scrollbar */
-        .main-content::-webkit-scrollbar {
-            width: 5px;
-        }
-        .main-content::-webkit-scrollbar-track {
-            background: #112240;
-        }
-        .main-content::-webkit-scrollbar-thumb {
-            background: #64ffda;
-            border-radius: 5px;
-        }
-
-        @media (max-width: 400px) {
-            .categories-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-        /* Bannière d'installation - à ajouter dans la section <style> */
-.install-banner {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    max-width: 500px;
-    margin: 0 auto;
-    background: linear-gradient(135deg, #112240 0%, #0a192f 100%);
-    border-top: 2px solid #64ffda;
-    padding: 15px 20px;
-    z-index: 1001;
-    transform: translateY(100%);
-    transition: transform 0.4s ease;
-    box-shadow: 0 -5px 20px rgba(0,0,0,0.3);
-}
-
-.install-banner.show {
-    transform: translateY(0);
-}
-
-.install-banner-content {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    flex-wrap: wrap;
-}
-
-.install-banner-icon {
-    font-size: 2.5rem;
-    filter: drop-shadow(0 2px 4px #64ffda55);
-}
-
-.install-banner-text {
-    flex: 1;
-}
-
-.install-banner-text h4 {
-    color: #64ffda;
-    font-size: 1rem;
-    margin-bottom: 4px;
-}
-
-.install-banner-text p {
-    color: #8892b0;
-    font-size: 0.8rem;
-}
-
-.install-banner-buttons {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
-
-.btn-install {
-    background-color: #64ffda;
-    color: #0a192f;
-    border: none;
-    padding: 8px 20px;
-    border-radius: 30px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.2s;
-    font-size: 0.85rem;
-}
-
-.btn-install:hover {
-    background-color: #4cd8b5;
-    transform: scale(1.02);
-}
-
-.btn-later {
-    background: none;
-    border: 1px solid #1e3a5c;
-    color: #8892b0;
-    padding: 8px 15px;
-    border-radius: 30px;
-    cursor: pointer;
-    font-size: 0.8rem;
-    transition: 0.2s;
-}
-
-.btn-later:hover {
-    border-color: #64ffda;
-    color: #64ffda;
-}
-
-.btn-close {
-    background: none;
-    border: none;
-    color: #8892b0;
-    font-size: 1.2rem;
-    cursor: pointer;
-    padding: 5px;
-    margin-left: 5px;
-}
-
-.btn-close:hover {
-    color: #64ffda;
-}
-
-.update-badge {
-    background-color: #ff6b35;
-    color: white;
-    border-radius: 20px;
-    padding: 2px 8px;
-    font-size: 0.7rem;
-    margin-left: 8px;
-    font-weight: bold;
-}
-    </style>
+.empty { text-align:center; color:#666; padding:30px; }
+</style>
 </head>
 <body>
-    <div class="app-container">
-        <!-- Header inchangé avec STUDIA -->
-        <div class="header">
-            <div class="logo">STUDIA</div>
-            <button class="hamburger" id="hamburgerBtn">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-        </div>
 
-        <!-- Menu overlay – épuré, sans cours directs, avec accès support -->
-        <div class="menu-overlay" id="menuOverlay">
-            <div class="menu-section">
-                <h2>📂 Navigation</h2>
-                <div class="menu-items">
-                    <a href="#" class="menu-card" id="menuAccueil" style="pointer-events:none; opacity:0.7;">
-                        <h3>🏠 Accueil (catégories)</h3>
-                        <div class="description">Médecine & Économie</div>
-                    </a>
-                    <a href="Medecine.html" class="menu-card" target="_blank" rel="noopener noreferrer">
-                        <h3>🩺 Médecine</h3>
-                        <div class="description">Anatomie, vaccinologie, santé communautaire</div>
-                    </a>
-                    <a href="Economie.html" class="menu-card" target="_blank" rel="noopener noreferrer">
-                        <h3>📊 Économie</h3>
-                        <div class="description">Statistiques, micro/macro, développement</div>
-                    </a>
-                    <a href="Informatique.html" class="menu-card" target="_blank" rel="noopener noreferrer">
-                        <h3>🧑‍💻 Informatique 🧑‍💻</h3>
-                        <div class="description">Python, Développement Web</div>
-                    </a>
-                </div>
-            </div>
-            <div class="menu-section">
-                <h2>💬 Support</h2>
-                <div class="menu-items">
-                    <a href="https://wa.me/243961803375?text=Bonjour%20STUDIA%2C%20j%27ai%20une%20question%20sur%20les%20cat%C3%A9gories" 
-                       class="menu-card support" target="_blank" rel="noopener noreferrer">
-                        <h3>📱 WhatsApp</h3>
-                        <div class="description">Contactez-nous</div>
-                    </a>
-                </div>
-            </div>
-            <div class="menu-section">
-                <h2>⬇️ Téléchargez l'application Android</h2>
-                <div class="menu-items">
-                    <a href="STUDIA.apk" 
-                       class="menu-card support" target="_blank" rel="noopener noreferrer">
-                        <h3>STUDIA ANDROID VERSION</h3>
-                        <div class="description">Obtenez l'application Android</div>
-                    </a>
-                </div>
-            </div>
-            <!-- Petit rappel du nom -->
-            <div style="text-align: center; margin-top: 30px; font-size:0.8rem; color:#4a6f8c;">
-                <span> STUDIA – savoir en mouvement</span>
-            </div>
-        </div>
-
-        <!-- CONTENU PRINCIPAL : deux grandes catégories Médecine / Économie -->
-        <div class="main-content" id="mainContent">
-            <div class="hero">
-                <h1>STUDIA</h1>
-                <p>Choisissez votre domaine</p>
-            </div>
-
-            <!-- Grille des catégories : Médecine et Économie -->
-            <div class="categories-grid">
-                <!-- Carte Médecine (renvoie vers Medecine.html) -->
-                <a href="Medecine.html" class="category-card" target="_blank" rel="noopener noreferrer">
-                    <span class="category-emoji">🩺</span>
-                    <span class="category-title">Médecine</span>
-                    <span class="category-sub">Anatomie · Vaccinologie · Santé communautaire</span>
-                </a>
-                <!-- Carte Économie (renvoie vers Economie.html) -->
-                <a href="Economie.html" class="category-card" target="_blank" rel="noopener noreferrer">
-                    <span class="category-emoji">📊</span>
-                    <span class="category-title">Économie</span>
-                    <span class="category-sub">Statistiques · Microéconomie · Développement</span>
-                </a>
-                <a href="Informatique.html" class="category-card" target="_blank" rel="noopener noreferrer">
-                    <span class="category-emoji">🧑‍💻</span>
-                    <span class="category-title">Informatique </span>
-                    <span class="category-sub">Python · Algorithme · Développement Web</span>
-                </a>
-            </div>
-
-            <!-- Raccourcis vers quelques cours libres (simples exemples, mais ils mènent aussi aux catégories) 
-                 pour rester cohérent avec l'idée de navigation. On peut mettre des liens vers des sous-pages futures -->
-            <div class="quick-links">
-                <h3>📚 Accès rapide (cours populaires)</h3>
-                <div class="pill-list">
-                    <a href="https://medscroll.github.io/MedScroll/" class="pill">🧠 Anatomie tête/cou</a>
-                    <a href="MicroEconomie1.html" class="pill"> 🧾 MicroEconomie Ière année</a>
-                    <a href="Saco1.html" class="pill">🌍 Santé communautaire</a>
-                </div>
-                <p style="color:#62748c; font-size:0.75rem; margin-top:15px;">
-                    * Les cours sont organisés par catégorie. Cliquez sur Médecine ou Économie pour explorer.
-                </p>
-            </div>
-
-            <!-- Bandeau contact WhatsApp discret -->
-            <div style="text-align: center; margin: 30px 0 20px;">
-                <a href="https://wa.me/243961803375?text=Bonjour%20STUDIA%2C%20je%20souhaite%20plus%20d%27informations%20sur%20les%20cours" 
-                   class="whatsapp-link" 
-                   target="_blank"
-                   rel="noopener noreferrer">
-                    <span class="whatsapp-icon">📱</span>
-                    Contacter STUDIA
-                </a>
-            </div>
-        </div>
-        <!-- Bannière d'installation intelligente -->
-<div class="install-banner" id="installBanner">
-    <div class="install-banner-content">
-        <div class="install-banner-icon">📱</div>
-        <div class="install-banner-text">
-            <h4>STUDIA <span id="updateBadge" class="update-badge" style="display:none;">Nouvelle version</span></h4>
-            <p>Application Android • Téléchargez la dernière version</p>
-        </div>
-        <div class="install-banner-buttons">
-            <button class="btn-install" id="installBtn">Installer</button>
-            <button class="btn-later" id="laterBtn">Plus tard</button>
-            <button class="btn-close" id="closeBannerBtn">✕</button>
-        </div>
+<div id="intro" class="intro-overlay">
+  <div class="intro-content">
+    <div class="intro-logo">📚</div>
+    <h1>STUDIA</h1>
+    <p class="intro-sub">Apprendre autrement — RDC</p>
+    <div class="intro-block">
+      <h3>🧠 Méthode</h3>
+      <ol>
+        <li><strong>Cas concret</strong> — Exemple réel.</li>
+        <li><strong>Question</strong> — Pourquoi, comment.</li>
+        <li><strong>Théorie</strong> — Explications claires.</li>
+        <li><strong>Pratique</strong> — Application.</li>
+        <li><strong>Quiz</strong> — Teste-toi.</li>
+      </ol>
     </div>
+    <button class="intro-btn" onclick="fermerIntro()">C'est parti !</button>
+  </div>
 </div>
-    </div>
 
-    <!-- Message de redirection (optionnel mais gardé pour cohérence) -->
-    <div class="redirect-message" id="redirectMessage">
-        <span>🔁 Redirection vers la catégorie...</span>
-        <button class="close-message" onclick="this.parentElement.classList.remove('show')">✕</button>
-    </div>
+<h1>📚 STUDIA</h1>
+<p class="sub">Programme scolaire RDC</p>
 
-    <script>
-        // === GESTION DE LA BANNIÈRE D'INSTALLATION ===
+<div class="search-bar">
+  <input type="text" id="search" placeholder="🔍 Rechercher un cours..." oninput="filtrer()">
+</div>
+
+<div class="niveaux" id="niveaux"></div>
+<div class="souscats" id="souscats"></div>
+<div id="liste"></div>
+
+<div id="installSection" style="margin-top:30px;padding:20px;background:#161b22;border-radius:14px;border:1px solid #21262d;">
+  <h2 style="color:#00ff88;font-size:18px;margin-bottom:12px;">📲 Installer STUDIA</h2>
+  <p style="font-size:13px;color:#8b949e;margin-bottom:16px;">
+    Installe l'app sur ton téléphone pour y accéder hors ligne.
+  </p>
+  <div id="installAndroid" style="display:none;">
+    <a href="https://TON_USER.github.io/STUDIA.apk"
+       style="display:block;text-align:center;padding:16px;background:#00ff88;color:#121212;text-decoration:none;border-radius:12px;font-weight:bold;font-size:15px;">
+      ⬇️ Télécharger l'APK Android
+    </a>
+  </div>
+  <div id="installIos" style="display:none;">
+    <div style="background:#1a2332;border-radius:12px;padding:16px;border-left:4px solid #0099ff;">
+      <p style="font-weight:bold;color:#0099ff;margin-bottom:12px;">📱 Installation sur iPhone / iPad</p>
+      <ol style="font-size:13px;color:#c0c8d0;line-height:1.8;margin-left:20px;">
+        <li>Ouvre cette page dans <strong>Safari</strong></li>
+        <li>Appuie sur <strong>Partager</strong> ⬆️</li>
+        <li>Choisis <strong>"Sur l'écran d'accueil"</strong></li>
+        <li>Appuie sur <strong>"Ajouter"</strong></li>
+      </ol>
+    </div>
+  </div>
+  <div id="installWeb" style="display:none;">
+    <p style="font-size:13px;color:#c0c8d0;">Ouvre cette page depuis ton téléphone pour l'installer.</p>
+  </div>
+</div>
+
+<p class="progress" id="progress">Chargement...</p>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+      .then(r => console.log('✓ SW :', r.scope))
+      .catch(e => console.error('✗ SW :', e));
+  });
+}
+</script>
+
+<script>
+/* ═══════ CONFIG — REMPLACE CES URLS ═══════ */
+const CATALOGUE_URL = 'https://TON_USER.github.io/TON_REPO_STUDIA/catalogue.json';
+const BASE_URL = 'https://TON_USER.github.io/TON_REPO_STUDIA/';
+
+const CoursStorage = {
+  COURS_CACHE: 'studia-cours-v1',
+  async _c() { return caches.open(this.COURS_CACHE); },
+  async exists(f) {
+    const c = await this._c();
+    return !!(await c.match(BASE_URL + f, { ignoreSearch: true }));
+  },
+  async download(url, f) {
+    try {
+      const r = await fetch(url, { cache: 'no-store' });
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      const c = await this._c();
+      await c.put(url, r.clone());
+      return true;
+    } catch (e) { console.error('DL err ' + f + ' :', e.message); return false; }
+  },
+  async delete(f) {
+    try { const c = await this._c(); await c.delete(BASE_URL + f, { ignoreSearch: true }); }
+    catch (e) {}
+  },
+  async getVersion(id) { return parseInt(localStorage.getItem('studia_v_' + id) || '0'); },
+  async setVersion(id, v) { localStorage.setItem('studia_v_' + id, v.toString()); }
+};
+
+var CATALOGUE = null;
+var NIVEAU_ACTIVE = null;
+var SOUSCAT_ACTIVE = null;
+var telechargementsEnCours = {};
+var recherche = '';
+
+function fermerIntro() {
+  document.getElementById('intro').style.display = 'none';
+  try { localStorage.setItem('studia_intro', 'true'); } catch(e) {}
+}
+try { if (localStorage.getItem('studia_intro') === 'true') document.getElementById('intro').style.display = 'none'; } catch(e) {}
+
+async function charger() {
+  try {
+    var cached = localStorage.getItem('studia_catalogue');
+    if (cached) { CATALOGUE = JSON.parse(cached); afficherTout(); }
+  } catch(e) {}
+  if (!navigator.onLine) {
+    setProgress(CATALOGUE ? '⚠ Hors ligne - cache' : '⚠ Hors ligne', '');
+    return;
+  }
+  setProgress('Chargement...', '');
+  try {
+    var r = await fetch(CATALOGUE_URL + '?t=' + Date.now());
+    var d = await r.json();
+    CATALOGUE = d;
+    try { localStorage.setItem('studia_catalogue', JSON.stringify(d)); } catch(e) {}
+    afficherTout();
+    setProgress('✓ Catalogue à jour', 'ok');
+  } catch(e) {
+    setProgress(CATALOGUE ? '⚠ Cache utilisé' : '⚠ Pas de connexion', 'err');
+  }
+}
+
+function setProgress(t, c) {
+  var p = document.getElementById('progress');
+  p.textContent = t;
+  p.className = 'progress ' + (c || '');
+}
+
+function afficherTout() {
+  if (!CATALOGUE || !CATALOGUE.categories) return;
+  if (!NIVEAU_ACTIVE) NIVEAU_ACTIVE = CATALOGUE.categories[0].id;
+  afficherNiveaux(); afficherSousCats(); afficherListe();
+}
+
+function getNiveauActif() {
+  if (!CATALOGUE) return null;
+  return CATALOGUE.categories.find(c => c.id === NIVEAU_ACTIVE);
+}
+
+function afficherNiveaux() {
+  var c = document.getElementById('niveaux'); c.innerHTML = '';
+  CATALOGUE.categories.forEach(function(cat) {
+    var t = document.createElement('div');
+    t.className = 'niveau-tab' + (NIVEAU_ACTIVE === cat.id ? ' active' : '');
+    t.textContent = cat.icone + ' ' + cat.nom;
+    t.onclick = () => { NIVEAU_ACTIVE = cat.id; SOUSCAT_ACTIVE = null; afficherNiveaux(); afficherSousCats(); afficherListe(); };
+    c.appendChild(t);
+  });
+}
+
+function afficherSousCats() {
+  var c = document.getElementById('souscats'); c.innerHTML = '';
+  var n = getNiveauActif();
+  if (!n) return;
+  if (!n.sousCategories || !n.sousCategories.length) {
+    c.classList.remove('active'); SOUSCAT_ACTIVE = null; return;
+  }
+  if (!SOUSCAT_ACTIVE) SOUSCAT_ACTIVE = n.sousCategories[0].id;
+  c.classList.add('active');
+  n.sousCategories.forEach(function(s) {
+    var t = document.createElement('div');
+    t.className = 'souscat-tab' + (SOUSCAT_ACTIVE === s.id ? ' active' : '');
+    t.textContent = s.nom;
+    t.onclick = () => { SOUSCAT_ACTIVE = s.id; afficherSousCats(); afficherListe(); };
+    c.appendChild(t);
+  });
+}
+
+function matchRecherche(c) {
+  if (!recherche) return true;
+  return c.titre.toLowerCase().includes(recherche) || c.description.toLowerCase().includes(recherche);
+}
+
+async function afficherListe() {
+  var l = document.getElementById('liste'); l.innerHTML = '';
+  var n = getNiveauActif();
+  if (!n) { l.innerHTML = '<p class="empty">Aucun niveau.</p>'; return; }
+  var list = [];
+  if (n.cours) n.cours.forEach(c => { if (matchRecherche(c)) list.push(c); });
+  if (n.sousCategories) n.sousCategories.forEach(s => {
+    if (SOUSCAT_ACTIVE && s.id !== SOUSCAT_ACTIVE) return;
+    s.cours.forEach(c => { if (matchRecherche(c)) list.push(c); });
+  });
+  if (!list.length) { l.innerHTML = '<p class="empty">Aucun cours.</p>'; return; }
+  for (var i = 0; i < list.length; i++) l.appendChild(await creerCoursElement(list[i]));
+}
+
+async function creerCoursElement(c) {
+  var v = await CoursStorage.getVersion(c.id);
+  var dejaLa = await CoursStorage.exists(c.fichiers[0]);
+  var enCours = telechargementsEnCours[c.id];
+  var online = navigator.onLine;
+  var etat = '', cls = '';
+  if (enCours) { etat = '⏳ ' + enCours.done + '/' + enCours.total; cls = 'maj'; }
+  else if (!dejaLa) { etat = online ? 'Non téléchargé' : '⚠ Hors ligne'; cls = online ? '' : 'warn'; }
+  else if (c.version > v) { etat = 'MàJ dispo'; cls = 'maj'; }
+  else { etat = '✓ Hors ligne'; cls = 'ok'; }
+
+  var d = document.createElement('div');
+  d.className = 'cours';
+  d.innerHTML =
+    '<div class="ico">' + (c.icone || '📖') + '</div>' +
+    '<div class="info">' +
+      '<div class="titre">' + c.titre + '</div>' +
+      '<div class="desc">' + c.description + '</div>' +
+      '<div class="meta"><span class="niveau">' + (c.niveau || '') + '</span></div>' +
+      '<div class="etat ' + cls + '">' + etat + '</div>' +
+    '</div><div class="actions"></div>';
+
+  var a = d.querySelector('.actions');
+  if (dejaLa && !enCours) {
+    var b1 = document.createElement('button');
+    b1.className = 'btn-lire'; b1.textContent = '📖 Lire';
+    b1.onclick = () => ouvrirLocal(c); a.appendChild(b1);
+    var b2 = document.createElement('button');
+    b2.className = 'btn-supp'; b2.textContent = '🗑️';
+    b2.onclick = () => supprimer(c); a.appendChild(b2);
+  }
+  if (!dejaLa && online && !enCours) {
+    var b3 = document.createElement('button');
+    b3.className = 'btn-dl'; b3.textContent = '☁️ Télécharger';
+    b3.onclick = () => telecharger(c); a.appendChild(b3);
+    var b4 = document.createElement('button');
+    b4.className = 'btn-ligne'; b4.textContent = '🌐 En ligne';
+    b4.onclick = () => { window.location.href = BASE_URL + c.fichiers[0]; }; a.appendChild(b4);
+  }
+  if (dejaLa && c.version > v && online && !enCours) {
+    var b5 = document.createElement('button');
+    b5.className = 'btn-maj'; b5.textContent = '🔄 MàJ';
+    b5.onclick = () => telecharger(c); a.appendChild(b5);
+  }
+  return d;
+}
+
+function filtrer() {
+  recherche = document.getElementById('search').value.toLowerCase().trim();
+  if (recherche) afficherListeRecherche(); else afficherListe();
+}
+
+async function afficherListeRecherche() {
+  var l = document.getElementById('liste'); l.innerHTML = '';
+  var tous = [];
+  CATALOGUE.categories.forEach(cat => {
+    if (cat.cours) cat.cours.forEach(c => { if (matchRecherche(c)) tous.push(c); });
+    if (cat.sousCategories) cat.sousCategories.forEach(s => {
+      s.cours.forEach(c => { if (matchRecherche(c)) tous.push(c); });
+    });
+  });
+  if (!tous.length) { l.innerHTML = '<p class="empty">Aucun résultat.</p>'; return; }
+  for (var i = 0; i < tous.length; i++) l.appendChild(await creerCoursElement(tous[i]));
+}
+
+async function telecharger(c) {
+  if (!navigator.onLine) { setProgress('⚠ Pas de connexion', 'err'); return; }
+  if (telechargementsEnCours[c.id]) return;
+  telechargementsEnCours[c.id] = { total: c.fichiers.length, done: 0 };
+  setProgress('⏳ ' + c.titre + ' : 0/' + c.fichiers.length, '');
+  afficherListe();
+  for (var i = 0; i < c.fichiers.length; i++) {
+    var ok = await CoursStorage.download(BASE_URL + c.fichiers[i], c.fichiers[i]);
+    if (ok) onDone(c.fichiers[i]); else onErr(c.fichiers[i]);
+  }
+}
+
+function onDone(f) {
+  getAllCours().forEach(c => {
+    if (c.fichiers.includes(f) && telechargementsEnCours[c.id]) {
+      var t = telechargementsEnCours[c.id]; t.done++;
+      if (t.done >= t.total) {
+        CoursStorage.setVersion(c.id, c.version);
+        delete telechargementsEnCours[c.id];
+        setProgress('✓ ' + c.titre + ' téléchargé', 'ok');
+      } else setProgress('⏳ ' + c.titre + ' : ' + t.done + '/' + t.total, '');
+      afficherListe();
+    }
+  });
+}
+
+function onErr(f) {
+  getAllCours().forEach(c => {
+    if (c.fichiers.includes(f) && telechargementsEnCours[c.id]) {
+      delete telechargementsEnCours[c.id];
+      setProgress('❌ Erreur : ' + f, 'err');
+      afficherListe();
+    }
+  });
+}
+
+function getAllCours() {
+  var all = [];
+  if (!CATALOGUE) return all;
+  CATALOGUE.categories.forEach(cat => {
+    if (cat.cours) cat.cours.forEach(c => all.push(c));
+    if (cat.sousCategories) cat.sousCategories.forEach(s => s.cours.forEach(c => all.push(c)));
+  });
+  return all;
+}
+
+async function ouvrirLocal(c) {
+  const url = BASE_URL + c.fichiers[0];
+  const o = document.createElement('div');
+  o.id = 'readerOverlay';
+  o.style.cssText = 'position:fixed;inset:0;z-index:99999;background:#0d1117;display:flex;flex-direction:column;';
+  o.innerHTML =
+    '<div style="padding:12px;background:#161b22;border-bottom:1px solid #21262d;display:flex;align-items:center;gap:10px;flex-shrink:0;">' +
+      '<button id="closeReader" style="padding:8px 16px;background:#00ff88;color:#121212;border:none;border-radius:20px;font-weight:bold;cursor:pointer;font-size:14px;">← Retour</button>' +
+      '<span style="font-size:14px;font-weight:bold;color:#e6f1ff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + c.titre + '</span>' +
+    '</div>' +
+    '<iframe id="readerFrame" style="flex:1;border:none;background:#fff;width:100%;" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>';
+  document.body.appendChild(o);
+  const frame = o.querySelector('#readerFrame');
+  try {
+    const cache = await caches.open(CoursStorage.COURS_CACHE);
+    let resp = await cache.match(url, { ignoreSearch: true });
+    if (!resp) { resp = await fetch(url); if (resp.ok) await cache.put(url, resp.clone()); }
+    let html = await resp.text();
+    if (!/<base\s/i.test(html)) html = html.replace(/<head([^>]*)>/i, '<head$1><base href="' + BASE_URL + '">');
+    frame.srcdoc = html;
+  } catch(e) {
+    frame.srcdoc = '<html><body style="padding:20px;font-family:sans-serif;"><h2>❌ Indisponible</h2><p>Connecte-toi pour télécharger ce cours.</p></body></html>';
+  }
+  o.querySelector('#closeReader').onclick = () => o.remove();
+}
+
+async function supprimer(c) {
+  for (var i = 0; i < c.fichiers.length; i++) await CoursStorage.delete(c.fichiers[i]);
+  await CoursStorage.setVersion(c.id, 0);
+  setProgress('🗑️ ' + c.titre + ' supprimé', '');
+  afficherListe();
+}
+
+window.addEventListener('online', () => { setProgress('✓ Connecté', 'ok'); charger(); });
+window.addEventListener('offline', () => { setProgress('⚠ Hors ligne', ''); afficherListe(); });
+
 (function() {
-    const INSTALL_KEY = 'studia_banner_closed';
-    const APP_VERSION = '1.2.0';
-    const VERSION_KEY = 'studia_app_version';
-
-    // Fonction pour afficher/masquer la bannière
-    function showBanner(show) {
-        const banner = document.getElementById('installBanner');
-        if (banner) {
-            if (show) {
-                banner.classList.add('show');
-            } else {
-                banner.classList.remove('show');
-            }
-        }
-    }
-
-    // Vérifier si la bannière doit s'afficher
-    function checkAndShowBanner() {
-        const banner = document.getElementById('installBanner');
-        const updateBadge = document.getElementById('updateBadge');
-        
-        if (!banner) return;
-        
-        const savedVersion = localStorage.getItem(VERSION_KEY);
-        const isBannerClosed = localStorage.getItem(INSTALL_KEY);
-        
-        // Vérifier si c'est une mise à jour
-        const isUpdate = savedVersion && savedVersion !== APP_VERSION;
-        
-        if (isUpdate) {
-            // Afficher le badge de mise à jour
-            if (updateBadge) updateBadge.style.display = 'inline-block';
-            showBanner(true);
-        } 
-        else if (!isBannerClosed) {
-            if (updateBadge) updateBadge.style.display = 'none';
-            showBanner(true);
-        }
-        
-        // Stocker la version actuelle
-        localStorage.setItem(VERSION_KEY, APP_VERSION);
-    }
-
-    // Fermer la bannière
-    function closeBanner(permanent = false) {
-        showBanner(false);
-        if (permanent) {
-            localStorage.setItem(INSTALL_KEY, 'true');
-        }
-    }
-
-    // Télécharger l'application
-    function downloadApp() {
-        window.location.href = 'STUDIA.apk';
-        
-        // Afficher un message de confirmation
-        const msg = document.getElementById('redirectMessage');
-        if (msg) {
-            const span = msg.querySelector('span');
-            if (span) span.innerHTML = '📱 Téléchargement lancé...';
-            msg.classList.add('show');
-            setTimeout(() => {
-                msg.classList.remove('show');
-                if (span) span.innerHTML = '🔁 Redirection vers la catégorie...';
-            }, 2000);
-        }
-    }
-
-    // Initialisation après chargement du DOM
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', function() {
-            checkAndShowBanner();
-            
-            const installBtn = document.getElementById('installBtn');
-            const laterBtn = document.getElementById('laterBtn');
-            const closeBtn = document.getElementById('closeBannerBtn');
-            
-            if (installBtn) installBtn.addEventListener('click', downloadApp);
-            if (laterBtn) laterBtn.addEventListener('click', function() { closeBanner(false); });
-            if (closeBtn) closeBtn.addEventListener('click', function() { closeBanner(true); });
-        });
-    } else {
-        checkAndShowBanner();
-        
-        const installBtn = document.getElementById('installBtn');
-        const laterBtn = document.getElementById('laterBtn');
-        const closeBtn = document.getElementById('closeBannerBtn');
-        
-        if (installBtn) installBtn.addEventListener('click', downloadApp);
-        if (laterBtn) laterBtn.addEventListener('click', function() { closeBanner(false); });
-        if (closeBtn) closeBtn.addEventListener('click', function() { closeBanner(true); });
-    }
+  const ua = navigator.userAgent;
+  const isIOS = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  const isAndroid = /Android/.test(ua);
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+  if (isStandalone) { document.getElementById('installSection').style.display = 'none'; return; }
+  if (isAndroid) document.getElementById('installAndroid').style.display = 'block';
+  else if (isIOS) document.getElementById('installIos').style.display = 'block';
+  else document.getElementById('installWeb').style.display = 'block';
 })();
-        // === GESTION DU MENU HAMBURGER (identique) ===
-        const hamburgerBtn = document.getElementById('hamburgerBtn');
-        const menuOverlay = document.getElementById('menuOverlay');
 
-        function toggleMenu() {
-            hamburgerBtn.classList.toggle('open');
-            menuOverlay.classList.toggle('open');
-            const mainContent = document.getElementById('mainContent');
-            if (menuOverlay.classList.contains('open')) {
-                mainContent.style.overflow = 'hidden';
-            } else {
-                mainContent.style.overflow = 'auto';
-            }
-        }
-        hamburgerBtn.addEventListener('click', toggleMenu);
-
-        // Fermer le menu si on clique sur un lien (sauf ceux avec #)
-        document.querySelectorAll('.menu-card[href]').forEach(link => {
-            link.addEventListener('click', () => {
-                if (menuOverlay.classList.contains('open')) {
-                    toggleMenu(); // ferme proprement
-                }
-            });
-        });
-
-        // On peut aussi fermer en cliquant sur les cartes catégories depuis le main (optionnel)
-        document.querySelectorAll('.category-card').forEach(card => {
-            card.addEventListener('click', (e) => {
-                // juste pour le confort : on peut montrer un petit message de redirection
-                const redirectMsg = document.getElementById('redirectMessage');
-                redirectMsg.classList.add('show');
-                setTimeout(() => {
-                    redirectMsg.classList.remove('show');
-                }, 1200);
-                // Pas de e.preventDefault() : on laisse le href s'exécuter normalement.
-            });
-        });
-
-        // Adaptation Android (conservée)
-        function fixAndroidLayout() {
-            if (/Android/.test(navigator.userAgent)) {
-                const header = document.querySelector('.header');
-                if (header) {
-                    setTimeout(() => {
-                        header.style.transform = 'translateZ(0)';
-                        void header.offsetHeight;
-                    }, 100);
-                }
-            }
-        }
-        fixAndroidLayout();
-
-        // Fermeture manuelle du message
-        document.querySelector('.close-message').addEventListener('click', function(e) {
-            e.stopPropagation();
-            this.parentElement.classList.remove('show');
-        });
-
-        // Petit script pour que les "pills" rapides ne soient pas bloquées (elles pointent vers des ancres, mais les pages Medecine/Eco n'existent pas encore; on laisse quand même l'utilisateur être redirigé vers la page catégorie)
-        // Rien à modifier, les href sont conservés.
-    </script>
+charger();
+</script>
 </body>
-  </html>
+</html>
