@@ -620,81 +620,63 @@ verifierBadgePromos();
     <script>
 /* ═══════════ TRACKING STUDIA ═══════════ */
 function track(nom, params) {
-    if (typeof gtag === 'function') {
-        gtag('event', nom, params || {});
-    }
+    if (typeof gtag === 'function') gtag('event', nom, params || {});
 }
 
-// Track automatique au chargement
-track('app_open', {
-    app: 'studia',
+track('studia_app_open', {
     version: '1.0.0',
     pwa: window.matchMedia('(display-mode: standalone)').matches
 });
 
-// Track les téléchargements de cours
 var _oldDownload = telecharger;
 telecharger = function(c) {
-    track('cours_download_start', {
-        cours_id: c.id,
-        cours_titre: c.titre,
-        niveau: c.niveau || '',
-        fichiers: c.fichiers.length
+    track('studia_download', {
+        cours_id: c.id, cours_titre: c.titre,
+        niveau: c.niveau || '', fichiers: c.fichiers.length
     });
     return _oldDownload.call(this, c);
 };
 
-// Track la lecture des cours
 var _oldOuvrir = ouvrirLocal;
 ouvrirLocal = function(c) {
-    track('cours_open', {
-        cours_id: c.id,
-        cours_titre: c.titre,
-        niveau: c.niveau || ''
+    track('studia_open', {
+        cours_id: c.id, cours_titre: c.titre, niveau: c.niveau || ''
     });
     return _oldOuvrir.call(this, c);
 };
 
-// Track la suppression
 var _oldSupprimer = supprimer;
 supprimer = function(c) {
-    track('cours_delete', { cours_id: c.id });
+    track('studia_delete', { cours_id: c.id });
     return _oldSupprimer.call(this, c);
 };
 
-// Track les catégories
 var _oldFiltrer = filtrer;
 filtrer = function() {
     var r = document.getElementById('search').value;
-    if (r && r.length > 2) {
-        track('search', { search_term: r });
-    }
+    if (r && r.length > 2) track('studia_search', { search_term: r });
     return _oldFiltrer.call(this);
 };
 
-// Track l'ouverture des Découvertes
-var _oldDecouvrir = ouvrirDecouvertes;
-ouvrirDecouvertes = function() {
-    track('decouvertes_open', { app: 'studia' });
-    return _oldDecouvrir.call(this);
-};
+if (typeof ouvrirDecouvertes === 'function') {
+    var _oldDecouvrir = ouvrirDecouvertes;
+    ouvrirDecouvertes = function() {
+        track('studia_decouvertes');
+        return _oldDecouvrir.call(this);
+    };
+}
 
-// Track le clic sur une promo
 window.addEventListener('click', function(e) {
     var lien = e.target.closest('.promo-lien');
     if (lien) {
         var card = lien.closest('.promo-card');
         var titre = card ? card.querySelector('.promo-titre').textContent : '';
-        track('promo_click', {
-            promo: titre,
-            app: 'studia'
-        });
+        track('studia_promo_click', { promo: titre });
     }
 });
 
-// Track l'installation PWA
 window.addEventListener('appinstalled', function() {
-    track('pwa_installed', { app: 'studia' });
+    track('studia_pwa_install');
 });
 </script>
 </body>
