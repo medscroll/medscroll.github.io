@@ -41,6 +41,12 @@ h1 { color:#00ff88; font-size:22px; margin-bottom:4px; }
 .cat-tab { flex-shrink:0; padding:10px 16px; border-radius:20px; background:#161b22; color:#ccc; border:1px solid #21262d; font-size:13px; cursor:pointer; white-space:nowrap; }
 .cat-tab.active { background:#00ff88; color:#121212; font-weight:bold; border-color:#00ff88; }
 
+.souscats { display:none; gap:6px; overflow-x:auto; padding-bottom:10px; scrollbar-width:none; margin-bottom:6px; }
+.souscats.active { display:flex; }
+.souscats::-webkit-scrollbar { display:none; }
+.souscat-tab { flex-shrink:0; padding:8px 14px; border-radius:16px; background:#1a2332; color:#8899aa; border:1px solid #2a3444; font-size:12px; cursor:pointer; white-space:nowrap; }
+.souscat-tab.active { background:#0099ff; color:#fff; font-weight:bold; border-color:#0099ff; }
+
 .cours { background:#161b22; border-radius:14px; padding:14px; margin-bottom:10px; border:1px solid #21262d; display:flex; align-items:center; gap:12px; }
 .cours .ico { font-size:32px; flex-shrink:0; }
 .cours .info { flex:1; min-width:0; }
@@ -99,10 +105,10 @@ h1 { color:#00ff88; font-size:22px; margin-bottom:4px; }
 </div>
 
 <div class="cats" id="cats"></div>
+<div class="souscats" id="souscats"></div>
 <div id="liste"></div>
 <p class="progress" id="progress">Chargement...</p>
 
-<!-- OVERLAY DÉCOUVERTES -->
 <div id="decouvertesOverlay">
     <div class="dec-header">
         <h1>✨ Découvertes</h1>
@@ -115,7 +121,6 @@ h1 { color:#00ff88; font-size:22px; margin-bottom:4px; }
 </div>
 
 <script>
-/* ═══════════ SERVICE WORKER ═══════════ */
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js').catch(e => console.error('SW:', e));
@@ -158,6 +163,7 @@ var CoursStorage = {
 /* ═══════════ ÉTAT GLOBAL ═══════════ */
 var CATALOGUE = null;
 var CATEGORIE_ACTIVE = 'toutes';
+var SOUSCAT_ACTIVE = null;
 var telechargementsEnCours = {};
 var recherche = '';
 
@@ -194,14 +200,20 @@ function afficherTout() {
     if (!CATALOGUE) return;
     try {
         var s = JSON.parse(localStorage.getItem('studia_section') || 'null');
-        if (s && s.cat) CATEGORIE_ACTIVE = s.cat;
+        if (s) {
+            if (s.cat) CATEGORIE_ACTIVE = s.cat;
+            if (s.sub) SOUSCAT_ACTIVE = s.sub;
+        }
     } catch(e) {}
     afficherOnglets();
+    afficherSousCats();
     afficherListe();
 }
 
 function sauverSection() {
-    try { localStorage.setItem('studia_section', JSON.stringify({ cat: CATEGORIE_ACTIVE })); } catch(e) {}
+    try {
+        localStorage.setItem('studia_section', JSON.stringify({ cat: CATEGORIE_ACTIVE, sub: SOUSCAT_ACTIVE }));
+    } catch(e) {}
 }
 
 function afficherOnglets() {
@@ -210,13 +222,64 @@ function afficherOnglets() {
     var toutes = document.createElement('div');
     toutes.className = 'cat-tab' + (CATEGORIE_ACTIVE === 'toutes' ? ' active' : '');
     toutes.textContent = '📚 Toutes';
-    toutes.onclick = function() { CATEGORIE_ACTIVE = 'toutes'; sauverSection(); afficherOnglets(); afficherListe(); };
+    toutes.onclick = function() {
+        CATEGORIE_ACTIVE = 'toutes';
+        SOUSCAT_ACTIVE = null;
+        sauverSection();
+        afficherOnglets();
+        afficherSousCats();
+        afficherListe();
+    };
     c.appendChild(toutes);
+
     CATALOGUE.categories.forEach(function(cat) {
         var t = document.createElement('div');
         t.className = 'cat-tab' + (CATEGORIE_ACTIVE === cat.id ? ' active' : '');
         t.textContent = cat.icone + ' ' + cat.nom;
-        t.onclick = function() { CATEGORIE_ACTIVE = cat.id; sauverSection(); afficherOnglets(); afficherListe(); };
+        t.onclick = function() {
+            CATEGORIE_ACTIVE = cat.id;
+            SOUSCAT_ACTIVE = null;
+            sauverSection();
+            afficherOnglets();
+            afficherSousCats();
+            afficherListe();
+        };
+        c.appendChild(t);
+    });
+}
+
+function afficherSousCats() {
+    var c = document.getElementById('souscats');
+    c.innerHTML = '';
+    if (CATEGORIE_ACTIVE === 'toutes') {
+        c.classList.remove('active');
+        SOUSCAT_ACTIVE = null;
+        return;
+    }
+    var cat = null;
+    for (var i = 0; i < CATALOGUE.categories.length; i++) {
+        if (CATALOGUE.categories[i].id === CATEGORIE_ACTIVE) {
+            cat = CATALOGUE.categories[i];
+            break;
+        }
+    }
+    if (!cat || !cat.sousCategories || cat.sousCategories.length === 0) {
+        c.classList.remove('active');
+        SOUSCAT_ACTIVE = null;
+        return;
+    }
+    if (!SOUSCAT_ACTIVE) SOUSCAT_ACTIVE = cat.sousCategories[0].id;
+    c.classList.add('active');
+    cat.sousCategories.forEach(function(sub) {
+        var t = document.createElement('div');
+        t.className = 'souscat-tab' + (SOUSCAT_ACTIVE === sub.id ? ' active' : '');
+        t.textContent = sub.nom;
+        t.onclick = function() {
+            SOUSCAT_ACTIVE = sub.id;
+            sauverSection();
+            afficherSousCats();
+            afficherListe();
+        };
         c.appendChild(t);
     });
 }
@@ -231,12 +294,25 @@ async function afficherListe() {
     var liste = document.getElementById('liste');
     liste.innerHTML = '';
     var coursAffichables = [];
+
     CATALOGUE.categories.forEach(function(cat) {
         if (CATEGORIE_ACTIVE !== 'toutes' && CATEGORIE_ACTIVE !== cat.id) return;
-        cat.cours.forEach(function(c) {
-            if (matchRecherche(c)) coursAffichables.push(c);
-        });
+
+        if (cat.sousCategories && cat.sousCategories.length > 0) {
+            cat.sousCategories.forEach(function(sub) {
+                if (SOUSCAT_ACTIVE && sub.id !== SOUSCAT_ACTIVE) return;
+                sub.cours.forEach(function(c) {
+                    if (matchRecherche(c)) coursAffichables.push(c);
+                });
+            });
+        }
+        if (cat.cours && cat.cours.length > 0) {
+            cat.cours.forEach(function(c) {
+                if (matchRecherche(c)) coursAffichables.push(c);
+            });
+        }
     });
+
     if (coursAffichables.length === 0) {
         liste.innerHTML = '<p class="empty">Aucun cours trouvé.</p>';
         return;
@@ -320,32 +396,42 @@ async function telecharger(c) {
 
 function onDownloadDone(f) {
     if (!CATALOGUE) return;
-    CATALOGUE.categories.forEach(function(cat) {
-        cat.cours.forEach(function(c) {
-            if (c.fichiers.indexOf(f) !== -1 && telechargementsEnCours[c.id]) {
-                var t = telechargementsEnCours[c.id]; t.done++;
-                if (t.done >= t.total) {
-                    CoursStorage.setVersion(c.id, c.version);
-                    delete telechargementsEnCours[c.id];
-                    setProgress('✓ ' + c.titre + ' téléchargé', 'ok');
-                } else setProgress('⏳ ' + c.titre + ' : ' + t.done + '/' + t.total, '');
-                afficherListe();
-            }
-        });
+    getAllCours().forEach(function(c) {
+        if (c.fichiers.indexOf(f) !== -1 && telechargementsEnCours[c.id]) {
+            var t = telechargementsEnCours[c.id]; t.done++;
+            if (t.done >= t.total) {
+                CoursStorage.setVersion(c.id, c.version);
+                delete telechargementsEnCours[c.id];
+                setProgress('✓ ' + c.titre + ' téléchargé', 'ok');
+            } else setProgress('⏳ ' + c.titre + ' : ' + t.done + '/' + t.total, '');
+            afficherListe();
+        }
     });
 }
 
 function onDownloadError(f) {
     if (!CATALOGUE) return;
-    CATALOGUE.categories.forEach(function(cat) {
-        cat.cours.forEach(function(c) {
-            if (c.fichiers.indexOf(f) !== -1 && telechargementsEnCours[c.id]) {
-                delete telechargementsEnCours[c.id];
-                setProgress('❌ Erreur : ' + f, 'err');
-                afficherListe();
-            }
-        });
+    getAllCours().forEach(function(c) {
+        if (c.fichiers.indexOf(f) !== -1 && telechargementsEnCours[c.id]) {
+            delete telechargementsEnCours[c.id];
+            setProgress('❌ Erreur : ' + f, 'err');
+            afficherListe();
+        }
     });
+}
+
+function getAllCours() {
+    var tous = [];
+    if (!CATALOGUE) return tous;
+    CATALOGUE.categories.forEach(function(cat) {
+        if (cat.sousCategories) {
+            cat.sousCategories.forEach(function(sub) {
+                sub.cours.forEach(function(c) { tous.push(c); });
+            });
+        }
+        if (cat.cours) cat.cours.forEach(function(c) { tous.push(c); });
+    });
+    return tous;
 }
 
 /* ═══════════ LECTURE / SUPPRESSION ═══════════ */
@@ -382,6 +468,7 @@ async function ouvrirLocal(c) {
 async function supprimer(c) {
     for (var i = 0; i < c.fichiers.length; i++) await CoursStorage.delete(c.fichiers[i]);
     await CoursStorage.setVersion(c.id, 0);
+    track('studia_delete', { cours_id: c.id });
     setProgress('🗑️ ' + c.titre + ' supprimé', '');
     afficherListe();
 }
@@ -416,7 +503,8 @@ async function chargerPromos() {
 }
 
 function afficherPromos(promos) {
-    var liste = document.getElementById('promosListe'); liste.innerHTML = '';
+    var liste = document.getElementById('promosListe');
+    liste.innerHTML = '';
     var maintenant = new Date().toISOString().split('T')[0];
     var actifs = promos
         .filter(p => p.paye && p.debut <= maintenant && p.fin >= maintenant &&
@@ -471,15 +559,10 @@ async function verifierBadgePromos() {
 function track(nom, params) { if (typeof gtag === 'function') gtag('event', nom, params || {}); }
 track('studia_app_open', { version: '1.0.0', pwa: window.matchMedia('(display-mode: standalone)').matches });
 
-var _oldDownload = telecharger;
+var _oldTelecharger = telecharger;
 telecharger = function(c) {
     track('studia_download', { cours_id: c.id, cours_titre: c.titre, fichiers: c.fichiers.length });
-    return _oldDownload.call(this, c);
-};
-var _oldSupprimer = supprimer;
-supprimer = function(c) {
-    track('studia_delete', { cours_id: c.id });
-    return _oldSupprimer.call(this, c);
+    return _oldTelecharger.call(this, c);
 };
 var _oldFiltrer = filtrer;
 filtrer = function() {
