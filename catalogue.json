@@ -1,42 +1,103 @@
 {
-  "version": 2,
+  "version": 3,
+  "universite": "MEDSCROL",
   "categories": [
     {
       "id": "medecine",
       "nom": "Médecine",
       "icone": "🩺",
-      "couleur": "#ff6b6b",
-      "cours": [
+      "sousCategories": [
         {
-          "id": "premiers-secours",
-          "titre": "Premiers Secours",
-          "description": "Les gestes qui sauvent. Niveau B1.",
-          "icone": "🩺",
-          "niveau": "Tous niveaux",
-          "duree": "15 min",
-          "version": 1,
-          "fichiers": [
-            "Premier_Secours.html",
-            "Équipement.jpg",
-            "Rautek1.jpg",
-            "Rautek2.png",
-            "Heimlich.png",
-            "Aine.png",
-            "PLS.jpg",
-            "Dae.jpg",
-            "Cpr.jpg",
-            "premiers_secours.mp3"
+          "id": "l1",
+          "nom": "Licence 1 (L1)",
+          "cours": [
+            {
+              "id": "bioan",
+              "titre": "Biologie Animale",
+              "description": "Cours de biologie animale.",
+              "icone": "🧬",
+              "niveau": "L1",
+              "version": 1,
+              "fichiers": ["Bioan.html", "bioan.mp3"]
+            },
+            {
+              "id": "biophy",
+              "titre": "Biophysique",
+              "description": "Cours de biophysique.",
+              "icone": "⚛️",
+              "niveau": "L1",
+              "version": 1,
+              "fichiers": ["Biophy.html", "biophysique.mp3"]
+            },
+            {
+              "id": "biostat",
+              "titre": "Biostatistiques",
+              "description": "Cours de biostatistiques.",
+              "icone": "📊",
+              "niveau": "L1",
+              "version": 1,
+              "fichiers": ["Biostat.html", "biostat.mp3"]
+            },
+            {
+              "id": "bioveg",
+              "titre": "Biologie Végétale",
+              "description": "Cours de biologie végétale.",
+              "icone": "🌿",
+              "niveau": "L1",
+              "version": 1,
+              "fichiers": ["Bioveg.html", "bioveg.mp3"]
+            },
+            {
+              "id": "histologie",
+              "titre": "Histologie",
+              "description": "Cours complet d'histologie.",
+              "icone": "🔬",
+              "niveau": "L1",
+              "version": 1,
+              "fichiers": ["Histo.html", "histologie_complet.mp3"]
+            },
+            {
+              "id": "premiers-secours",
+              "titre": "Premiers Secours",
+              "description": "Les gestes qui sauvent.",
+              "icone": "🚑",
+              "niveau": "L1",
+              "version": 1,
+              "fichiers": [
+                "Premier_Secours.html",
+                "premiers_secours.mp3",
+                "Équipement.jpg",
+                "Rautek1.jpg",
+                "Rautek2.png",
+                "Heimlich.png",
+                "Aine.png",
+                "PLS.jpg",
+                "Dae.jpg",
+                "Cpr.jpg"
+              ]
+            },
+            {
+              "id": "sante-communautaire",
+              "titre": "Santé Communautaire",
+              "description": "Cours et audios de santé communautaire.",
+              "icone": "🏥",
+              "niveau": "L1",
+              "version": 1,
+              "fichiers": [
+                "Saco1.html", "Saco2.html", "Saco5.html",
+                "Saco1.mp3", "Saco2.mp3", "Saco3.mp3", "Saco4.mp3", "Saco5.mp3"
+              ]
+            },
+            {
+              "id": "histoire-medecine",
+              "titre": "Histoire de la Médecine",
+              "description": "Cours d'histoire de la médecine.",
+              "icone": "📜",
+              "niveau": "L1",
+              "version": 1,
+              "fichiers": ["Histoire_Medecine.html", "histoire_medecine.mp3"]
+            }
           ]
-        },
-        {
-          "id": "anatomie-coeur",
-          "titre": "Anatomie du cœur",
-          "description": "Structure et fonctionnement.",
-          "icone": "❤️",
-          "niveau": "L1",
-          "duree": "20 min",
-          "version": 1,
-          "fichiers": ["anatomie-coeur.html", "coeur.jpg"]
         }
       ]
     },
@@ -44,40 +105,180 @@
       "id": "economie",
       "nom": "Économie",
       "icone": "📊",
-      "couleur": "#4ecdc4",
-      "cours": [
+      "sousCategories": [
         {
-          "id": "offre-demande",
-          "titre": "Offre et demande",
-          "description": "Comprendre les marchés.",
-          "icone": "📈",
-          "niveau": "L1",
-          "duree": "25 min",
-          "version": 1,
-          "fichiers": ["offre-demande.html", "graphique.png"]
+          "id": "l1",
+          "nom": "Licence 1 (L1)",
+          "cours": [
+            {
+              "id": "economie-generale",
+              "titre": "Économie Générale",
+              "description": "Introduction à l'économie.",
+              "icone": "📈",
+              "niveau": "L1",
+              "version": 1,
+              "fichiers": ["Economie.html"]
+            },
+            {
+              "id": "macroeco",
+              "titre": "Macroéconomie",
+              "description": "Cours complet de macroéconomie.",
+              "icone": "🌍",
+              "niveau": "L1",
+              "version": 1,
+              "fichiers": ["MacroEco.html", "macro_complet.mp3"]
+            },
+            {
+              "id": "microeco-l1",
+              "titre": "Microéconomie L1",
+              "description": "Bases de la microéconomie.",
+              "icone": "📉",
+              "niveau": "L1",
+              "version": 1,
+              "fichiers": [
+                "MicroEconomie1.html", "MicroEconomie2.html",
+                "MicroEco1.mp3", "MicroEco2.mp3"
+              ]
+            },
+            {
+              "id": "offre-demande",
+              "titre": "Offre et Demande (Graphiques)",
+              "description": "Comprendre les marchés et les graphiques.",
+              "icone": "⚖️",
+              "niveau": "L1",
+              "version": 1,
+              "fichiers": ["C_Demande.jpg", "C_Offre.jpg", "Surplus.jpg", "Budget.jpg"]
+            }
+          ]
+        },
+        {
+          "id": "l2",
+          "nom": "Licence 2 (L2)",
+          "cours": [
+            {
+              "id": "microeco-l2",
+              "titre": "Microéconomie L2",
+              "description": "Série d'audios mEL2 pour la microéconomie L2.",
+              "icone": "🎧",
+              "niveau": "L2",
+              "version": 1,
+              "fichiers": [
+                "MicroEcoL2.html",
+                "mEL2_01.mp3", "mEL2_02.mp3", "mEL2_03.mp3", "mEL2_04.mp3",
+                "mEL2_05.mp3", "mEL2_06.mp3", "mEL2_07.mp3", "mEL2_08.mp3",
+                "mEL2_47.mp3", "mEL2_48.mp3", "mEL2_49.mp3", "mEL2_50.mp3", "mEL2_51.mp3"
+              ]
+            },
+            {
+              "id": "management",
+              "titre": "Management",
+              "description": "Introduction au management.",
+              "icone": "📋",
+              "niveau": "L2",
+              "version": 1,
+              "fichiers": [
+                "IntroMan.html", "IntroMan2.html",
+                "management_ch1_2.mp3", "management_ch3_6.mp3"
+              ]
+            },
+            {
+              "id": "marketing",
+              "titre": "Marketing",
+              "description": "Cours et révisions de marketing.",
+              "icone": "📈",
+              "niveau": "L2",
+              "version": 1,
+              "fichiers": [
+                "Gestmark.html", "Gestmarkr.html",
+                "marketing_audio.mp3", "revision_marketing_audio.mp3"
+              ]
+            },
+            {
+              "id": "histoire-eco",
+              "titre": "Histoire Économique",
+              "description": "Histoire des faits économiques.",
+              "icone": "📜",
+              "niveau": "L2",
+              "version": 1,
+              "fichiers": ["HisEco1.mp3", "HisEco2.mp3", "HisEco3.mp3"]
+            },
+            {
+              "id": "histoire",
+              "titre": "Histoire",
+              "description": "Cours d'histoire (L2).",
+              "icone": "🏛️",
+              "niveau": "L2",
+              "version": 1,
+              "fichiers": ["Histoire1.html", "Histoire2.html", "Histoire3.html"]
+            },
+            {
+              "id": "docm",
+              "titre": "Documents (DOCM)",
+              "description": "Documents et audios de cours pour l'économie L2.",
+              "icone": "📄",
+              "niveau": "L2",
+              "version": 1,
+              "fichiers": ["DOCOM.html", "docom_cours.mp3"]
+            }
+          ]
         }
       ]
-    },
-    {
-      "id": "droit",
-      "nom": "Droit",
-      "icone": "⚖️",
-      "couleur": "#feca57",
-      "cours": []
     },
     {
       "id": "informatique",
       "nom": "Informatique",
       "icone": "💻",
-      "couleur": "#a29bfe",
-      "cours": []
+      "sousCategories": [
+        {
+          "id": "l1",
+          "nom": "Licence 1 (L1)",
+          "cours": [
+            {
+              "id": "informatique-generale",
+              "titre": "Informatique Générale",
+              "description": "Introduction à l'informatique.",
+              "icone": "💻",
+              "niveau": "L1",
+              "version": 1,
+              "fichiers": ["Informatique.html"]
+            },
+            {
+              "id": "python-intro",
+              "titre": "Introduction à Python",
+              "description": "Bases de la programmation Python.",
+              "icone": "🐍",
+              "niveau": "L1",
+              "version": 1,
+              "fichiers": ["IntroPy.html", "python_intro.mp3"]
+            }
+          ]
+        }
+      ]
     },
     {
-      "id": "langues",
-      "nom": "Langues",
-      "icone": "🌍",
-      "couleur": "#fd79a8",
-      "cours": []
+      "id": "statistiques",
+      "nom": "Statistiques",
+      "icone": "📉",
+      "sousCategories": [
+        {
+          "id": "l1",
+          "nom": "Licence 1 (L1)",
+          "cours": [
+            {
+              "id": "statistiques-generales",
+              "titre": "Statistiques",
+              "description": "Cours de statistiques.",
+              "icone": "📊",
+              "niveau": "L1",
+              "version": 1,
+              "fichiers": [
+                "Statistiques.html", "Statistiques2.html",
+                "statistiques_cours.mp3", "stat_inf_complet.mp3"
+              ]
+            }
+          ]
+        }
+      ]
     }
   ]
 }
