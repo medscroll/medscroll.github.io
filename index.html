@@ -1,18 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-
-    <!-- ═══════════ GOOGLE ANALYTICS 4 ═══════════ -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-27JQ5Y9SJT"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-27JQ5Y9SJT', {
-    anonymize_ip: true,
-    cookie_flags: 'SameSite=None;Secure'
-  });
-</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#00ff88">
@@ -23,40 +11,35 @@
 <link rel="apple-touch-icon" href="./icon-192.png">
 <title>STUDIA</title>
 
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-27JQ5Y9SJT"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-27JQ5Y9SJT', { anonymize_ip: true });
+</script>
+
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Segoe UI',Roboto,sans-serif; background:#0d1117; color:#e6f1ff; padding:16px; padding-bottom:80px; }
 
-.intro-overlay { position:fixed; inset:0; background:#0d1117; z-index:9999; overflow-y:auto; padding:30px 20px; display:flex; justify-content:center; }
-.intro-content { max-width:500px; width:100%; }
-.intro-logo { font-size:64px; text-align:center; margin-bottom:10px; }
-.intro-content h1 { color:#00ff88; text-align:center; font-size:28px; margin-bottom:4px; }
-.intro-sub { color:#888; text-align:center; font-size:14px; margin-bottom:28px; }
-.intro-block { background:#161b22; border-radius:14px; padding:18px; margin-bottom:14px; border:1px solid #21262d; }
-.intro-block h3 { color:#00ccff; font-size:16px; margin-bottom:10px; }
-.intro-block p, .intro-block li { font-size:13px; color:#c0c8d0; line-height:1.6; }
-.intro-block ol, .intro-block ul { margin-left:20px; margin-top:6px; }
-.intro-block li { margin-bottom:4px; }
-.intro-block strong { color:#00ff88; }
-.intro-btn { width:100%; padding:16px; border-radius:12px; border:none; background:#00ff88; color:#121212; font-weight:bold; font-size:16px; margin-top:10px; cursor:pointer; }
-
-.search-bar { position:sticky; top:0; z-index:100; background:#0d1117; padding:8px 0 16px 0; }
-.search-bar input { width:100%; padding:14px 18px; border-radius:14px; border:1px solid #21262d; background:#161b22; color:#fff; font-size:15px; outline:none; }
-.search-bar input:focus { border-color:#00ff88; }
-
 h1 { color:#00ff88; font-size:22px; margin-bottom:4px; }
 .sub { color:#888; font-size:13px; margin-bottom:16px; }
 
-.niveaux { display:flex; gap:8px; overflow-x:auto; padding-bottom:8px; scrollbar-width:none; margin-bottom:4px; }
-.niveaux::-webkit-scrollbar { display:none; }
-.niveau-tab { flex-shrink:0; padding:10px 16px; border-radius:20px; background:#161b22; color:#ccc; border:1px solid #21262d; font-size:13px; cursor:pointer; white-space:nowrap; }
-.niveau-tab.active { background:#00ff88; color:#121212; font-weight:bold; border-color:#00ff88; }
+.search-row { display:flex; gap:8px; align-items:center; position:sticky; top:0; z-index:100; background:#0d1117; padding:8px 0 16px 0; }
+.search-row .search-bar { flex:1; position:static; padding:0; }
+.search-bar input { width:100%; padding:14px 18px; border-radius:14px; border:1px solid #21262d; background:#161b22; color:#fff; font-size:15px; outline:none; }
+.search-bar input:focus { border-color:#00ff88; }
 
-.souscats { display:none; gap:6px; overflow-x:auto; padding-bottom:10px; scrollbar-width:none; margin-bottom:6px; }
-.souscats.active { display:flex; }
-.souscats::-webkit-scrollbar { display:none; }
-.souscat-tab { flex-shrink:0; padding:8px 14px; border-radius:16px; background:#1a2332; color:#8899aa; border:1px solid #2a3444; font-size:12px; cursor:pointer; white-space:nowrap; }
-.souscat-tab.active { background:#0099ff; color:#fff; font-weight:bold; border-color:#0099ff; }
+.btn-decouvrir { flex-shrink:0; width:48px; height:48px; border-radius:14px; background:linear-gradient(135deg,#1a2332,#161b22); border:1px solid #2a3444; color:#00ccff; font-size:22px; cursor:pointer; display:flex; align-items:center; justify-content:center; position:relative; transition:all 0.2s; }
+.btn-decouvrir:active { transform:scale(0.94); background:#00ccff; color:#121212; }
+.btn-decouvrir .badge { position:absolute; top:-4px; right:-4px; min-width:16px; height:16px; padding:0 4px; border-radius:8px; background:#ff6666; color:#fff; font-size:10px; font-weight:bold; display:none; align-items:center; justify-content:center; line-height:1; }
+.btn-decouvrir.has-new .badge { display:flex; }
+
+.cats { display:flex; gap:8px; overflow-x:auto; padding-bottom:12px; scrollbar-width:none; }
+.cats::-webkit-scrollbar { display:none; }
+.cat-tab { flex-shrink:0; padding:10px 16px; border-radius:20px; background:#161b22; color:#ccc; border:1px solid #21262d; font-size:13px; cursor:pointer; white-space:nowrap; }
+.cat-tab.active { background:#00ff88; color:#121212; font-weight:bold; border-color:#00ff88; }
 
 .cours { background:#161b22; border-radius:14px; padding:14px; margin-bottom:10px; border:1px solid #21262d; display:flex; align-items:center; gap:12px; }
 .cours .ico { font-size:32px; flex-shrink:0; }
@@ -80,98 +63,30 @@ h1 { color:#00ff88; font-size:22px; margin-bottom:4px; }
 .progress { position:fixed; bottom:0; left:0; right:0; background:#161b22; padding:10px; text-align:center; font-size:11px; color:#8b949e; border-top:1px solid #21262d; }
 .progress.ok { color:#00ff88; }
 .progress.err { color:#ff6666; }
-
 .empty { text-align:center; color:#666; padding:30px; }
 
-.search-row { display:flex; gap:8px; align-items:center; position:sticky; top:0; z-index:100; background:#0d1117; padding:8px 0 16px 0; }
-.search-row .search-bar { flex:1; position:static; padding:0; }
-.btn-decouvrir {
-    flex-shrink:0; width:48px; height:48px; border-radius:14px;
-    background:linear-gradient(135deg,#1a2332,#161b22);
-    border:1px solid #2a3444; color:#00ccff; font-size:22px;
-    cursor:pointer; display:flex; align-items:center; justify-content:center;
-    position:relative; transition:all 0.2s;
-}
-.btn-decouvrir:active { transform:scale(0.94); background:#00ccff; color:#121212; }
-.btn-decouvrir .badge {
-    position:absolute; top:-4px; right:-4px; min-width:16px; height:16px;
-    padding:0 4px; border-radius:8px; background:#ff6666; color:#fff;
-    font-size:10px; font-weight:bold; display:none; align-items:center;
-    justify-content:center; line-height:1;
-}
-.btn-decouvrir.has-new .badge { display:flex; }
-
-#decouvertesOverlay {
-    display:none; position:fixed; inset:0; z-index:99999;
-    background:#0d1117; overflow-y:auto; padding:16px;
-}
-#decouvertesOverlay .dec-header {
-    display:flex; justify-content:space-between; align-items:center;
-    margin-bottom:20px; max-width:500px; margin-left:auto; margin-right:auto;
-}
+#decouvertesOverlay { display:none; position:fixed; inset:0; z-index:99999; background:#0d1117; overflow-y:auto; padding:16px; }
+#decouvertesOverlay .dec-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; max-width:500px; margin-left:auto; margin-right:auto; }
 #decouvertesOverlay .dec-header h1 { color:#00ff88; font-size:22px; margin:0; }
-#decouvertesOverlay .dec-close {
-    padding:8px 16px; background:#161b22; color:#fff; border:1px solid #21262d;
-    border-radius:20px; cursor:pointer; font-size:14px;
-}
-#decouvertesOverlay .dec-intro {
-    color:#888; font-size:12px; margin-bottom:16px; max-width:500px;
-    margin-left:auto; margin-right:auto;
-}
+#decouvertesOverlay .dec-close { padding:8px 16px; background:#161b22; color:#fff; border:1px solid #21262d; border-radius:20px; cursor:pointer; font-size:14px; }
+#decouvertesOverlay .dec-intro { color:#888; font-size:12px; margin-bottom:16px; max-width:500px; margin-left:auto; margin-right:auto; }
 #promosListe { max-width:500px; margin:0 auto; }
-.promo-card {
-    background:#161b22; border-radius:14px; padding:16px; margin-bottom:12px;
-    border:1px solid #21262d;
-}
+.promo-card { background:#161b22; border-radius:14px; padding:16px; margin-bottom:12px; border:1px solid #21262d; }
 .promo-card .promo-head { display:flex; gap:12px; align-items:flex-start; }
-.promo-card .promo-ico {
-    width:56px; height:56px; border-radius:12px;
-    flex-shrink:0; display:flex; align-items:center; justify-content:center;
-    background:#0d1117; border:1px solid #21262d; overflow:hidden;
-    font-size:32px;
-}
-.promo-card .promo-ico img {
-    width:100%; height:100%; object-fit:cover; border-radius:11px;
-}
+.promo-card .promo-ico { width:56px; height:56px; border-radius:12px; flex-shrink:0; display:flex; align-items:center; justify-content:center; background:#0d1117; border:1px solid #21262d; overflow:hidden; font-size:32px; }
+.promo-card .promo-ico img { width:100%; height:100%; object-fit:cover; border-radius:11px; }
 .promo-card .promo-body { flex:1; min-width:0; }
 .promo-card .promo-titre { font-weight:bold; font-size:15px; margin-bottom:4px; }
 .promo-card .promo-desc { font-size:12px; color:#8b949e; margin-bottom:8px; line-height:1.5; }
 .promo-card .promo-meta { font-size:11px; color:#666; margin-bottom:10px; }
-.promo-card .promo-lien {
-    display:inline-block; padding:8px 16px; background:#00ccff; color:#121212;
-    text-decoration:none; border-radius:20px; font-weight:bold; font-size:12px;
-}
-.promo-card .promo-badge {
-    display:inline-block; padding:2px 8px; border-radius:10px;
-    background:rgba(0,204,255,0.15); color:#00ccff; font-size:10px;
-    font-weight:bold; margin-left:6px; vertical-align:middle;
-}
-
+.promo-card .promo-lien { display:inline-block; padding:8px 16px; background:#00ccff; color:#121212; text-decoration:none; border-radius:20px; font-weight:bold; font-size:12px; }
+.promo-card .promo-badge { display:inline-block; padding:2px 8px; border-radius:10px; background:rgba(0,204,255,0.15); color:#00ccff; font-size:10px; font-weight:bold; margin-left:6px; vertical-align:middle; }
 </style>
 </head>
 <body>
 
-<div id="intro" class="intro-overlay">
-  <div class="intro-content">
-    <div class="intro-logo">📚</div>
-    <h1>STUDIA</h1>
-    <p class="intro-sub">Apprendre autrement — RDC</p>
-    <div class="intro-block">
-      <h3>🧠 Méthode</h3>
-      <ol>
-        <li><strong>Cas concret</strong> — Exemple réel.</li>
-        <li><strong>Question</strong> — Pourquoi, comment.</li>
-        <li><strong>Théorie</strong> — Explications claires.</li>
-        <li><strong>Pratique</strong> — Application.</li>
-        <li><strong>Quiz</strong> — Teste-toi.</li>
-      </ol>
-    </div>
-    <button class="intro-btn" onclick="fermerIntro()">C'est parti !</button>
-  </div>
-</div>
-
 <h1>📚 STUDIA</h1>
-<p class="sub">Programme scolaire RDC</p>
+<p class="sub">Apprendre autrement</p>
 
 <div class="search-row">
     <div class="search-bar">
@@ -183,363 +98,306 @@ h1 { color:#00ff88; font-size:22px; margin-bottom:4px; }
     </button>
 </div>
 
-<div class="niveaux" id="niveaux"></div>
-<div class="souscats" id="souscats"></div>
+<div class="cats" id="cats"></div>
 <div id="liste"></div>
-
-<div id="installSection" style="margin-top:30px;padding:20px;background:#161b22;border-radius:14px;border:1px solid #21262d;">
-  <h2 style="color:#00ff88;font-size:18px;margin-bottom:12px;">📲 Installer STUDIA</h2>
-  <p style="font-size:13px;color:#8b949e;margin-bottom:16px;">
-    Installe l'app sur ton téléphone pour y accéder hors ligne.
-  </p>
-  <div id="installAndroid" style="display:none;">
-    <a href="https://medscroll.github.io/STUDIA.apk"
-       style="display:block;text-align:center;padding:16px;background:#00ff88;color:#121212;text-decoration:none;border-radius:12px;font-weight:bold;font-size:15px;">
-      ⬇️ Télécharger l'APK Android (Version Classique)
-    </a>
-  </div>
-  <div id="installIos" style="display:none;">
-    <div style="background:#1a2332;border-radius:12px;padding:16px;border-left:4px solid #0099ff;">
-      <p style="font-weight:bold;color:#0099ff;margin-bottom:12px;">📱 Installation sur iPhone / iPad</p>
-      <ol style="font-size:13px;color:#c0c8d0;line-height:1.8;margin-left:20px;">
-        <li>Ouvre cette page dans <strong>Safari</strong></li>
-        <li>Appuie sur <strong>Partager</strong> ⬆️</li>
-        <li>Choisis <strong>"Sur l'écran d'accueil"</strong></li>
-        <li>Appuie sur <strong>"Ajouter"</strong></li>
-      </ol>
-    </div>
-  </div>
-  <div id="installWeb" style="display:none;">
-    <p style="font-size:13px;color:#c0c8d0;">Ouvre cette page depuis ton téléphone pour l'installer.</p>
-  </div>
-</div>
-
 <p class="progress" id="progress">Chargement...</p>
 
-<script>
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js')
-      .then(r => console.log('✓ SW :', r.scope))
-      .catch(e => console.error('✗ SW :', e));
-  });
-}
-</script>
-
-<script>
-/* ═══════ CONFIG — TOUT À LA RACINE ═══════ */
-const CATALOGUE_URL = 'https://medscroll.github.io/catalogue.json';
-const BASE_URL = 'https://medscroll.github.io/';
-
-const CoursStorage = {
-  COURS_CACHE: 'studia-cours-v1',
-  async _c() { return caches.open(this.COURS_CACHE); },
-  async exists(f) {
-    const c = await this._c();
-    return !!(await c.match(BASE_URL + f, { ignoreSearch: true }));
-  },
-  async download(url, f) {
-    try {
-      const r = await fetch(url, { cache: 'no-store' });
-      if (!r.ok) throw new Error('HTTP ' + r.status);
-      const c = await this._c();
-      await c.put(url, r.clone());
-      return true;
-    } catch (e) { console.error('DL err ' + f + ' :', e.message); return false; }
-  },
-  async delete(f) {
-    try { const c = await this._c(); await c.delete(BASE_URL + f, { ignoreSearch: true }); }
-    catch (e) {}
-  },
-  async getVersion(id) { return parseInt(localStorage.getItem('studia_v_' + id) || '0'); },
-  async setVersion(id, v) { localStorage.setItem('studia_v_' + id, v.toString()); }
-};
-
-var CATALOGUE = null;
-var NIVEAU_ACTIVE = null;
-var SOUSCAT_ACTIVE = null;
-var telechargementsEnCours = {};
-var recherche = '';
-
-function fermerIntro() {
-  document.getElementById('intro').style.display = 'none';
-  try { localStorage.setItem('studia_intro', 'true'); } catch(e) {}
-}
-try { if (localStorage.getItem('studia_intro') === 'true') document.getElementById('intro').style.display = 'none'; } catch(e) {}
-
-async function charger() {
-  try {
-    var cached = localStorage.getItem('studia_catalogue');
-    if (cached) { CATALOGUE = JSON.parse(cached); afficherTout(); }
-  } catch(e) {}
-  if (!navigator.onLine) {
-    setProgress(CATALOGUE ? '⚠ Hors ligne - cache' : '⚠ Hors ligne', '');
-    return;
-  }
-  setProgress('Chargement...', '');
-  try {
-    var r = await fetch(CATALOGUE_URL + '?t=' + Date.now());
-    var d = await r.json();
-    CATALOGUE = d;
-    try { localStorage.setItem('studia_catalogue', JSON.stringify(d)); } catch(e) {}
-    afficherTout();
-    setProgress('✓ Catalogue à jour', 'ok');
-  } catch(e) {
-    setProgress(CATALOGUE ? '⚠ Cache utilisé' : '⚠ Pas de connexion', 'err');
-  }
-}
-
-function setProgress(t, c) {
-  var p = document.getElementById('progress');
-  p.textContent = t;
-  p.className = 'progress ' + (c || '');
-}
-
-function afficherTout() {
-  if (!CATALOGUE || !CATALOGUE.categories) return;
-  if (!NIVEAU_ACTIVE) NIVEAU_ACTIVE = CATALOGUE.categories[0].id;
-  afficherNiveaux(); afficherSousCats(); afficherListe();
-}
-
-function getNiveauActif() {
-  if (!CATALOGUE) return null;
-  return CATALOGUE.categories.find(c => c.id === NIVEAU_ACTIVE);
-}
-
-function afficherNiveaux() {
-  var c = document.getElementById('niveaux'); c.innerHTML = '';
-  CATALOGUE.categories.forEach(function(cat) {
-    var t = document.createElement('div');
-    t.className = 'niveau-tab' + (NIVEAU_ACTIVE === cat.id ? ' active' : '');
-    t.textContent = cat.icone + ' ' + cat.nom;
-    t.onclick = () => { NIVEAU_ACTIVE = cat.id; SOUSCAT_ACTIVE = null; afficherNiveaux(); afficherSousCats(); afficherListe(); };
-    c.appendChild(t);
-  });
-}
-
-function afficherSousCats() {
-  var c = document.getElementById('souscats'); c.innerHTML = '';
-  var n = getNiveauActif();
-  if (!n) return;
-  if (!n.sousCategories || !n.sousCategories.length) {
-    c.classList.remove('active'); SOUSCAT_ACTIVE = null; return;
-  }
-  if (!SOUSCAT_ACTIVE) SOUSCAT_ACTIVE = n.sousCategories[0].id;
-  c.classList.add('active');
-  n.sousCategories.forEach(function(s) {
-    var t = document.createElement('div');
-    t.className = 'souscat-tab' + (SOUSCAT_ACTIVE === s.id ? ' active' : '');
-    t.textContent = s.nom;
-    t.onclick = () => { SOUSCAT_ACTIVE = s.id; afficherSousCats(); afficherListe(); };
-    c.appendChild(t);
-  });
-}
-
-function matchRecherche(c) {
-  if (!recherche) return true;
-  return c.titre.toLowerCase().includes(recherche) || c.description.toLowerCase().includes(recherche);
-}
-
-async function afficherListe() {
-  var l = document.getElementById('liste'); l.innerHTML = '';
-  var n = getNiveauActif();
-  if (!n) { l.innerHTML = '<p class="empty">Aucun niveau.</p>'; return; }
-  var list = [];
-  if (n.cours) n.cours.forEach(c => { if (matchRecherche(c)) list.push(c); });
-  if (n.sousCategories) n.sousCategories.forEach(s => {
-    if (SOUSCAT_ACTIVE && s.id !== SOUSCAT_ACTIVE) return;
-    s.cours.forEach(c => { if (matchRecherche(c)) list.push(c); });
-  });
-  if (!list.length) { l.innerHTML = '<p class="empty">Aucun cours.</p>'; return; }
-  for (var i = 0; i < list.length; i++) l.appendChild(await creerCoursElement(list[i]));
-}
-
-async function creerCoursElement(c) {
-  var v = await CoursStorage.getVersion(c.id);
-  var dejaLa = await CoursStorage.exists(c.fichiers[0]);
-  var enCours = telechargementsEnCours[c.id];
-  var online = navigator.onLine;
-  var etat = '', cls = '';
-  if (enCours) { etat = '⏳ ' + enCours.done + '/' + enCours.total; cls = 'maj'; }
-  else if (!dejaLa) { etat = online ? 'Non téléchargé' : '⚠ Hors ligne'; cls = online ? '' : 'warn'; }
-  else if (c.version > v) { etat = 'MàJ dispo'; cls = 'maj'; }
-  else { etat = '✓ Hors ligne'; cls = 'ok'; }
-
-  var d = document.createElement('div');
-  d.className = 'cours';
-  d.innerHTML =
-    '<div class="ico">' + (c.icone || '📖') + '</div>' +
-    '<div class="info">' +
-      '<div class="titre">' + c.titre + '</div>' +
-      '<div class="desc">' + c.description + '</div>' +
-      '<div class="meta"><span class="niveau">' + (c.niveau || '') + '</span></div>' +
-      '<div class="etat ' + cls + '">' + etat + '</div>' +
-    '</div><div class="actions"></div>';
-
-  var a = d.querySelector('.actions');
-  if (dejaLa && !enCours) {
-    var b1 = document.createElement('button');
-    b1.className = 'btn-lire'; b1.textContent = '📖 Lire';
-    b1.onclick = () => ouvrirLocal(c); a.appendChild(b1);
-    var b2 = document.createElement('button');
-    b2.className = 'btn-supp'; b2.textContent = '🗑️';
-    b2.onclick = () => supprimer(c); a.appendChild(b2);
-  }
-  if (!dejaLa && online && !enCours) {
-    var b3 = document.createElement('button');
-    b3.className = 'btn-dl'; b3.textContent = '☁️ Télécharger';
-    b3.onclick = () => telecharger(c); a.appendChild(b3);
-    var b4 = document.createElement('button');
-    b4.className = 'btn-ligne'; b4.textContent = '🌐 En ligne';
-    b4.onclick = () => { window.location.href = BASE_URL + c.fichiers[0]; }; a.appendChild(b4);
-  }
-  if (dejaLa && c.version > v && online && !enCours) {
-    var b5 = document.createElement('button');
-    b5.className = 'btn-maj'; b5.textContent = '🔄 MàJ';
-    b5.onclick = () => telecharger(c); a.appendChild(b5);
-  }
-  return d;
-}
-
-function filtrer() {
-  recherche = document.getElementById('search').value.toLowerCase().trim();
-  if (recherche) afficherListeRecherche(); else afficherListe();
-}
-
-async function afficherListeRecherche() {
-  var l = document.getElementById('liste'); l.innerHTML = '';
-  var tous = [];
-  CATALOGUE.categories.forEach(cat => {
-    if (cat.cours) cat.cours.forEach(c => { if (matchRecherche(c)) tous.push(c); });
-    if (cat.sousCategories) cat.sousCategories.forEach(s => {
-      s.cours.forEach(c => { if (matchRecherche(c)) tous.push(c); });
-    });
-  });
-  if (!tous.length) { l.innerHTML = '<p class="empty">Aucun résultat.</p>'; return; }
-  for (var i = 0; i < tous.length; i++) l.appendChild(await creerCoursElement(tous[i]));
-}
-
-async function telecharger(c) {
-  if (!navigator.onLine) { setProgress('⚠ Pas de connexion', 'err'); return; }
-  if (telechargementsEnCours[c.id]) return;
-  telechargementsEnCours[c.id] = { total: c.fichiers.length, done: 0 };
-  setProgress('⏳ ' + c.titre + ' : 0/' + c.fichiers.length, '');
-  afficherListe();
-  for (var i = 0; i < c.fichiers.length; i++) {
-    var ok = await CoursStorage.download(BASE_URL + c.fichiers[i], c.fichiers[i]);
-    if (ok) onDone(c.fichiers[i]); else onErr(c.fichiers[i]);
-  }
-}
-
-function onDone(f) {
-  getAllCours().forEach(c => {
-    if (c.fichiers.includes(f) && telechargementsEnCours[c.id]) {
-      var t = telechargementsEnCours[c.id]; t.done++;
-      if (t.done >= t.total) {
-        CoursStorage.setVersion(c.id, c.version);
-        delete telechargementsEnCours[c.id];
-        setProgress('✓ ' + c.titre + ' téléchargé', 'ok');
-      } else setProgress('⏳ ' + c.titre + ' : ' + t.done + '/' + t.total, '');
-      afficherListe();
-    }
-  });
-}
-
-function onErr(f) {
-  getAllCours().forEach(c => {
-    if (c.fichiers.includes(f) && telechargementsEnCours[c.id]) {
-      delete telechargementsEnCours[c.id];
-      setProgress('❌ Erreur : ' + f, 'err');
-      afficherListe();
-    }
-  });
-}
-
-function getAllCours() {
-  var all = [];
-  if (!CATALOGUE) return all;
-  CATALOGUE.categories.forEach(cat => {
-    if (cat.cours) cat.cours.forEach(c => all.push(c));
-    if (cat.sousCategories) cat.sousCategories.forEach(s => s.cours.forEach(c => all.push(c)));
-  });
-  return all;
-}
-
-async function ouvrirLocal(c) {
-  const url = BASE_URL + c.fichiers[0];
-  const o = document.createElement('div');
-  o.id = 'readerOverlay';
-  o.style.cssText = 'position:fixed;inset:0;z-index:99999;background:#0d1117;display:flex;flex-direction:column;';
-  o.innerHTML =
-    '<div style="padding:12px;background:#161b22;border-bottom:1px solid #21262d;display:flex;align-items:center;gap:10px;flex-shrink:0;">' +
-      '<button id="closeReader" style="padding:8px 16px;background:#00ff88;color:#121212;border:none;border-radius:20px;font-weight:bold;cursor:pointer;font-size:14px;">← Retour</button>' +
-      '<span style="font-size:14px;font-weight:bold;color:#e6f1ff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + c.titre + '</span>' +
-    '</div>' +
-    '<iframe id="readerFrame" style="flex:1;border:none;background:#fff;width:100%;" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>';
-  document.body.appendChild(o);
-  const frame = o.querySelector('#readerFrame');
-  try {
-    const cache = await caches.open(CoursStorage.COURS_CACHE);
-    let resp = await cache.match(url, { ignoreSearch: true });
-    if (!resp) { resp = await fetch(url); if (resp.ok) await cache.put(url, resp.clone()); }
-    let html = await resp.text();
-    if (!/<base\s/i.test(html)) html = html.replace(/<head([^>]*)>/i, '<head$1><base href="' + BASE_URL + '">');
-    frame.srcdoc = html;
-  } catch(e) {
-    frame.srcdoc = '<html><body style="padding:20px;font-family:sans-serif;"><h2>❌ Indisponible</h2><p>Connecte-toi pour télécharger ce cours.</p></body></html>';
-  }
-  o.querySelector('#closeReader').onclick = () => o.remove();
-}
-
-async function supprimer(c) {
-  for (var i = 0; i < c.fichiers.length; i++) await CoursStorage.delete(c.fichiers[i]);
-  await CoursStorage.setVersion(c.id, 0);
-  setProgress('🗑️ ' + c.titre + ' supprimé', '');
-  afficherListe();
-}
-
-window.addEventListener('online', () => { setProgress('✓ Connecté', 'ok'); charger(); });
-window.addEventListener('offline', () => { setProgress('⚠ Hors ligne', ''); afficherListe(); });
-
-(function() {
-  const ua = navigator.userAgent;
-  const isIOS = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-  const isAndroid = /Android/.test(ua);
-  const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-  if (isStandalone) { document.getElementById('installSection').style.display = 'none'; return; }
-  if (isAndroid) document.getElementById('installAndroid').style.display = 'block';
-  else if (isIOS) document.getElementById('installIos').style.display = 'block';
-  else document.getElementById('installWeb').style.display = 'block';
-})();
-
-charger();
-</script>
-
- <div id="decouvertesOverlay">
+<!-- OVERLAY DÉCOUVERTES -->
+<div id="decouvertesOverlay">
     <div class="dec-header">
         <h1>✨ Découvertes</h1>
         <button class="dec-close" onclick="fermerDecouvertes()">✕</button>
     </div>
-    <p class="dec-intro">
-        Recommandations sélectionnées — aucun suivi, aucune donnée collectée.
-    </p>
+    <p class="dec-intro">Recommandations sélectionnées — aucun suivi, aucune donnée collectée.</p>
     <div id="promosListe">
         <p style="color:#666;text-align:center;padding:30px;">Chargement...</p>
     </div>
 </div>
 
 <script>
-var APP_SOURCE = 'studia';
+/* ═══════════ SERVICE WORKER ═══════════ */
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(e => console.error('SW:', e));
+    });
+}
+</script>
+
+<script>
+/* ═══════════ CONFIG ═══════════ */
+var CATALOGUE_URL = 'https://medscroll.github.io/catalogue.json';
+var BASE_URL = 'https://medscroll.github.io/';
 var PROMOS_URL = 'https://medscroll.github.io/promos.json';
 var PROMOS_CACHE = 'studia-promos-v1';
+var APP_SOURCE = 'studia';
 
+/* ═══════════ STOCKAGE — CACHE API ═══════════ */
+var CoursStorage = {
+    COURS_CACHE: 'studia-cours-v1',
+    async _c() { return caches.open(this.COURS_CACHE); },
+    async exists(f) {
+        var c = await this._c();
+        return !!(await c.match(BASE_URL + f, { ignoreSearch: true }));
+    },
+    async download(url, f) {
+        try {
+            var r = await fetch(url, { cache: 'no-store' });
+            if (!r.ok) throw new Error('HTTP ' + r.status);
+            var c = await this._c();
+            await c.put(url, r.clone());
+            return true;
+        } catch (e) { console.error('DL err:', e.message); return false; }
+    },
+    async delete(f) {
+        try { var c = await this._c(); await c.delete(BASE_URL + f, { ignoreSearch: true }); } catch (e) {}
+    },
+    async getVersion(id) { return parseInt(localStorage.getItem('studia_v_' + id) || '0'); },
+    async setVersion(id, v) { localStorage.setItem('studia_v_' + id, v.toString()); }
+};
+
+/* ═══════════ ÉTAT GLOBAL ═══════════ */
+var CATALOGUE = null;
+var CATEGORIE_ACTIVE = 'toutes';
+var telechargementsEnCours = {};
+var recherche = '';
+
+/* ═══════════ CHARGEMENT ═══════════ */
+function charger() {
+    try {
+        var cached = localStorage.getItem('catalogue_cache');
+        if (cached) { CATALOGUE = JSON.parse(cached); afficherTout(); }
+    } catch(e) {}
+    if (!navigator.onLine) {
+        setProgress(CATALOGUE ? '⚠ Hors ligne - cache' : '⚠ Hors ligne', '');
+        return;
+    }
+    setProgress('Chargement...', '');
+    fetch(CATALOGUE_URL + '?t=' + Date.now())
+        .then(r => r.json())
+        .then(data => {
+            CATALOGUE = data;
+            try { localStorage.setItem('catalogue_cache', JSON.stringify(data)); } catch(e) {}
+            afficherTout();
+            setProgress('✓ Catalogue à jour', 'ok');
+        })
+        .catch(e => setProgress(CATALOGUE ? '⚠ Cache utilisé' : '⚠ Pas de connexion', 'err'));
+}
+
+function setProgress(txt, cls) {
+    var p = document.getElementById('progress');
+    p.textContent = txt;
+    p.className = 'progress ' + (cls || '');
+}
+
+/* ═══════════ AFFICHAGE ═══════════ */
+function afficherTout() {
+    if (!CATALOGUE) return;
+    try {
+        var s = JSON.parse(localStorage.getItem('studia_section') || 'null');
+        if (s && s.cat) CATEGORIE_ACTIVE = s.cat;
+    } catch(e) {}
+    afficherOnglets();
+    afficherListe();
+}
+
+function sauverSection() {
+    try { localStorage.setItem('studia_section', JSON.stringify({ cat: CATEGORIE_ACTIVE })); } catch(e) {}
+}
+
+function afficherOnglets() {
+    var c = document.getElementById('cats');
+    c.innerHTML = '';
+    var toutes = document.createElement('div');
+    toutes.className = 'cat-tab' + (CATEGORIE_ACTIVE === 'toutes' ? ' active' : '');
+    toutes.textContent = '📚 Toutes';
+    toutes.onclick = function() { CATEGORIE_ACTIVE = 'toutes'; sauverSection(); afficherOnglets(); afficherListe(); };
+    c.appendChild(toutes);
+    CATALOGUE.categories.forEach(function(cat) {
+        var t = document.createElement('div');
+        t.className = 'cat-tab' + (CATEGORIE_ACTIVE === cat.id ? ' active' : '');
+        t.textContent = cat.icone + ' ' + cat.nom;
+        t.onclick = function() { CATEGORIE_ACTIVE = cat.id; sauverSection(); afficherOnglets(); afficherListe(); };
+        c.appendChild(t);
+    });
+}
+
+function matchRecherche(c) {
+    if (!recherche) return true;
+    return c.titre.toLowerCase().indexOf(recherche) !== -1 ||
+           c.description.toLowerCase().indexOf(recherche) !== -1;
+}
+
+async function afficherListe() {
+    var liste = document.getElementById('liste');
+    liste.innerHTML = '';
+    var coursAffichables = [];
+    CATALOGUE.categories.forEach(function(cat) {
+        if (CATEGORIE_ACTIVE !== 'toutes' && CATEGORIE_ACTIVE !== cat.id) return;
+        cat.cours.forEach(function(c) {
+            if (matchRecherche(c)) coursAffichables.push(c);
+        });
+    });
+    if (coursAffichables.length === 0) {
+        liste.innerHTML = '<p class="empty">Aucun cours trouvé.</p>';
+        return;
+    }
+    for (var i = 0; i < coursAffichables.length; i++) {
+        liste.appendChild(await creerCoursElement(coursAffichables[i]));
+    }
+}
+
+async function creerCoursElement(c) {
+    var localV = await CoursStorage.getVersion(c.id);
+    var htmlFile = c.fichiers[0];
+    var dejaLa = await CoursStorage.exists(htmlFile);
+    var telechargement = telechargementsEnCours[c.id];
+    var enCours = !!telechargement;
+    var online = navigator.onLine;
+
+    var etatTexte = '', etatCls = '';
+    if (enCours) { etatTexte = '⏳ ' + telechargement.done + '/' + telechargement.total; etatCls = 'maj'; }
+    else if (!dejaLa) { etatTexte = online ? 'Non téléchargé' : '⚠ Hors ligne'; etatCls = online ? '' : 'warn'; }
+    else if (c.version > localV) { etatTexte = 'Mise à jour dispo'; etatCls = 'maj'; }
+    else { etatTexte = '✓ Hors ligne'; etatCls = 'ok'; }
+
+    var div = document.createElement('div');
+    div.className = 'cours';
+    div.innerHTML =
+        '<div class="ico">' + (c.icone || '📖') + '</div>' +
+        '<div class="info">' +
+            '<div class="titre">' + c.titre + '</div>' +
+            '<div class="desc">' + c.description + '</div>' +
+            '<div class="meta">' +
+                '<span class="niveau">' + (c.niveau || '') + '</span>' +
+                '<span>⏱ ' + (c.duree || '') + '</span>' +
+            '</div>' +
+            '<div class="etat ' + etatCls + '">' + etatTexte + '</div>' +
+        '</div><div class="actions"></div>';
+
+    var actions = div.querySelector('.actions');
+    if (dejaLa && !enCours) {
+        var b1 = document.createElement('button');
+        b1.className = 'btn-lire'; b1.textContent = '📖 Lire';
+        b1.onclick = function() { ouvrirLocal(c); }; actions.appendChild(b1);
+        var b2 = document.createElement('button');
+        b2.className = 'btn-supp'; b2.textContent = '🗑️';
+        b2.onclick = function() { supprimer(c); }; actions.appendChild(b2);
+    }
+    if (!dejaLa && online && !enCours) {
+        var b3 = document.createElement('button');
+        b3.className = 'btn-dl'; b3.textContent = '☁️ Télécharger';
+        b3.onclick = function() { telecharger(c); }; actions.appendChild(b3);
+        var b4 = document.createElement('button');
+        b4.className = 'btn-ligne'; b4.textContent = '🌐 En ligne';
+        b4.onclick = function() { window.location.href = BASE_URL + c.fichiers[0]; }; actions.appendChild(b4);
+    }
+    if (dejaLa && c.version > localV && online && !enCours) {
+        var b5 = document.createElement('button');
+        b5.className = 'btn-maj'; b5.textContent = '🔄 MàJ';
+        b5.onclick = function() { telecharger(c); }; actions.appendChild(b5);
+    }
+    return div;
+}
+
+/* ═══════════ RECHERCHE ═══════════ */
+function filtrer() {
+    recherche = document.getElementById('search').value.toLowerCase().trim();
+    afficherListe();
+}
+
+/* ═══════════ TÉLÉCHARGEMENT ═══════════ */
+async function telecharger(c) {
+    if (!navigator.onLine) { setProgress('⚠ Pas de connexion', 'err'); return; }
+    if (telechargementsEnCours[c.id]) return;
+    telechargementsEnCours[c.id] = { total: c.fichiers.length, done: 0 };
+    setProgress('⏳ ' + c.titre + ' : 0/' + c.fichiers.length, '');
+    afficherListe();
+    for (var i = 0; i < c.fichiers.length; i++) {
+        var ok = await CoursStorage.download(BASE_URL + c.fichiers[i], c.fichiers[i]);
+        if (ok) onDownloadDone(c.fichiers[i]); else onDownloadError(c.fichiers[i]);
+    }
+}
+
+function onDownloadDone(f) {
+    if (!CATALOGUE) return;
+    CATALOGUE.categories.forEach(function(cat) {
+        cat.cours.forEach(function(c) {
+            if (c.fichiers.indexOf(f) !== -1 && telechargementsEnCours[c.id]) {
+                var t = telechargementsEnCours[c.id]; t.done++;
+                if (t.done >= t.total) {
+                    CoursStorage.setVersion(c.id, c.version);
+                    delete telechargementsEnCours[c.id];
+                    setProgress('✓ ' + c.titre + ' téléchargé', 'ok');
+                } else setProgress('⏳ ' + c.titre + ' : ' + t.done + '/' + t.total, '');
+                afficherListe();
+            }
+        });
+    });
+}
+
+function onDownloadError(f) {
+    if (!CATALOGUE) return;
+    CATALOGUE.categories.forEach(function(cat) {
+        cat.cours.forEach(function(c) {
+            if (c.fichiers.indexOf(f) !== -1 && telechargementsEnCours[c.id]) {
+                delete telechargementsEnCours[c.id];
+                setProgress('❌ Erreur : ' + f, 'err');
+                afficherListe();
+            }
+        });
+    });
+}
+
+/* ═══════════ LECTURE / SUPPRESSION ═══════════ */
+async function ouvrirLocal(c) {
+    var url = BASE_URL + c.fichiers[0];
+    try { await CoursStorage.setVersion(c.id, c.version); } catch(e) {}
+    track('studia_open', { cours_id: c.id, cours_titre: c.titre });
+
+    var o = document.createElement('div');
+    o.id = 'readerOverlay';
+    o.style.cssText = 'position:fixed;inset:0;z-index:99999;background:#0d1117;display:flex;flex-direction:column;';
+    o.innerHTML =
+        '<div style="padding:12px;background:#161b22;border-bottom:1px solid #21262d;display:flex;align-items:center;gap:10px;flex-shrink:0;">' +
+            '<button id="closeReader" style="padding:8px 16px;background:#00ff88;color:#121212;border:none;border-radius:20px;font-weight:bold;cursor:pointer;font-size:14px;">← Retour</button>' +
+            '<span style="font-size:14px;font-weight:bold;color:#e6f1ff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + c.titre + '</span>' +
+        '</div>' +
+        '<iframe id="readerFrame" style="flex:1;border:none;background:#fff;width:100%;" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>';
+    document.body.appendChild(o);
+
+    var frame = o.querySelector('#readerFrame');
+    try {
+        var cache = await caches.open(CoursStorage.COURS_CACHE);
+        var resp = await cache.match(url, { ignoreSearch: true });
+        if (!resp) { resp = await fetch(url); if (resp.ok) await cache.put(url, resp.clone()); }
+        var html = await resp.text();
+        if (!/<base\s/i.test(html)) html = html.replace(/<head([^>]*)>/i, '<head$1><base href="' + BASE_URL + '">');
+        frame.srcdoc = html;
+    } catch(e) {
+        frame.srcdoc = '<html><body style="padding:20px;font-family:sans-serif;"><h2>❌ Indisponible</h2><p>Connecte-toi pour télécharger ce cours.</p></body></html>';
+    }
+    o.querySelector('#closeReader').onclick = function() { o.remove(); };
+}
+
+async function supprimer(c) {
+    for (var i = 0; i < c.fichiers.length; i++) await CoursStorage.delete(c.fichiers[i]);
+    await CoursStorage.setVersion(c.id, 0);
+    setProgress('🗑️ ' + c.titre + ' supprimé', '');
+    afficherListe();
+}
+
+/* ═══════════ ÉVÉNEMENTS ═══════════ */
+window.addEventListener('online', function() { setProgress('✓ Connecté', 'ok'); charger(); });
+window.addEventListener('offline', function() { setProgress('⚠ Hors ligne', ''); afficherListe(); });
+
+/* ═══════════ DÉCOUVERTES ═══════════ */
 async function ouvrirDecouvertes() {
     document.getElementById('decouvertesOverlay').style.display = 'block';
+    track('studia_decouvertes');
     await chargerPromos();
 }
-function fermerDecouvertes() {
-    document.getElementById('decouvertesOverlay').style.display = 'none';
-}
+function fermerDecouvertes() { document.getElementById('decouvertesOverlay').style.display = 'none'; }
+
 async function chargerPromos() {
     var liste = document.getElementById('promosListe');
     liste.innerHTML = '<p style="color:#666;text-align:center;padding:30px;">Chargement...</p>';
@@ -556,25 +414,23 @@ async function chargerPromos() {
         liste.innerHTML = '<p style="color:#666;text-align:center;padding:30px;">Hors ligne — reviens plus tard.</p>';
     }
 }
+
 function afficherPromos(promos) {
-    var liste = document.getElementById('promosListe');
-    liste.innerHTML = '';
+    var liste = document.getElementById('promosListe'); liste.innerHTML = '';
     var maintenant = new Date().toISOString().split('T')[0];
     var actifs = promos
-        .filter(function(p) {
-            return p.paye && p.debut <= maintenant && p.fin >= maintenant &&
-                   (!p.cible || p.cible === APP_SOURCE || p.cible === 'toutes');
-        })
-        .sort(function(a, b) { return (a.priorite || 99) - (b.priorite || 99); });
+        .filter(p => p.paye && p.debut <= maintenant && p.fin >= maintenant &&
+                    (!p.cible || p.cible === APP_SOURCE || p.cible === 'toutes'))
+        .sort((a, b) => (a.priorite || 99) - (b.priorite || 99));
 
     if (actifs.length === 0) {
-        liste.innerHTML = '<p style="color:#666;text-align:center;padding:30px;">Aucune recommandation pour le moment.</p>';
+        liste.innerHTML = '<p style="color:#666;text-align:center;padding:30px;">Aucune recommandation.</p>';
         return;
     }
     var badge = document.getElementById('badgePromos');
     if (badge) { badge.textContent = actifs.length; badge.style.display = 'flex'; }
 
-    actifs.forEach(function(p) {
+    actifs.forEach(p => {
         var lienTrack = p.lien + (p.lien.indexOf('?') !== -1 ? '&' : '?') +
             'utm_source=' + APP_SOURCE + '&utm_medium=app&utm_campaign=' + (p.id || 'promo');
         var div = document.createElement('div');
@@ -582,11 +438,7 @@ function afficherPromos(promos) {
         var badgeHtml = p.partenaire ? '<span class="promo-badge">Partenaire</span>' : '';
         div.innerHTML =
             '<div class="promo-head">' +
-                '<div class="promo-ico">' +
-    (p.image 
-        ? '<img src="' + p.image + '" alt="' + p.titre + '" loading="lazy">'
-        : (p.icone || '📌')) +
-'</div>' +
+                '<div class="promo-ico">' + (p.image ? '<img src="' + p.image + '" alt="" loading="lazy">' : (p.icone || '📌')) + '</div>' +
                 '<div class="promo-body">' +
                     '<div class="promo-titre">' + p.titre + badgeHtml + '</div>' +
                     '<div class="promo-desc">' + p.desc + '</div>' +
@@ -597,6 +449,7 @@ function afficherPromos(promos) {
         liste.appendChild(div);
     });
 }
+
 async function verifierBadgePromos() {
     try {
         var cache = await caches.open(PROMOS_CACHE);
@@ -607,65 +460,33 @@ async function verifierBadgePromos() {
         }
         var data = await resp.json();
         var maintenant = new Date().toISOString().split('T')[0];
-        var count = data.promos.filter(function(p) {
-            return p.paye && p.debut <= maintenant && p.fin >= maintenant &&
-                   (!p.cible || p.cible === APP_SOURCE || p.cible === 'toutes');
-        }).length;
+        var count = data.promos.filter(p => p.paye && p.debut <= maintenant && p.fin >= maintenant &&
+                    (!p.cible || p.cible === APP_SOURCE || p.cible === 'toutes')).length;
         var badge = document.getElementById('badgePromos');
         if (badge && count > 0) { badge.textContent = count; badge.style.display = 'flex'; }
     } catch (e) {}
 }
-verifierBadgePromos();
-</script> 
-    <script>
-/* ═══════════ TRACKING STUDIA ═══════════ */
-function track(nom, params) {
-    if (typeof gtag === 'function') gtag('event', nom, params || {});
-}
 
-track('studia_app_open', {
-    version: '1.0.0',
-    pwa: window.matchMedia('(display-mode: standalone)').matches
-});
+/* ═══════════ TRACKING ═══════════ */
+function track(nom, params) { if (typeof gtag === 'function') gtag('event', nom, params || {}); }
+track('studia_app_open', { version: '1.0.0', pwa: window.matchMedia('(display-mode: standalone)').matches });
 
 var _oldDownload = telecharger;
 telecharger = function(c) {
-    track('studia_download', {
-        cours_id: c.id, cours_titre: c.titre,
-        niveau: c.niveau || '', fichiers: c.fichiers.length
-    });
+    track('studia_download', { cours_id: c.id, cours_titre: c.titre, fichiers: c.fichiers.length });
     return _oldDownload.call(this, c);
 };
-
-var _oldOuvrir = ouvrirLocal;
-ouvrirLocal = function(c) {
-    track('studia_open', {
-        cours_id: c.id, cours_titre: c.titre, niveau: c.niveau || ''
-    });
-    return _oldOuvrir.call(this, c);
-};
-
 var _oldSupprimer = supprimer;
 supprimer = function(c) {
     track('studia_delete', { cours_id: c.id });
     return _oldSupprimer.call(this, c);
 };
-
 var _oldFiltrer = filtrer;
 filtrer = function() {
     var r = document.getElementById('search').value;
     if (r && r.length > 2) track('studia_search', { search_term: r });
     return _oldFiltrer.call(this);
 };
-
-if (typeof ouvrirDecouvertes === 'function') {
-    var _oldDecouvrir = ouvrirDecouvertes;
-    ouvrirDecouvertes = function() {
-        track('studia_decouvertes');
-        return _oldDecouvrir.call(this);
-    };
-}
-
 window.addEventListener('click', function(e) {
     var lien = e.target.closest('.promo-lien');
     if (lien) {
@@ -674,10 +495,11 @@ window.addEventListener('click', function(e) {
         track('studia_promo_click', { promo: titre });
     }
 });
+window.addEventListener('appinstalled', function() { track('studia_pwa_install'); });
 
-window.addEventListener('appinstalled', function() {
-    track('studia_pwa_install');
-});
+/* ═══════════ DÉMARRAGE ═══════════ */
+verifierBadgePromos();
+charger();
 </script>
 </body>
 </html>
